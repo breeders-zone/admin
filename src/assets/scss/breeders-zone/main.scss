@@ -1,0 +1,142 @@
+$main-color: #3F81E5;
+$feather-shadow: 0px 0px 5px rgba(0, 0, 0, 0.25);
+$country-shadow: 0px 0px 2px 0.5px rgba(0, 0, 0, 0.5);
+$border-radius: 5px;
+
+@mixin morph-indicator {
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+  padding: 5px;
+  color: #fff;
+  border-radius: 5px;
+  user-select: none;
+
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  font-height: 16px;
+  font-align: center;
+  white-space: nowrap!important;
+}
+
+.morph {
+  &s{
+    display: flex;
+    width: 100%;
+  }
+
+  &-indicator-count{
+    display: inline-block;
+    padding: 2px 5px;
+    color: #fff;
+    border-radius: 5px;
+    user-select: none;
+
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  &-indicator{
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+    padding: 5px;
+    color: #fff !important;
+    border-radius: 5px;
+    user-select: none;
+
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    white-space: nowrap!important;
+
+    &:hover{
+      text-decoration: none;
+    }
+
+    &-search{
+      @include morph-indicator;
+      background: #be2050;
+    }
+  }
+
+  &-dominant{
+
+    $normal: #3F81E5;
+    $super: #665599;
+
+    &-normal{
+      background: $normal;
+    }
+
+    &-super{
+      background: $super;
+    }
+  }
+
+  &-recessive{
+
+    $possible-het: #FFCC44;
+    $het: #FF9966;
+    $visual: #FF7788;
+
+    &-possible-het{
+      background: $possible-het;
+    }
+
+    &-het{
+      background: $het;
+    }
+
+    &-visual{
+      background: $visual;
+    }
+  }
+
+  &-other{
+
+    $normal: #B3B3B3;
+    $possible: #808080;
+
+    &-normal{
+      background: $normal;
+    }
+
+    &-possible{
+      background: $possible;
+    }
+  }
+}
+
+.search-morphs {
+  border: 1px solid #D3D9DE;
+  border-top: none;
+  z-index: 9999;
+  border-radius: 0 0 10px 10px;
+  position: absolute;
+  top: 40px;
+  background: #fff;
+  height: 150px;
+  overflow: auto;
+
+  &-item {
+    padding: 5px 0;
+    border-bottom: 1px solid #ccc;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.selected {
+      background: $main-color;
+    }
+  }
+}
