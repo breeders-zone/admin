@@ -3,17 +3,16 @@ import initialState from "./initialState";
 const kinds = (state, action) => {
     const payload = action.payload;
     if (state === undefined) {
-        return initialState.kinds;
+        return initialState.localities;
     }
 
     switch (action.type) {
-        case 'SET_KINDS':
+        case 'SET_LOCALITIES':
             return {
-                all: payload.kinds,
-                active: payload.activeKinds,
+                all: payload,
                 request: false
             };
-        case 'DELETE_KIND':
+        case 'DELETE_LOCALITY':
             return {
                 ...state,
                 all: [...payload]

@@ -3,20 +3,24 @@ import initialState from "./initialState";
 const kinds = (state, action) => {
     const payload = action.payload;
     if (state === undefined) {
-        return initialState.kinds;
+        return initialState.levels;
     }
 
     switch (action.type) {
-        case 'SET_KINDS':
-            return {
-                all: payload.kinds,
-                active: payload.activeKinds,
-                request: false
-            };
-        case 'DELETE_KIND':
+        case 'SET_LEVELS':
             return {
                 ...state,
-                all: [...payload]
+                ...payload
+            };
+        case 'SET_LEVELS_REQUEST':
+            return {
+                ...state,
+                request: payload
+            };
+        case 'DELETE_LEVEL':
+            return {
+                ...state,
+                data: [...payload]
             };
         default:
             return state

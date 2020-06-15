@@ -3,18 +3,17 @@ import initialState from "./initialState";
 const kinds = (state, action) => {
     const payload = action.payload;
     if (state === undefined) {
-        return initialState.kinds;
+        return initialState.subcategories;
     }
 
     switch (action.type) {
-        case 'SET_KINDS':
+        case 'SET_SUBCATEGORIES':
             return {
-                all: payload.kinds,
-                active: payload.activeKinds,
+                all: payload,
                 request: false
             };
-        case 'DELETE_KIND':
-            return {
+        case 'DELETE_SUBCATEGORY':
+            return  {
                 ...state,
                 all: [...payload]
             };
