@@ -71,7 +71,7 @@ class ProductForm extends Component{
                 setProduct({
                     ...data,
                     initialMorphs: [...data.morphs],
-                    initialLocalities: [...data.localities]
+                    initialLocalities: []
                 });
                 if (data.product_images[0])
                     this.setState({mainImg: data.product_images[0]});
@@ -126,13 +126,13 @@ class ProductForm extends Component{
     };
 
     onSubmit = (data, actions) => {
-        const {product: {morphs, localities}, id, setProduct, setProductRequest} = this.props;
+        const {product: {morphs}, id, setProduct, setProductRequest} = this.props;
 
         dataService.updateProduct(id, {
             ...data,
+            locality_id: data.locality_id !== 'none' ? data.locality_id : null,
             product_images: data.acceptedFiles,
             morphs,
-            localities
         })
             .then( async ({success}) => {
                 this.setState({isEdit: false});
@@ -140,8 +140,7 @@ class ProductForm extends Component{
                 const data = await dataService.getProduct(id);
                 setProduct({
                     ...data,
-                    initialMorphs: [...data.morphs],
-                    initialLocalities: [...data.localities]
+                    initialMorphs: [...data.morphs]
                 });
                 actions.setValues({
                     ...data,
@@ -182,10 +181,7 @@ class ProductForm extends Component{
             allKinds,
             setProductMorph,
             deleteProductMorph,
-            setProduct,
-            setProductLocality,
-            deleteProductLocality,
-            addProductLocality
+            setProduct
         } = this.props;
         const {mainImg, isEdit, searchInput, searchInputBlur, is404} = this.state;
         const sliderOptions = {
@@ -585,78 +581,38 @@ class ProductForm extends Component{
                                                     selectedKind.localities.length > 0 ?
                                                         (
                                                             <div className="d-flex align-items-center mb-3">
-                                                                <h3 className="title">Локалитеты:</h3>
-                                                                {
-                                                                    isEdit && product.localities.length === 0 ?
-                                                                        <Row className="ml-2">
-                                                                            <button
-                                                                                onClick={() => addProductLocality(selectedKind.localities[0])}
-                                                                                className="btn btn-primary rounded d-flex justify-content-center align-items-center"
-                                                                            >
-                                                                                <i className="ni ni-lg ni-fat-add text-white"></i>
-                                                                            </button>
-                                                                        </Row>
-                                                                        : null
-                                                                }
+                                                                <h3 className="title">Локалитет:</h3>
                                                                 {
                                                                     isEdit ?
                                                                         (
                                                                             <div className="d-flex flex-column w-100 ml-2">
-                                                                                {
-                                                                                    product.localities.map( (locality, idx) => (
-                                                                                        <Row className="w-100 mb-2" key={locality.title + '-index-' + idx}>
-                                                                                            <Col xs={9}>
-                                                                                                <Input
-                                                                                                    className="form-control-alternative"
-                                                                                                    name={"locality-" + locality.id}
-                                                                                                    type="select"
-                                                                                                    onChange={(e) => {
-                                                                                                        const locality = selectedKind.localities.find((item) => item.id === Number(e.target.value));
-                                                                                                        setProductLocality({
-                                                                                                            locality,
-                                                                                                            idx
-                                                                                                        })
-                                                                                                    }}
-                                                                                                    value={locality.id}
-                                                                                                >
-                                                                                                    {
-                                                                                                        selectedKind.localities.map((item) => <option key={"locality-value-" + item.id} value={item.id}>{item.title}</option> )
-                                                                                                    }
-                                                                                                </Input>
-                                                                                            </Col>
-                                                                                            <Col xs={2} className="d-flex">
-                                                                                                <button
-                                                                                                    type="button"
-                                                                                                    onClick={() => deleteProductLocality(idx)}
-                                                                                                    className="btn btn-danger rounded d-flex justify-content-center align-items-center"
-                                                                                                >
-                                                                                                    <i className="ni ni-lg ni-fat-delete text-white "></i>
-                                                                                                </button>
-                                                                                                {
-                                                                                                    idx === (product.localities.length - 1) ?
-                                                                                                        <button
-                                                                                                            type="button"
-                                                                                                            onClick={() => addProductLocality(selectedKind.localities[0])}
-                                                                                                            className="btn btn-primary rounded d-flex justify-content-center align-items-center"
-                                                                                                        >
-                                                                                                            <i className="ni ni-lg ni-fat-add text-white"></i>
-                                                                                                        </button>
-                                                                                                        : null
-                                                                                                }
-                                                                                            </Col>
-                                                                                        </Row>
-                                                                                    ))
-                                                                                }
+                                                                                <Row>
+                                                                                    <Col xs={12}>
+                                                                                        <Input
+                                                                                            className="form-control-alternative"
+                                                                                            name="locality_id"
+                                                                                            type="select"
+                                                                                            onChange={handleChange}
+                                                                                            onBlur={handleBlur}
+                                                                                            value={values.locality_id}
+                                                                                        >
+                                                                                            <option value="none">Нет</option>
+                                                                                            {
+                                                                                                selectedKind.localities.map((item) => <option key={"locality-value-" + item.id} value={item.id}>{item.title}</option> )
+                                                                                            }
+                                                                                        </Input>
+                                                                                    </Col>
+                                                                                </Row>
                                                                             </div>
                                                                         )
                                                                         : (
                                                                             <div className="morphs">
                                                                                 {
-                                                                                    product.localities.map( (locality) => (
-                                                                                        <a className="morph-indicator morph-other-normal" key={locality.title}>
-                                                                                            {locality.title}
+                                                                                    product.locality ?
+                                                                                        <a className="morph-indicator morph-other-normal">
+                                                                                            {product.locality.title}
                                                                                         </a>
-                                                                                    ))
+                                                                                        : null
                                                                                 }
                                                                             </div>
                                                                         )
@@ -903,9 +859,6 @@ export default connect(mapStateToProps, {
     setProductMorph,
     setSelectedMorphIdx,
     deleteProductMorph,
-    setProductLocality,
-    deleteProductLocality,
-    addProductLocality
 })(
     withRouter(ProductForm)
 );
