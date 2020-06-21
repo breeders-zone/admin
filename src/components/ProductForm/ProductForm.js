@@ -71,7 +71,6 @@ class ProductForm extends Component{
                 setProduct({
                     ...data,
                     initialMorphs: [...data.morphs],
-                    initialLocalities: []
                 });
                 if (data.product_images[0])
                     this.setState({mainImg: data.product_images[0]});
