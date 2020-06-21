@@ -18,6 +18,14 @@ const genes = (state, action) => {
                 ...state,
                 request: payload
             };
+        case 'SET_GENES_OPTION_SEARCH':
+            return {
+                ...state,
+                options: {
+                    ...state,
+                    q: payload
+                }
+            };
         case 'DELETE_GENE':
             return {
                 ...state,

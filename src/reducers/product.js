@@ -37,21 +37,6 @@ const products = (state, action) => {
                 ...state,
                 selectedMorphIdx: payload
             };
-        case 'SET_PRODUCT_LOCALITY':
-            return {
-                ...state,
-                localities: payload
-            };
-        case 'DELETE_PRODUCT_LOCALITY':
-            return {
-                ...state,
-                localities: payload
-            };
-        case 'ADD_PRODUCT_LOCALITY':
-            return {
-                ...state,
-                localities: [...state.localities, payload]
-            };
         default:
             return state
     }

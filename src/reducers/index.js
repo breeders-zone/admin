@@ -21,8 +21,10 @@ import reports from "./reports";
 import report from "./report";
 import level from "./level";
 import levels from "./levels";
+import header from "./header";
 
 const createRootReducer = (history) => combineReducers({
+    header,
     kind,
     kinds,
     subcategory,

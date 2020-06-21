@@ -2,6 +2,18 @@ const initialState = {
     profile: {
         name: ''
     },
+    header: {
+        newUsers: {
+            mount: 0,
+            total: 0,
+            request: true
+        },
+        newProducts: {
+            mount: 0,
+            total: 0,
+            request: true
+        }
+    },
     kind: {
         request: true,
         title_eng: '',
@@ -49,7 +61,10 @@ const initialState = {
         request: true,
         current_page: null,
         last_page: null,
-        data: []
+        data: [],
+        options: {
+            q: ''
+        }
     },
     trait: {
         request: true,
@@ -65,7 +80,7 @@ const initialState = {
     product: {
         request: true,
         morphs: [],
-        localities: [],
+        locality: null,
         product_images: [],
         searchMorphsResult: [],
         selectedMorphIdx: 0,
