@@ -140,3 +140,30 @@ $border-radius: 5px;
     }
   }
 }
+
+.slick{
+  &-slide{
+    padding: 0 5px;
+  }
+
+  &-track {
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+  }
+
+  &-arrow{
+    width: 20px;
+    height: 20px;
+
+    &::before{
+      color: $main-color;
+      opacity: 1;
+      font-size: 20px;
+    }
+
+    &:hover{
+      opacity: 0.9;
+    }
+  }
+}
