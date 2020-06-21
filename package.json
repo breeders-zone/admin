@@ -78,6 +78,7 @@
     "eslint-plugin-flowtype": "3.13.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
+    "memoize-one": "^5.1.1",
     "typescript": "3.7.5"
   }
 }
