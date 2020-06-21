@@ -1,12 +1,11 @@
 import React, {Component} from "react";
-import Header from "../Headers/Header";
 import {
     Alert,
     Card,
     CardBody,
     CardHeader,
     Col,
-    Container, Form, FormGroup,
+    Form, FormGroup,
     Input,
     InputGroup,
     InputGroupAddon,
@@ -16,9 +15,8 @@ import {
 } from "reactstrap";
 import {connect} from "react-redux";
 import {
-    addProductLocality, deleteProductLocality,
     deleteProductMorph,
-    setProduct, setProductLocality,
+    setProduct,
     setProductMorph,
     setProductRequest,
     setProductSearchMorphsResult,
@@ -33,7 +31,6 @@ import {DataService} from "../../services";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import ReactDatetime from "react-datetime";
 import Dropzone from "react-dropzone";
-import Error404 from "../../views/Error404";
 import * as Yup from "yup";
 const dataService = new DataService();
 const debounceSearch = AwesomeDebouncePromise(
@@ -272,7 +269,7 @@ class ProductForm extends Component{
                          status,
                          isSubmitting
                      }) => {
-                        const selectedKind = allKinds.find((item) => item.id == values.kind_id);
+                        const selectedKind = allKinds.find((item) => item.id === Number(values.kind_id));
 
                         if (isSubmitting) {
                             return (
@@ -363,7 +360,7 @@ class ProductForm extends Component{
                                                                     width: 35,
                                                                     height: 35
                                                                 }}>
-                                                                    <img className="img-fluid m-auto" src={product.user.logo_img_url}/>
+                                                                    <img className="img-fluid m-auto" src={product.user.logo_img_url} alt={product.user.company_name}/>
                                                                 </div>
                                                                 <span>{product.user.company_name}</span>
                                                             </Link>
@@ -555,7 +552,7 @@ class ProductForm extends Component{
                                                         <div className="morphs flex-wrap">
                                                             {
                                                                 product.morphs.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
-                                                                    <a className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
+                                                                    <div className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
                                                                         {traitTitle} {geneTitle}
                                                                         {
                                                                             isEdit ?
@@ -570,7 +567,7 @@ class ProductForm extends Component{
                                                                                 ></i>
                                                                                 : null
                                                                         }
-                                                                    </a>
+                                                                    </div>
                                                                 ))
                                                             }
                                                         </div>
@@ -608,9 +605,9 @@ class ProductForm extends Component{
                                                                             <div className="morphs">
                                                                                 {
                                                                                     product.locality ?
-                                                                                        <a className="morph-indicator morph-other-normal">
+                                                                                        <div className="morph-indicator morph-other-normal">
                                                                                             {product.locality.title}
-                                                                                        </a>
+                                                                                        </div>
                                                                                         : null
                                                                                 }
                                                                             </div>
