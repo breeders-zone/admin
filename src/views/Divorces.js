@@ -347,7 +347,11 @@ class Divorces extends Component {
                                     </tbody>
                                 </Table>
                                 <CardFooter className="py-4">
-                                    <Pagination value={divorces}/>
+                                    {
+                                        divorces.last_page ?
+                                            <Pagination totalItems={divorces.last_page} pageSize={1} defaultActivePage={divorces.current_page}/>
+                                            : null
+                                    }
                                 </CardFooter>
                             </Card>
                         </div>

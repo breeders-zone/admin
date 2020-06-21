@@ -176,6 +176,7 @@ class Kind extends Component {
                     <Formik
                         initialValues={{
                             ...kind,
+                            has_subcategories: kind.has_subcategories ? '1' : '0',
                             acceptedFileHeader: null,
                             acceptedFileSquare: null,
                             previewsHeader: [],

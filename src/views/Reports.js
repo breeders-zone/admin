@@ -140,7 +140,11 @@ class Genes extends Component {
                                     </tbody>
                                 </Table>
                                 <CardFooter className="py-4">
-                                    <Pagination value={reports}/>
+                                    {
+                                        reports.last_page ?
+                                            <Pagination totalItems={reports.last_page} pageSize={1} defaultActivePage={reports.current_page}/>
+                                            : null
+                                    }
                                 </CardFooter>
                             </Card>
                         </Col>

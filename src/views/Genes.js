@@ -6,7 +6,7 @@ import {
     Col,
     Container, DropdownItem,
     DropdownMenu,
-    DropdownToggle,
+    DropdownToggle, Form, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText,
     Media,
     Row, Spinner,
     Table,
@@ -15,7 +15,7 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
-import {deleteGene, setGenes, setGenesRequest} from "../actions";
+import {deleteGene, setGenes, setGenesOptionSearch, setGenesRequest} from "../actions";
 import {times} from "../utils";
 import Pagination from "../components/Pagination/Pagination";
 
@@ -41,8 +41,17 @@ class Genes extends Component {
             });
     };
 
+    search = (e) => {
+        e.preventDefault();
+        const {router, history, genes: {options}} = this.props;
+        const query = router.location.query;
+        query.q = options.q;
+
+        history.push('?' + window.qs.stringify(query));
+    };
+
     render() {
-        const { genes, deleteGene } = this.props;
+        const { genes, deleteGene, setGenesOptionSearch } = this.props;
 
         return (
             <React.Fragment>
@@ -52,7 +61,21 @@ class Genes extends Component {
                         <Col xs={12}>
                             <Card>
                                 <CardHeader className="d-flex justify-content-between align-items-center">
-                                    <h1>Гены</h1>
+                                    <Form onSubmit={this.search} className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex">
+                                        <FormGroup className="mb-0 my-auto w-100">
+                                            <InputGroup className="input-group-alternative shadow w-100">
+                                                <InputGroupAddon
+                                                    addonType="prepend"
+                                                    onClick={this.search}
+                                                >
+                                                    <InputGroupText>
+                                                        <i className="fas fa-search text-dark" />
+                                                    </InputGroupText>
+                                                </InputGroupAddon>
+                                                <Input placeholder="Search" type="text" className="text-dark" onChange={(e) => setGenesOptionSearch(e.target.value)} />
+                                            </InputGroup>
+                                        </FormGroup>
+                                    </Form>
                                     <Link to="/admin/genes/add" className="btn btn-primary">
                                         Добавить
                                     </Link>
@@ -140,7 +163,11 @@ class Genes extends Component {
                                     </tbody>
                                 </Table>
                                 <CardFooter className="py-4">
-                                    <Pagination value={genes}/>
+                                    {
+                                        genes.last_page ?
+                                            <Pagination totalItems={genes.last_page} pageSize={1} defaultActivePage={genes.current_page}/>
+                                            : null
+                                    }
                                 </CardFooter>
                             </Card>
                         </Col>
@@ -160,6 +187,6 @@ const mapStateToProps = ({genes, router}) => ({
     router
 });
 
-export default connect(mapStateToProps, {setGenes, deleteGene, setGenesRequest})(
+export default connect(mapStateToProps, {setGenes, deleteGene, setGenesRequest, setGenesOptionSearch})(
     withDataService(Genes, mapMethodsToProps)
 )

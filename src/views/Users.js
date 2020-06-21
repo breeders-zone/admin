@@ -341,7 +341,11 @@ class Users extends Component {
                                     </tbody>
                                 </Table>
                                 <CardFooter>
-                                    <Pagination value={users}/>
+                                    {
+                                        users.last_page ?
+                                            <Pagination totalItems={users.last_page} pageSize={1} defaultActivePage={users.current_page}/>
+                                            : null
+                                    }
                                 </CardFooter>
                             </Card>
                         </Col>

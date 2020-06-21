@@ -293,7 +293,11 @@ class Products extends Component {
                                     </tbody>
                                 </Table>
                                 <CardFooter className="py-4">
-                                    <Pagination value={products}/>
+                                    {
+                                        products.last_page ?
+                                            <Pagination totalItems={products.last_page} pageSize={1} defaultActivePage={products.current_page}/>
+                                            : null
+                                    }
                                 </CardFooter>
                             </Card>
                         </div>

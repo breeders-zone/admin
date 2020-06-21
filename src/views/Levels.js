@@ -175,7 +175,11 @@ class Levels extends Component {
                                     </tbody>
                                 </Table>
                                 <CardFooter className="py-4">
-                                    <Pagination value={levels}/>
+                                    {
+                                        levels.last_page ?
+                                            <Pagination totalItems={levels.last_page} pageSize={1} defaultActivePage={levels.current_page}/>
+                                            : null
+                                    }
                                 </CardFooter>
                             </Card>
                         </div>

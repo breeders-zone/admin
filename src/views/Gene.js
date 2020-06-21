@@ -294,9 +294,9 @@ class Gene extends Component {
                                                         <tbody>
                                                         {
                                                             !isEdit ?
-                                                                gene.kinds.map( (item) => <tr key={"kinds-" + item.id}><td>{item.title_rus}</td></tr>)
+                                                                gene.kinds.map( (item, idx) => <tr key={"kinds-" + idx}><td>{item.title_rus}</td></tr>)
                                                                 : values.kinds.map( (item, idx) => (
-                                                                    <tr key={"locality-" + item.id}>
+                                                                    <tr key={"locality-" + idx}>
                                                                         <td className="w-100">
                                                                             <Input
                                                                                 className="form-control-alternative"
@@ -310,7 +310,7 @@ class Gene extends Component {
                                                                                 }}
                                                                             >
                                                                                 {
-                                                                                    allKinds.map( (item) => <option key={"kind-" + idx + item.id} value={item.id}>{item.title_rus}</option>)
+                                                                                    allKinds.map( (item) => <option key={"kind-" + idx} value={item.id}>{item.title_rus}</option>)
                                                                                 }
                                                                             </Input>
                                                                         </td>
