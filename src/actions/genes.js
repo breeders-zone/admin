@@ -31,3 +31,10 @@ export const setGenesRequest = (payload) => {
         payload
     }
 };
+
+export const setGenesOptionSearch = (payload) => {
+    return {
+        type: 'SET_GENES_OPTION_SEARCH',
+        payload
+    }
+};

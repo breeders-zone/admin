@@ -14,6 +14,6 @@ export const setLocalityRequest = (payload) => {
 
 export const clearLocality = () => {
     return {
-        type: 'CLEALOCALITY'
+        type: 'CLEAR_LOCALITY'
     }
 };

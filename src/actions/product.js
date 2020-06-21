@@ -59,32 +59,3 @@ export const setSelectedMorphIdx = (payload) => {
         payload
     }
 };
-
-export const setProductLocality = (payload) => (dispatch, getState) => {
-    const state = getState();
-    const localities = state.product.localities;
-    localities[payload.idx] = payload.locality;
-
-    dispatch({
-        type: 'SET_PRODUCT_LOCALITY',
-        payload: localities
-    });
-};
-
-export const deleteProductLocality = (payload) => (dispatch, getState) => {
-    const state = getState();
-    const localities = state.product.localities;
-    localities.splice(payload, 1);
-
-    dispatch({
-        type: 'DELETE_PRODUCT_LOCALITY',
-        payload: localities
-    })
-};
-
-export const addProductLocality = (payload) => {
-    return {
-        type: 'ADD_PRODUCT_LOCALITY',
-        payload
-    }
-};
