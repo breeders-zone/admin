@@ -72,6 +72,36 @@ class DataService {
             .then((res) => res.data);
     };
 
+    getNewUsers = () => {
+        const token = localStorage.getItem('token');
+
+        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/new-users',
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            }
+        )
+            .then(res => res.data)
+    };
+
+    getNewProducts = () => {
+        const token = localStorage.getItem('token');
+
+        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/new-products',
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    Authorization: 'Bearer ' + token
+                }
+            }
+        )
+            .then(res => res.data)
+    };
+
     getKinds = () => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/kinds',
             {
