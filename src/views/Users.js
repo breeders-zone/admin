@@ -137,6 +137,11 @@ class Users extends Component {
                                                 Только магазины
                                             </DropdownItem>
                                             <DropdownItem
+                                                onClick={() => this.selectSort('notactive')}
+                                            >
+                                                Только не активные
+                                            </DropdownItem>
+                                            <DropdownItem
                                                 onClick={() => this.selectSort('guards')}
                                             >
                                                 Только хранители
