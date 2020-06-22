@@ -8,11 +8,10 @@ import {
     FormGroup, Input,
     InputGroup,
     InputGroupAddon,
-    InputGroupText, Media,
+    InputGroupText,
     Row, Spinner, Table, UncontrolledDropdown
 } from "reactstrap";
 import Header from "../components/Headers/Header";
-import {toUrl} from "../utils";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
@@ -25,7 +24,6 @@ import {
     setUsersRequest
 } from "../actions";
 import Pagination from "../components/Pagination/Pagination";
-import user from "../reducers/user";
 
 class Users extends Component {
     componentDidMount() {
@@ -211,6 +209,7 @@ class Users extends Component {
                                                                             height: 50,
                                                                             objectFit: 'cover'
                                                                         }}
+                                                                        alt={item.name}
                                                                     />
                                                                 </div>
                                                                 : null
@@ -225,7 +224,7 @@ class Users extends Component {
                                                                     width: 50,
                                                                     height: 50
                                                                 }}>
-                                                                    <img className="img-fluid m-auto" src={item.logo_img_url}/>
+                                                                    <img className="img-fluid m-auto" src={item.logo_img_url} alt={item.company_name}/>
                                                                 </div>
                                                                 : null
                                                         }
