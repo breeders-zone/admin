@@ -226,6 +226,11 @@ var routes = [
         layout: "/admin"
     },
     {
+        path: "/user-profile",
+        component: Profile,
+        layout: "/admin"
+    },
+    {
         path: "/login",
         component: Login,
         layout: "/auth"
