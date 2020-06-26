@@ -35,25 +35,29 @@ class Header extends React.Component {
     }
 
     getNewUsersPooling = () => {
-        const {getNewUsers, setHeaderNewUsers, setHeaderNewUsersRequest} = this.props;
-        setHeaderNewUsersRequest(true);
-        getNewUsers()
-            .then((data) => {
-                setHeaderNewUsers(data);
-                setHeaderNewUsersRequest(false);
-            })
-            .catch(() => setTimeout(() => this.getNewUsersPooling(), 3000))
+        const {getNewUsers, setHeaderNewUsers, setHeaderNewUsersRequest, newUsers} = this.props;
+        if(!newUsers.total) {
+            setHeaderNewUsersRequest(true);
+            getNewUsers()
+                .then((data) => {
+                    setHeaderNewUsers(data);
+                    setHeaderNewUsersRequest(false);
+                })
+                .catch(() => setTimeout(() => this.getNewUsersPooling(), 3000));
+        }
     };
 
     getNewProductsPooling = () => {
-        const {getNewProducts, setHeaderNewProducts, setHeaderNewProductsRequest} = this.props;
-        setHeaderNewProductsRequest(true);
-        getNewProducts()
-            .then((data) => {
-                setHeaderNewProducts(data);
-                setHeaderNewProductsRequest(false);
-            })
-            .catch(() => setTimeout(() => this.getNewProductsPooling(), 3000))
+        const {getNewProducts, setHeaderNewProducts, setHeaderNewProductsRequest, newProducts} = this.props;
+        if(!newProducts.total) {
+            setHeaderNewProductsRequest(true);
+            getNewProducts()
+                .then((data) => {
+                    setHeaderNewProducts(data);
+                    setHeaderNewProductsRequest(false);
+                })
+                .catch(() => setTimeout(() => this.getNewProductsPooling(), 3000));
+        }
     };
 
     render() {
