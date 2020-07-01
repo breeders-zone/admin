@@ -35,7 +35,7 @@ class Header extends React.Component {
     }
 
     getNewUsersPooling = () => {
-        const {getNewUsers, setHeaderNewUsers, setHeaderNewUsersRequest, newUsers} = this.props;
+        const {getNewUsers, setHeaderNewUsers, setHeaderNewUsersRequest, header: {newUsers}} = this.props;
         if(!newUsers.total) {
             setHeaderNewUsersRequest(true);
             getNewUsers()
@@ -48,7 +48,7 @@ class Header extends React.Component {
     };
 
     getNewProductsPooling = () => {
-        const {getNewProducts, setHeaderNewProducts, setHeaderNewProductsRequest, newProducts} = this.props;
+        const {getNewProducts, setHeaderNewProducts, setHeaderNewProductsRequest, header: {newProducts}} = this.props;
         if(!newProducts.total) {
             setHeaderNewProductsRequest(true);
             getNewProducts()
