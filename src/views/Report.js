@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import Header from "../components/Headers/Header";
 import Error404 from "./Error404";
-import {Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner} from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Container, Row, Spinner} from "reactstrap";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearReport, setReport, setReportRequest} from "../actions";
 import ProductForm from "../components/ProductForm";
-import Dropzone from "react-dropzone";
 import DivorceForm from "../components/DivorceForm/DivorceForm";
 
 class report extends Component {

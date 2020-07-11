@@ -16,7 +16,6 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {deleteReport, setReports, setReportsRequest} from "../actions";
-import {times} from "../utils";
 import Pagination from "../components/Pagination/Pagination";
 
 class Genes extends Component {

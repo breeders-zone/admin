@@ -7,7 +7,6 @@ import {withDataService} from "../components/hoc";
 import {connect} from "react-redux";
 import {addUserKind, clearUser, deleteUserKind, setUser, setUserKind, setUserRequest} from "../actions";
 import Error404 from "./Error404";
-import profile from "../reducers/profile";
 
 class User extends Component {
     state = {
@@ -225,7 +224,7 @@ class User extends Component {
                                                                     previewsProfile: []
                                                                 });
                                                             }
-                                                            this.setState({isProfileEdit: !isProfileEdit})
+                                                            this.setState({isProfileEdit: !isProfileEdit});
                                                         }}
                                                     >
                                                         { !isProfileEdit ? 'Редактировать' : 'Отмена'}
@@ -535,6 +534,7 @@ class User extends Component {
                                 <Formik
                                     initialValues={{
                                         ...user,
+                                        about: user.about ? user.about : '',
                                         description: user.description ? user.description : '',
                                         acceptedFileLogo: null,
                                         previewsLogo: []
@@ -803,7 +803,7 @@ class User extends Component {
                                                                             }
                                                                             {
                                                                                 !isShopEdit && user.website ?
-                                                                                    <a href={user.website}>{user.website}</a>
+                                                                                    <a className="social" href={user.website}>{user.website}</a>
                                                                                     : null
                                                                             }
                                                                             {
@@ -829,7 +829,7 @@ class User extends Component {
                                                                             }
                                                                             {
                                                                                 !isShopEdit && user.vk ?
-                                                                                    <a href={user.vk}>{user.vk}</a>
+                                                                                    <a className="social" href={user.vk}>{user.vk}</a>
                                                                                     : null
                                                                             }
                                                                             {
@@ -853,7 +853,7 @@ class User extends Component {
                                                                             }
                                                                             {
                                                                                 !isShopEdit && user.instagram ?
-                                                                                    <a href={user.instagram}>{user.instagram}</a>
+                                                                                    <a className="social" href={user.instagram}>{user.instagram}</a>
                                                                                     : null
                                                                             }
                                                                             {
@@ -877,7 +877,7 @@ class User extends Component {
                                                                             }
                                                                             {
                                                                                 !isShopEdit && user.facebook ?
-                                                                                    <a href={user.facebook}>{user.facebook}</a>
+                                                                                    <a className="social" href={user.facebook}>{user.facebook}</a>
                                                                                     : null
                                                                             }
                                                                             {
@@ -901,7 +901,7 @@ class User extends Component {
                                                                             }
                                                                             {
                                                                                 !isShopEdit && user.youtube ?
-                                                                                    <a href={user.youtube}>{user.youtube}</a>
+                                                                                    <a className="social" href={user.youtube}>{user.youtube}</a>
                                                                                     : null
                                                                             }
                                                                             {

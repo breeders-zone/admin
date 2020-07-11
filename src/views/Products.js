@@ -19,7 +19,7 @@ import {
     setProductsState
 } from "../actions";
 import {connect} from "react-redux";
-import {times, toUrl} from "../utils";
+import {toUrl} from "../utils";
 import {Link} from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
 
@@ -136,6 +136,7 @@ class Products extends Component {
                                             {
                                                 allKinds.map( (item) => (
                                                     <DropdownItem
+                                                        key={item.title_rus}
                                                         onClick={() => this.selectKind(item)}
                                                     >
                                                         {item.title_rus}

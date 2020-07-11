@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React from "react";
 import Header from "../components/Headers/Header";
 import {
     Badge,
     Card,
-    CardBody, CardHeader,
+    CardHeader,
     Col,
     Container, DropdownItem, DropdownMenu,
     DropdownToggle,

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Header from "../components/Headers/Header";
 import {
-    Card, CardFooter,
+    Card,
     CardHeader,
     Col,
     Container, DropdownItem,
@@ -16,7 +16,6 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {deleteTrait, setTraits, setTraitsRequest} from "../actions";
-import Pagination from "../components/Pagination/Pagination";
 
 class Traits extends Component {
     componentDidMount() {
@@ -75,7 +74,7 @@ class Traits extends Component {
                                                 </td>
                                             </tr>
                                             : traits.data.map( (item) => (
-                                                <tr>
+                                                <tr key={item.id}>
                                                     <th scope="row">
                                                         <Link to={`/admin/traits/${item.id}`}>
                                                             <Media className="align-items-center text-dark">

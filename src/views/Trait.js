@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Header from "../components/Headers/Header";
 import Error404 from "./Error404";
-import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner, Table} from "reactstrap";
+import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner} from "reactstrap";
 import {Formik} from "formik";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";

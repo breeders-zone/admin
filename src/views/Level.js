@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "../components/Headers/Header";
 import {Container} from "reactstrap";
-import ProductForm from "../components/ProductForm";
 import LevelForm from "../components/LevelForm/LevelForm";
 
 const Level = (props) => {

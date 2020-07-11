@@ -36,7 +36,7 @@ import {ErrorMessage, Formik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
-import {setProfile, setProfileRequest} from "../actions";
+import {setProfile} from "../actions";
 
 const Profile = (props) => {
     const {profile} = props;

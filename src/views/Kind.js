@@ -272,7 +272,7 @@ class Kind extends Component {
                                                                                 name="title_eng"
                                                                                 value={values.title_eng}
                                                                                 onChange={handleChange}
-                                                                                onBlut={handleBlur}
+                                                                                onBlur={handleBlur}
                                                                             />
                                                                             : <p>{kind.title_eng}</p>
                                                                     }
@@ -290,7 +290,7 @@ class Kind extends Component {
                                                                                 name="group"
                                                                                 value={values.group}
                                                                                 onChange={handleChange}
-                                                                                onBlut={handleBlur}
+                                                                                onBlur={handleBlur}
                                                                             />
                                                                             : <p>{kind.group}</p>
                                                                     }
@@ -313,7 +313,7 @@ class Kind extends Component {
                                                                                             setFieldValue('has_subcategories', e.target.value);
                                                                                             setFieldValue('subcategories', kind.subcategories);
                                                                                         }}
-                                                                                        onBlut={handleBlur}
+                                                                                        onBlur={handleBlur}
                                                                                         style={{
                                                                                             opacity: 0
                                                                                         }}
@@ -328,7 +328,7 @@ class Kind extends Component {
                                                                                             setFieldValue('has_subcategories', e.target.value);
                                                                                             setFieldValue('subcategories', []);
                                                                                         }}
-                                                                                        onBlut={handleBlur}
+                                                                                        onBlur={handleBlur}
                                                                                         style={{
                                                                                             opacity: 0
                                                                                         }}

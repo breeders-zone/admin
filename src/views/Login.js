@@ -29,14 +29,11 @@ import {
     InputGroupAddon,
     InputGroupText,
     InputGroup,
-    Row,
     Col, Spinner, Alert
 } from "reactstrap";
 import {ErrorMessage, Formik} from "formik";
 import * as Yup from "yup";
 import {withDataService} from "../components/hoc";
-import {isLogin} from "../utils";
-import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import {getUser} from "../actions";
 

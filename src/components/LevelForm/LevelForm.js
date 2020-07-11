@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import Header from "../Headers/Header";
-import Error404 from "../../views/Error404";
-import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner} from "reactstrap";
+import {Alert, Card, CardBody, CardHeader, Col, Form, Input, Row, Spinner} from "reactstrap";
 import {Formik} from "formik";
 import {connect} from "react-redux";
 import {withDataService} from "../hoc";
@@ -190,7 +188,6 @@ class LevelForm extends Component {
     render() {
         const {
             level,
-            match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
 

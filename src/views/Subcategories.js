@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React from "react";
 import Header from "../components/Headers/Header";
 import {
     Badge,
     Card,
-    CardBody, CardHeader,
+    CardHeader,
     Col,
     Container, DropdownItem, DropdownMenu,
     DropdownToggle,
@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {deleteKind, deleteSubcategory} from "../actions";
+import {deleteSubcategory} from "../actions";
 
 const Subcategories = (props) => {
     const {subcategories, deleteSubcategory} = props;

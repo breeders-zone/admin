@@ -6,7 +6,6 @@ import Error404 from "./Error404";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearSubcategory, setSubcategories, setSubcategory, setSubcategoryRequest} from "../actions";
-import subcategory from "../reducers/subcategory";
 
 class Subcategory extends Component {
     state = {

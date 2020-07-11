@@ -16,7 +16,6 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {deleteGene, setGenes, setGenesOptionSearch, setGenesRequest} from "../actions";
-import {times} from "../utils";
 import Pagination from "../components/Pagination/Pagination";
 
 class Genes extends Component {
@@ -99,7 +98,7 @@ class Genes extends Component {
                                                 </td>
                                             </tr>
                                             : genes.data.map( (item) => (
-                                                <tr>
+                                                <tr key={item.id}>
                                                     <th scope="row">
                                                         <Link to={`/admin/genes/${item.id}`}>
                                                             <Media className="align-items-center text-dark">

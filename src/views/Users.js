@@ -192,7 +192,7 @@ class Users extends Component {
                                                 <td className="d-flex"><Spinner className="m-auto"/></td>
                                             </tr>
                                             : users.data.map( (item, idx) => (
-                                                <tr>
+                                                <tr key={item.id}>
                                                     <td>
                                                         <Link to={`/admin/users/${item.id}`} className="d-flex align-items-center">
                                                         {

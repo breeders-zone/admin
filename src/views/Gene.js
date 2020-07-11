@@ -106,7 +106,6 @@ class Gene extends Component {
         const {
             gene,
             allKinds,
-            subcategories,
             match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;

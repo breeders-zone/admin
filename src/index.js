@@ -17,7 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch} from "react-router-dom";
 import {ConnectedRouter} from "connected-react-router";
 
 import "assets/plugins/nucleo/css/nucleo.css";
