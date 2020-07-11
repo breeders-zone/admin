@@ -128,22 +128,25 @@ class Header extends React.Component {
                                                     </div>
                                                 </Col>
                                             </Row>
-                                            <p className="mt-3 mb-0 text-muted text-sm">
-                                                {
-                                                    newUsers.request ?
-                                                        (
-                                                            <span className="mr-2">
+
+                                            {
+                                                newUsers.request ?
+                                                    (
+                                                        <div className="mt-3 mb-0 text-muted text-sm">
+                                                            <div className="mr-2">
                                                                 <Spinner size="sm"/>
-                                                            </span>
-                                                        )
-                                                        : (
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                    : (
+                                                        <p className="mt-3 mb-0 text-muted text-sm">
                                                             <span className={"mr-2" + (((100 * newUsers.mount) / newUsers.total).toFixed(2) ? ' text-success' : '')}>
                                                               <i className={((100 * newUsers.mount) / newUsers.total).toFixed(2) ? 'fas fa-arrow-up' : 'fas fa-minus'} /> {((100 * newUsers.mount) / newUsers.total).toFixed(2)}%
                                                             </span>
-                                                        )
-                                                }
-                                                <span className="text-nowrap">За последний месяц</span>
-                                            </p>
+                                                            <span className="text-nowrap">За последний месяц</span>
+                                                        </p>
+                                                    )
+                                            }
                                         </CardBody>
                                     </Card>
                                 </Col>
@@ -172,22 +175,25 @@ class Header extends React.Component {
                                                     </div>
                                                 </Col>
                                             </Row>
-                                            <p className="mt-3 mb-0 text-muted text-sm">
-                                                {
-                                                    newProducts.request ?
-                                                        (
-                                                            <span className="mr-2">
+                                            {
+                                                newProducts.request ?
+                                                    (
+                                                        <div className="mt-3 mb-0 text-muted text-sm">
+                                                            <div className="mr-2">
                                                                 <Spinner size="sm"/>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                    : (
+                                                        <p className="mt-3 mb-0 text-muted text-sm">
+                                                            <span
+                                                                className={"mr-2" + (((100 * newProducts.mount) / newProducts.total).toFixed(2) ? ' text-success' : '')}>
+                                                                <i className={((100 * newProducts.mount) / newProducts.total).toFixed(2) ? 'fas fa-arrow-up' : 'fas fa-minus'}/> {((100 * newProducts.mount) / newProducts.total).toFixed(2)}%
                                                             </span>
-                                                        )
-                                                        : (
-                                                            <span className={"mr-2" + (((100 * newProducts.mount) / newProducts.total).toFixed(2) ? ' text-success' : '')}>
-                                                              <i className={((100 * newProducts.mount) / newProducts.total).toFixed(2) ? 'fas fa-arrow-up' : 'fas fa-minus'} /> {((100 * newProducts.mount) / newProducts.total).toFixed(2)}%
-                                                            </span>
-                                                        )
-                                                }
-                                                <span className="text-nowrap">За последний месяц</span>
-                                            </p>
+                                                            <span className="text-nowrap">За последний месяц</span>
+                                                        </p>
+                                                    )
+                                            }
                                         </CardBody>
                                     </Card>
                                 </Col>
