@@ -1,9 +1,11 @@
 import React from 'react';
+import {DataService} from "../services";
 
-const {
-    Provider: DataServiceProvider,
-    Consumer: DataServiceConsumer
-} = React.createContext();
+const DataServiceContext = React.createContext(new DataService());
+const DataServiceProvider = DataServiceContext.Provider;
+const DataServiceConsumer = DataServiceContext.Consumer;
+
+export default DataServiceContext;
 
 export {
     DataServiceProvider,
