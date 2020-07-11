@@ -99,7 +99,9 @@ class Pagination extends PureComponent {
 
     nextOrPreviousPagItem = (name, page, direction) => {
         return (
-            <PaginationItem>
+            <PaginationItem
+                key={`${name}-${page}`}
+            >
                 <PaginationLink
                     href="#pablo"
                     onClick={e => this.handleSelectNextOrPrevious(direction)}
