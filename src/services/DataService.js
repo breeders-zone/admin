@@ -482,22 +482,26 @@ class DataService {
 
     getProducts = (options) => {
         const query = window.qs.stringify(options);
+        const token = localStorage.getItem('token');
 
         return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/products?' + query, {
             headers: {
                 'Content-Type': 'application/json',
-                Accept: 'application/json'
+                Accept: 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
             .then( (res) => res.data);
     };
 
     getProduct = (productId) => {
+        const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/products/' + productId,
             {
                     headers: {
                         'Content-Type': 'application/json',
-                        Accept: 'application/json'
+                        Accept: 'application/json',
+                        'Authorization': `Bearer ${token}`
                     }
             }
         )
