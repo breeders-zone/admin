@@ -28,6 +28,7 @@ import routes from "routes.js";
 import {isLogin} from "../utils";
 import {connect} from "react-redux";
 import {getUser} from "../actions";
+import {withErrorBoundary} from "../components/hoc";
 
 class Admin extends React.Component {
     componentDidMount() {
@@ -48,7 +49,7 @@ class Admin extends React.Component {
                 return (
                     <Route
                         path={prop.layout + prop.path}
-                        component={prop.component}
+                        component={withErrorBoundary(prop.component, true)}
                         key={key}
                     />
                 );

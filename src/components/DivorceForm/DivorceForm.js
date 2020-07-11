@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {withDataService} from "../hoc";
+import {withDataService, withErrorBoundary} from "../hoc";
 import {
     Alert,
     Card,
@@ -288,7 +288,7 @@ class DivorceFrom extends Component {
                          isSubmitting,
                          status
                      }) => {
-                        const selectedKind = allKinds.find((item) => item.id == values.kind_id);
+                        const selectedKind = allKinds.find((item) => item.id === Number(values.kind_id));
 
                         if (isSubmitting) {
                             return (
@@ -378,7 +378,7 @@ class DivorceFrom extends Component {
                                                                     width: 35,
                                                                     height: 35
                                                                 }}>
-                                                                    <img className="img-fluid m-auto" src={divorce.user.logo_img_url}/>
+                                                                    <img className="img-fluid m-auto" src={divorce.user.logo_img_url} alt={divorce.title}/>
                                                                 </div>
                                                                 <span>{divorce.user.company_name}</span>
                                                             </Link>
@@ -505,7 +505,7 @@ class DivorceFrom extends Component {
                                                                 <div className="morphs flex-wrap">
                                                                     {
                                                                         values.male.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
-                                                                            <a className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
+                                                                            <p className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
                                                                                 {traitTitle} {geneTitle}
                                                                                 {
                                                                                     isEdit ?
@@ -520,7 +520,7 @@ class DivorceFrom extends Component {
                                                                                         ></i>
                                                                                         : null
                                                                                 }
-                                                                            </a>
+                                                                            </p>
                                                                         ))
                                                                     }
                                                                 </div>
@@ -580,7 +580,7 @@ class DivorceFrom extends Component {
                                                                 <div className="morphs flex-wrap">
                                                                     {
                                                                         values.female.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
-                                                                            <a className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
+                                                                            <p className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
                                                                                 {traitTitle} {geneTitle}
                                                                                 {
                                                                                     isEdit ?
@@ -594,7 +594,7 @@ class DivorceFrom extends Component {
                                                                                         ></i>
                                                                                         : null
                                                                                 }
-                                                                            </a>
+                                                                            </p>
                                                                         ))
                                                                     }
                                                                 </div>
@@ -980,5 +980,7 @@ export default connect(mapStateToProps, {
     setSelectedMorphMaleIdx,
     setSelectedMorphFemaleIdx
 })(
-    withDataService(withRouter(DivorceFrom), mapMethodsToProps)
+    withErrorBoundary(
+        withDataService(withRouter(DivorceFrom), mapMethodsToProps)
+    )
 );

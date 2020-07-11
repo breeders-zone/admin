@@ -32,6 +32,7 @@ import AwesomeDebouncePromise from "awesome-debounce-promise";
 import ReactDatetime from "react-datetime";
 import Dropzone from "react-dropzone";
 import * as Yup from "yup";
+import {withErrorBoundary} from "../hoc";
 const dataService = new DataService();
 const debounceSearch = AwesomeDebouncePromise(
     dataService.searchMorphs,
@@ -856,5 +857,7 @@ export default connect(mapStateToProps, {
     setSelectedMorphIdx,
     deleteProductMorph,
 })(
-    withRouter(ProductForm)
+    withErrorBoundary(
+        withRouter(ProductForm)
+    )
 );
