@@ -39,6 +39,8 @@ import Reports from "./views/Reports";
 import Report from "./views/Report";
 import Level from "./views/Level";
 import Levels from "./views/Levels";
+import Faqs from "./views/Faqs";
+import Faq from "./views/Faq";
 
 var routes = [
     {
@@ -94,6 +96,23 @@ var routes = [
         name: "Жалобы",
         icon: "fas fa-exclamation-circle text-red",
         component: Reports,
+        layout: "/admin"
+    },
+    {
+        path: "/faq/add",
+        component: Faq,
+        layout: "/admin"
+    },
+    {
+        path: "/faq/:label",
+        component: Faq,
+        layout: "/admin"
+    },
+    {
+        path: "/faq",
+        name: "FAQ",
+        icon: "ni ni-books text-blue",
+        component: Faqs,
         layout: "/admin"
     },
     {

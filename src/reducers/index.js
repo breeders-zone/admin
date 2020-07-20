@@ -22,6 +22,8 @@ import report from "./report";
 import level from "./level";
 import levels from "./levels";
 import header from "./header";
+import faqs from "./faqs";
+import faq from "./faq";
 
 const createRootReducer = (history) => combineReducers({
     header,
@@ -41,6 +43,8 @@ const createRootReducer = (history) => combineReducers({
     divorces,
     report,
     reports,
+    faqs,
+    faq,
     level,
     levels,
     user,

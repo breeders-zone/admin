@@ -20,3 +20,5 @@ export * from "./report";
 export * from "./levels";
 export * from "./level";
 export * from "./header";
+export * from "./faqs";
+export * from "./faq";

@@ -77,6 +77,17 @@ const initialState = {
         last_page: null,
         data: []
     },
+    faq: {
+        request: true,
+        label: '',
+        title: '',
+        description: '',
+        in_index: false
+    },
+    faqs: {
+        request: true,
+        data: []
+    },
     product: {
         request: true,
         morphs: [],
