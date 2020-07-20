@@ -1,0 +1,104 @@
+.editor {
+    width: 100%;
+    height: auto;
+    padding: 0;
+
+    .DraftEditor {
+        &-root {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+        }
+    }
+
+    &-panel {
+        display: flex;
+        border-bottom: 1px solid $gray-300;
+        padding: 7px !important;
+
+
+        button {
+            @include btn;
+            padding: 0;
+            margin-right: 5px;
+            background: none;
+
+            .active {
+                svg {
+                    fill: $main-color;
+                }
+            }
+        }
+    }
+
+    .public-DraftStyleDefault-block {
+        margin: 0 !important;
+    }
+
+    &-editor .public-DraftEditorPlaceholder-root,
+    &-editor .public-DraftEditor-content {
+        margin: 0 -15px -15px;
+        padding: 15px;
+    }
+
+    &-editor .public-DraftEditor-content {
+        min-height: 100px;
+    }
+
+    &-hidePlaceholder .public-DraftEditorPlaceholder-root {
+        display: none;
+    }
+
+    &-blockquote {
+        border-left: 5px solid #eee;
+        color: #666;
+        font-family: 'Hoefler Text', 'Georgia', serif;
+        font-style: italic;
+        margin: 16px 0;
+        padding: 10px 20px;
+    }
+
+    &-editor .public-DraftStyleDefault-pre {
+        background-color: rgba(0, 0, 0, 0.05);
+        font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+        font-size: 16px;
+        padding: 20px;
+    }
+
+    &-controls {
+        font-family: 'Helvetica', sans-serif;
+        font-size: 14px;
+        margin-bottom: 5px;
+        user-select: none;
+    }
+
+    &-style {
+        cursor: pointer;
+        margin-right: 16px;
+
+        &:last-child {
+            margin-right: 0 !important;
+        }
+    }
+
+    &-active {
+        color: #5890ff;
+    }
+
+    &-divider {
+        width: 3px;
+        height: 100%;
+        border-radius: 10px;
+        background: $gray-200;
+        margin-right: 8px;
+    }
+
+    .align-right div {
+        text-align: right;
+    }
+    .align-center div {
+        text-align: center;
+    }
+    .align-left div {
+        text-align: left;
+    }
+}

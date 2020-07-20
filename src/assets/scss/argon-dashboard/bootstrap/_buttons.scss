@@ -4,7 +4,7 @@
 // Base styles
 //
 
-.btn {
+@mixin btn {
   display: inline-block;
   font-weight: $btn-font-weight;
   text-align: center;
@@ -46,6 +46,10 @@
       @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
     }
   }
+}
+
+.btn {
+  @include btn;
 }
 
 // Future-proof disabling of clicks on `<a>` elements
