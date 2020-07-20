@@ -881,6 +881,85 @@ class DataService {
         })
             .then((res) => res.data);
     };
+
+
+    getFaqs = (options) => {
+        const query = window.qs.stringify(options);
+        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/faq?' +  query, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }
+        })
+            .then((res) => res.data);
+    };
+
+    getFaq = (label) => {
+        const token = localStorage.getItem('token');
+        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/faq/' + label,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then( (res) => res.data)
+    };
+
+    setFaq = (data) => {
+        const token = localStorage.getItem('token');
+        return Axios.post(
+            `${process.env.REACT_APP_API_DOMAIN}/api/faq`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    boundary: Math.random().toString().substr(2),
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+
+    updateFaq = (label, data) => {
+        const token = localStorage.getItem('token');
+        return Axios.put(
+            `${process.env.REACT_APP_API_DOMAIN}/api/faq/${label}`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    boundary: Math.random().toString().substr(2),
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+    deleteFaq = (label) => {
+        const token = localStorage.getItem('token');
+
+        return Axios.delete(
+            `${process.env.REACT_APP_API_DOMAIN}/api/faq/${label}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+
 }
 
 export default DataService
