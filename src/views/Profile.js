@@ -73,6 +73,12 @@ const Profile = (props) => {
             .catch((err) => {
                 const errors = err.response.data.errors;
                 setOldPasswordError(errors.old_password[0]);
+                actions.setValues({
+                    ...profile,
+                    old_password: '',
+                    password: data.password,
+                    password_confirmation: data.password_confirmation,
+                });
                 actions.setErrors(errors);
                 actions.setSubmitting(false);
             })
