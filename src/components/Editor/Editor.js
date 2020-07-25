@@ -9,6 +9,7 @@ import TextAlignComponent from "./ToolbarComponents/TextAlignComponent";
 import ListComponent from "./ToolbarComponents/ListComponent";
 import FontSizeComponent from "./ToolbarComponents/FontSizeComponent";
 import HistoryComponent from "./ToolbarComponents/HistoryComponent";
+import LinkComponent from "./ToolbarComponents/LinkComponent";
 
 const Editor = (props) => {
     const { state = EditorState.createEmpty(), onChange } = props;
@@ -24,6 +25,7 @@ const Editor = (props) => {
                 toolbar={{
                     options: [
                         'inline',
+                        'link',
                         'blockType',
                         'fontSize',
                         'list',
@@ -50,6 +52,9 @@ const Editor = (props) => {
                     },
                     history: {
                         component: HistoryComponent
+                    },
+                    link: {
+                        component: LinkComponent
                     }
                 }}
             />
