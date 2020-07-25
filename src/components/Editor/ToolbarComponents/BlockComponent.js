@@ -29,7 +29,7 @@ const BlockComponent = (props) => {
                     {
                         currentState.blockType !== 'Normal' ?
                             <DropdownItem
-                                onClick={() => onClick}
+                                onClick={() => onClick('Normal')}
                             >
                                Нет заголовка
                             </DropdownItem>
