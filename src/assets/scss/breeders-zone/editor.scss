@@ -16,7 +16,7 @@
         padding: 7px !important;
 
 
-        button {
+        button:not(.btn-primary) {
             @include btn;
             padding: 0;
             margin-right: 5px;
@@ -100,5 +100,20 @@
     }
     .align-left div {
         text-align: left;
+    }
+
+    &-dropdown {
+        width: 350px;
+        position: absolute;
+        left: 0;
+        top: 35px;
+        z-index: 99999;
+
+        padding: 10px;
+
+        color: #212529;
+        background-color: #f7fafc;
+        border-color: #f7fafc;
+        box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
     }
 }
