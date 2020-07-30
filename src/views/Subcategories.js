@@ -16,11 +16,15 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {deleteSubcategory} from "../actions";
+import Helmet from "react-helmet";
 
 const Subcategories = (props) => {
     const {subcategories, deleteSubcategory} = props;
     return (
         <React.Fragment>
+            <Helmet>
+                <title>Подкатегории | Breeders Zone</title>
+            </Helmet>
             <Header/>
             <Container className="mt--7" fluid>
                 <Row>
@@ -36,11 +40,23 @@ const Subcategories = (props) => {
                                 <thead className="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Название</th>
+                                    <th
+                                        scope="col"
+                                        className={(!subcategories.request && subcategories.all.length === 0) || subcategories.request ? 'w-100' : '' }
+                                    >Название</th>
                                     <th scope="col" />
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {
+                                    !subcategories.request && subcategories.all.length === 0 ?
+                                        <tr>
+                                            <td></td>
+                                            <td className="d-flex justify-content-center"><p className="m-0">Подкатегорий нет</p></td>
+                                            <td></td>
+                                        </tr>
+                                        : null
+                                }
                                 {
                                     subcategories.request ?
                                         <tr>

@@ -6,6 +6,7 @@ import {withDataService} from "../hoc";
 import {clearLevel, setLevel, setLevelRequest} from "../../actions";
 import {withRouter} from "react-router-dom";
 import Dropzone from "react-dropzone";
+import Helmet from "react-helmet";
 
 class LevelForm extends Component {
     state = {
@@ -188,12 +189,16 @@ class LevelForm extends Component {
     render() {
         const {
             level,
+            match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
 
         if (level.request)
             return (
                 <Row>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Col xs={12}>
                         <Card>
                             <CardBody className="d-flex">
@@ -207,6 +212,9 @@ class LevelForm extends Component {
         if (is404)
             return (
                 <Card>
+                    <Helmet>
+                        <title>Упс... похоже такой страницы не найденно | 404 | Breeders Zone</title>
+                    </Helmet>
                     <CardBody>
                         <div className="d-flex justify-content-center align-items-center p-4">
                             <h1>Упс... похоже такой страницы не найденно</h1>
@@ -216,201 +224,217 @@ class LevelForm extends Component {
             );
 
         return (
-            <Formik
-                initialValues={{
-                    ...level,
-                    logo: null,
-                    preview: []
-                }}
-                onSubmit={this.onSubmit}
-            >
+            <React.Fragment>
                 {
-                    ({
-                         handleSubmit,
-                         handleChange,
-                         handleBlur,
-                         values,
-                         setValues,
-                         setFieldValue,
-                         isSubmitting,
-                         status
-                     }) => {
-                        if (isSubmitting)
+                    path.match(/\/admin\/[a-z]+-levels\/:id/gi) !== null ?
+                        <Helmet>
+                            <title>{!level.request ?  level.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path.match(/\/admin\/[a-z]+-levels\/add/gi) !== null ?
+                        <Helmet>
+                            <title>Добавить уровень | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                <Formik
+                    initialValues={{
+                        ...level,
+                        logo: null,
+                        preview: []
+                    }}
+                    onSubmit={this.onSubmit}
+                >
+                    {
+                        ({
+                             handleSubmit,
+                             handleChange,
+                             handleBlur,
+                             values,
+                             setValues,
+                             setFieldValue,
+                             isSubmitting,
+                             status
+                         }) => {
+                            if (isSubmitting)
+                                return (
+                                    <Row>
+                                        <Col xs={12}>
+                                            <Card>
+                                                <CardBody className="d-flex">
+                                                    <Spinner className="m-auto"/>
+                                                </CardBody>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                );
+
                             return (
-                                <Row>
-                                    <Col xs={12}>
-                                        <Card>
-                                            <CardBody className="d-flex">
-                                                <Spinner className="m-auto"/>
-                                            </CardBody>
-                                        </Card>
-                                    </Col>
-                                </Row>
-                            );
-
-                        return (
-                            <Form onSubmit={handleSubmit}>
-                                {
-                                    status ?
-                                        <Alert color="success" className="mb-3">
-                                            {status}
-                                        </Alert>
-                                        : null
-                                }
-                                <Row className="mb-3">
-                                    <Col xs={12} lg={8}>
-                                        <Card>
-                                            <CardHeader className="d-flex justify-content-between">
-                                                {
-                                                    !this.isAdd ?
-                                                        (
-                                                            <React.Fragment>
-                                                                <h1 className="m-0">{level.title}</h1>
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-primary"
-                                                                    onClick={() => {
-                                                                        if (isEdit) {
-                                                                            setValues(level);
-                                                                        }
-                                                                        this.setState({isEdit: !isEdit})
-                                                                    }}
-                                                                >
-                                                                    { !isEdit ? 'Редактировать' : 'Отмена'}
-                                                                </button>
-                                                            </React.Fragment>
-                                                        )
-                                                        :  <h3 className="m-0">Добавить уровень {this.isGuardLevel ? 'хранителя.' : 'магазина.'}</h3>
-                                                }
-                                            </CardHeader>
-                                            <CardBody>
-                                                <Row className="mb-3">
-                                                    <Col xs={12} md={6}>
-                                                        <div className="d-flex">
-                                                            <h3 className="mr-3">Уровень:</h3>
-                                                            {
-                                                                isEdit ?
-                                                                    <Input
-                                                                        className="form-control-alternative"
-                                                                        name="level"
-                                                                        type="number"
-                                                                        onChange={handleChange}
-                                                                        onBlur={handleBlur}
-                                                                        value={values.level}
-                                                                    />
-                                                                    : <p>{level.level}</p>
-                                                            }
-                                                        </div>
-                                                    </Col>
-                                                    <Col xs={12} md={6}>
-                                                        <div className="d-flex">
-                                                            <h3 className="mr-3">Название:</h3>
-                                                            {
-                                                                isEdit ?
-                                                                    <Input
-                                                                        className="form-control-alternative"
-                                                                        name="title"
-                                                                        onChange={handleChange}
-                                                                        onBlur={handleBlur}
-                                                                        value={values.title}
-                                                                    />
-                                                                    : <p>{level.title}</p>
-                                                            }
-                                                        </div>
-                                                    </Col>
-                                                </Row>
-                                                {
-                                                    isEdit ?
-                                                        <Row className="justify-content-center">
-                                                            <Col xs={8} md={4} className="d-flex justify-content-center">
-                                                                <button
-                                                                    type="submit"
-                                                                    className="btn btn-primary"
-                                                                >
-                                                                    Сохранить
-                                                                </button>
-                                                            </Col>
-                                                        </Row>
-                                                        : null
-                                                }
-                                            </CardBody>
-                                        </Card>
-                                    </Col>
-                                    <Col xs={12} lg={4}>
-                                        <Card>
-                                            <CardBody>
-                                                <h2>Фото:</h2>
-                                                {
-                                                    level.logo_src ?
-                                                        <div className="mb-2">
-                                                            <img src={level.logo_src} alt={level.title} className="img-fluid rounded"/>
-                                                        </div>
-                                                        : <p>К сожалению вы не добавили фото</p>
-
-                                                }
-                                                {
-                                                    isEdit ?
-                                                        <Dropzone
-                                                            multiple={false}
-                                                            onDrop={acceptedFiles => {
-                                                                const previews = [];
-                                                                for (let item of acceptedFiles){
-                                                                    previews.push(URL.createObjectURL(item))
+                                <Form onSubmit={handleSubmit}>
+                                    {
+                                        status ?
+                                            <Alert color="success" className="mb-3">
+                                                {status}
+                                            </Alert>
+                                            : null
+                                    }
+                                    <Row className="mb-3">
+                                        <Col xs={12} lg={8}>
+                                            <Card>
+                                                <CardHeader className="d-flex justify-content-between">
+                                                    {
+                                                        !this.isAdd ?
+                                                            (
+                                                                <React.Fragment>
+                                                                    <h1 className="m-0">{level.title}</h1>
+                                                                    <button
+                                                                        type="button"
+                                                                        className="btn btn-primary"
+                                                                        onClick={() => {
+                                                                            if (isEdit) {
+                                                                                setValues(level);
+                                                                            }
+                                                                            this.setState({isEdit: !isEdit})
+                                                                        }}
+                                                                    >
+                                                                        { !isEdit ? 'Редактировать' : 'Отмена'}
+                                                                    </button>
+                                                                </React.Fragment>
+                                                            )
+                                                            :  <h3 className="m-0">Добавить уровень {this.isGuardLevel ? 'хранителя.' : 'магазина.'}</h3>
+                                                    }
+                                                </CardHeader>
+                                                <CardBody>
+                                                    <Row className="mb-3">
+                                                        <Col xs={12} md={6}>
+                                                            <div className="d-flex">
+                                                                <h3 className="mr-3">Уровень:</h3>
+                                                                {
+                                                                    isEdit ?
+                                                                        <Input
+                                                                            className="form-control-alternative"
+                                                                            name="level"
+                                                                            type="number"
+                                                                            onChange={handleChange}
+                                                                            onBlur={handleBlur}
+                                                                            value={values.level}
+                                                                        />
+                                                                        : <p>{level.level}</p>
                                                                 }
-                                                                setFieldValue('preview', [...previews, ...values.preview]);
-                                                                setFieldValue('logo', acceptedFiles[0]);
-                                                            }}
-                                                        >
-                                                            {
-                                                                ({getRootProps, getInputProps}) => (
-                                                                    <div {...getRootProps()}  className="p-3 row m-0 mb-2 rounded shadow w-100">
-                                                                        <input {...getInputProps()} name="dropzone"/>
-                                                                        {
-                                                                            values.preview.length > 0 ?
-                                                                                values.preview.map( (item, idx) => (
-                                                                                    <Col
-                                                                                        key={item}
-                                                                                        xs={6}
-                                                                                        className="slider-item position-relative rounded"
-                                                                                    >
-                                                                                        <img src={item} className="img-fluid rounded" alt="main"/>
-                                                                                        <span
-                                                                                            style={{
-                                                                                                position: 'absolute',
-                                                                                                top: 3,
-                                                                                                right: 13,
-                                                                                                cursor: 'pointer'
-                                                                                            }}
-                                                                                            onClick={(e) => {
-                                                                                                e.stopPropagation();
-                                                                                                const preview = values.preview;
-                                                                                                preview.splice(idx, 1);
+                                                            </div>
+                                                        </Col>
+                                                        <Col xs={12} md={6}>
+                                                            <div className="d-flex">
+                                                                <h3 className="mr-3">Название:</h3>
+                                                                {
+                                                                    isEdit ?
+                                                                        <Input
+                                                                            className="form-control-alternative"
+                                                                            name="title"
+                                                                            onChange={handleChange}
+                                                                            onBlur={handleBlur}
+                                                                            value={values.title}
+                                                                        />
+                                                                        : <p>{level.title}</p>
+                                                                }
+                                                            </div>
+                                                        </Col>
+                                                    </Row>
+                                                    {
+                                                        isEdit ?
+                                                            <Row className="justify-content-center">
+                                                                <Col xs={8} md={4} className="d-flex justify-content-center">
+                                                                    <button
+                                                                        type="submit"
+                                                                        className="btn btn-primary"
+                                                                    >
+                                                                        Сохранить
+                                                                    </button>
+                                                                </Col>
+                                                            </Row>
+                                                            : null
+                                                    }
+                                                </CardBody>
+                                            </Card>
+                                        </Col>
+                                        <Col xs={12} lg={4}>
+                                            <Card>
+                                                <CardBody>
+                                                    <h2>Фото:</h2>
+                                                    {
+                                                        level.logo_src ?
+                                                            <div className="mb-2">
+                                                                <img src={level.logo_src} alt={level.title} className="img-fluid rounded"/>
+                                                            </div>
+                                                            : <p>К сожалению вы не добавили фото</p>
 
-                                                                                                setFieldValue('logo', null);
-                                                                                                setFieldValue('preview', preview)
-                                                                                            }}
+                                                    }
+                                                    {
+                                                        isEdit ?
+                                                            <Dropzone
+                                                                multiple={false}
+                                                                onDrop={acceptedFiles => {
+                                                                    const previews = [];
+                                                                    for (let item of acceptedFiles){
+                                                                        previews.push(URL.createObjectURL(item))
+                                                                    }
+                                                                    setFieldValue('preview', [...previews, ...values.preview]);
+                                                                    setFieldValue('logo', acceptedFiles[0]);
+                                                                }}
+                                                            >
+                                                                {
+                                                                    ({getRootProps, getInputProps}) => (
+                                                                        <div {...getRootProps()}  className="p-3 row m-0 mb-2 rounded shadow w-100">
+                                                                            <input {...getInputProps()} name="dropzone"/>
+                                                                            {
+                                                                                values.preview.length > 0 ?
+                                                                                    values.preview.map( (item, idx) => (
+                                                                                        <Col
+                                                                                            key={item}
+                                                                                            xs={6}
+                                                                                            className="slider-item position-relative rounded"
                                                                                         >
+                                                                                            <img src={item} className="img-fluid rounded" alt="main"/>
+                                                                                            <span
+                                                                                                style={{
+                                                                                                    position: 'absolute',
+                                                                                                    top: 3,
+                                                                                                    right: 13,
+                                                                                                    cursor: 'pointer'
+                                                                                                }}
+                                                                                                onClick={(e) => {
+                                                                                                    e.stopPropagation();
+                                                                                                    const preview = values.preview;
+                                                                                                    preview.splice(idx, 1);
+
+                                                                                                    setFieldValue('logo', null);
+                                                                                                    setFieldValue('preview', preview)
+                                                                                                }}
+                                                                                            >
                                                                                                     <i className="ni ni-2x ni-fat-remove text-danger"></i>
                                                                                                 </span>
-                                                                                    </Col>
-                                                                                ))
-                                                                                : <p className="text-center font-weight-bold m-auto">Перетащите файлы сюда или кликните, чтобы выбрать файл.</p>
-                                                                        }
-                                                                    </div>
-                                                                )
-                                                            }
-                                                        </Dropzone>
-                                                        : null
-                                                }
-                                            </CardBody>
-                                        </Card>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        )
+                                                                                        </Col>
+                                                                                    ))
+                                                                                    : <p className="text-center font-weight-bold m-auto">Перетащите файлы сюда или кликните, чтобы выбрать файл.</p>
+                                                                            }
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            </Dropzone>
+                                                            : null
+                                                    }
+                                                </CardBody>
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                </Form>
+                            )
+                        }
                     }
-                }
-            </Formik>
+                </Formik>
+            </React.Fragment>
         )
     }
 }

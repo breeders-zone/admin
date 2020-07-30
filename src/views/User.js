@@ -7,6 +7,7 @@ import {withDataService} from "../components/hoc";
 import {connect} from "react-redux";
 import {addUserKind, clearUser, deleteUserKind, setUser, setUserKind, setUserRequest} from "../actions";
 import Error404 from "./Error404";
+import Helmet from "react-helmet";
 
 class User extends Component {
     state = {
@@ -115,13 +116,17 @@ class User extends Component {
             addUserKind,
             setUserKind,
             deleteUserKind,
-            setUser
+            setUser,
+            match: {path}
         } = this.props;
         const {isShopEdit, isProfileEdit, is404, profileRequest} = this.state;
 
         if (user.request || allKinds.length === 0) {
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -150,6 +155,13 @@ class User extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/users/:id' ?
+                        <Helmet>
+                            <title>{!user.request ?  `${user.name} ${user.surname} ${user.company_name ? `| ${user.company_name}` : ''}` : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

@@ -15,8 +15,9 @@ import {
     deleteLevel,
 } from "../actions";
 import {connect} from "react-redux";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
+import Helmet from "react-helmet";
 
 class Levels extends Component {
 
@@ -55,10 +56,22 @@ class Levels extends Component {
 
 
     render() {
-        const {levels, deleteLevel} = this.props;
+        const {levels, deleteLevel, match: {path}} = this.props;
         const {request} = levels;
         return (
             <React.Fragment>
+                <Helmet>
+                    {
+                        path === '/admin/breeder-levels' ?
+                            <title>Уровни магазинов | Breeders Zone</title>
+                            : null
+                    }
+                    {
+                        path === '/admin/guard-levels' ?
+                            <title>Уровни хранителей | Breeders Zone</title>
+                            : null
+                    }
+                </Helmet>
                 <Header />
                 <Container className="mt--7" fluid>
                     {/* Table */}
@@ -75,7 +88,10 @@ class Levels extends Component {
                                     <thead className="thead-light">
                                     <tr>
                                         <th scope="col">Уровень</th>
-                                        <th scope="col">Фото</th>
+                                        <th
+                                            scope="col"
+                                            className={(!request && levels.data.length === 0) || request ? 'w-100' : null}
+                                        >Фото</th>
                                         <th scope="col">Название</th>
                                         <th scope="col" />
                                     </tr>
@@ -200,4 +216,9 @@ const mapStateToProps = ({levels, router}) => ({
     router
 });
 
-export default connect(mapStateToProps, {setLevels, setLevelsRequest, deleteLevel})(withDataService(Levels, mapMethodsToProps));
+export default connect(mapStateToProps, {setLevels, setLevelsRequest, deleteLevel})(
+    withDataService(
+        withRouter(Levels),
+        mapMethodsToProps
+    )
+);

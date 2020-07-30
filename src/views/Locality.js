@@ -6,6 +6,7 @@ import {Formik} from "formik";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearLocality, setLocalities, setLocality, setLocalityRequest} from "../actions";
+import Helmet from "react-helmet";
 
 class Locality extends Component {
     state = {
@@ -124,6 +125,9 @@ class Locality extends Component {
         if (locality.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -144,6 +148,20 @@ class Locality extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/localities/:id' ?
+                        <Helmet>
+                            <title>{!locality.request ?  locality.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path === '/admin/localities/add' ?
+                        <Helmet>
+                            <title>Добавить локалитет | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

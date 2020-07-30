@@ -6,6 +6,7 @@ import Error404 from "./Error404";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearSubcategory, setSubcategories, setSubcategory, setSubcategoryRequest} from "../actions";
+import Helmet from "react-helmet";
 
 class Subcategory extends Component {
     state = {
@@ -121,6 +122,9 @@ class Subcategory extends Component {
         if (subcategory.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -141,6 +145,20 @@ class Subcategory extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/subcategories/:id' ?
+                        <Helmet>
+                            <title>{!subcategory.request ?  subcategory.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path === '/admin/subcategories/add' ?
+                        <Helmet>
+                            <title>Добавить подкатегорию | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

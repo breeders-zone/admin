@@ -16,6 +16,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {deleteTrait, setTraits, setTraitsRequest} from "../actions";
+import Helmet from "react-helmet";
 
 class Traits extends Component {
     componentDidMount() {
@@ -44,6 +45,9 @@ class Traits extends Component {
 
         return (
             <React.Fragment>
+                <Helmet>
+                    <title>Виды генов | Breeders Zone</title>
+                </Helmet>
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Row>
@@ -59,12 +63,27 @@ class Traits extends Component {
                                     <thead className="thead-light">
                                     <tr>
                                         <th scope="col">ID</th>
-                                        <th scope="col">Название</th>
+                                        <th
+                                            scope="col"
+                                            className={(!traits.request && traits.data.length === 0 ) || traits.request ? 'w-100' : ''}
+                                        >Название</th>
                                         <th scope="col">Тип</th>
                                         <th scope="col" />
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {
+                                        !traits.request && traits.data.length === 0 ?
+                                            <tr>
+                                                <td></td>
+                                                <td colSpan="3" className="d-flex justify-content-center">
+                                                    <p className="m-0">Генов нет</p>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            : null
+                                    }
                                     {
                                         traits.request ?
                                             <tr>

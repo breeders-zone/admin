@@ -6,6 +6,7 @@ import {Formik} from "formik";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearGene, setGene, setGeneRequest} from "../actions";
+import Helmet from "react-helmet";
 
 class Gene extends Component {
     state = {
@@ -113,6 +114,9 @@ class Gene extends Component {
         if (gene.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -133,6 +137,20 @@ class Gene extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/genes/:id' ?
+                        <Helmet>
+                            <title>{!gene.request ?  gene.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path === '/admin/genes/add' ?
+                        <Helmet>
+                            <title>Добавить ген | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

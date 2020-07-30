@@ -16,11 +16,15 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {deleteLocality} from "../actions";
+import Helmet from "react-helmet";
 
 const Localities = (props) => {
     const {localities, deleteLocality} = props;
     return (
         <React.Fragment>
+            <Helmet>
+                <title>Локалитеты | Breeders Zone</title>
+            </Helmet>
             <Header/>
             <Container className="mt--7" fluid>
                 <Row>
@@ -36,11 +40,23 @@ const Localities = (props) => {
                                 <thead className="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
-                                    <th scope="col">Название</th>
+                                    <th
+                                        scope="col"
+                                        className={(!localities.request && localities.all.length === 0) || localities.request ? 'w-100' : '' }
+                                    >Название</th>
                                     <th scope="col" />
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {
+                                    !localities.request && localities.all.length === 0 ?
+                                        <tr>
+                                            <td></td>
+                                            <td className="d-flex justify-content-center"><p className="m-0">Локалитетов нет</p></td>
+                                            <td></td>
+                                        </tr>
+                                        : null
+                                }
                                 {
                                     localities.request ?
                                         <tr>
