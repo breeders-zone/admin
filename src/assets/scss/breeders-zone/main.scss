@@ -173,3 +173,11 @@ $border-radius: 5px;
   overflow: hidden;
   white-space: nowrap;
 }
+
+.table-flush tbody tr:last-child td,
+.table-flush tbody tr:last-child th {
+  border-bottom: 1px solid #e9ecef !important;
+}
+.table-responsive {
+  min-height: 300px;
+}
