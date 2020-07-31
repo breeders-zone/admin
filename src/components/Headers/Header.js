@@ -123,8 +123,8 @@ class Header extends React.Component {
                                                     </span>
                                                 </div>
                                                 <Col className="col-auto">
-                                                    <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                                                        <i className="fas fa-chart-pie" />
+                                                    <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                                                        <i className="fas fa-users" />
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -170,8 +170,8 @@ class Header extends React.Component {
                                                     </span>
                                                 </div>
                                                 <Col className="col-auto">
-                                                    <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                                                        <i className="fas fa-users" />
+                                                    <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                                        <i className="fas fa-chart-pie" />
                                                     </div>
                                                 </Col>
                                             </Row>
