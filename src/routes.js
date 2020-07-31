@@ -252,14 +252,7 @@ var routes = [
         icon: "ni ni-bullet-list-67 text-blue",
         component: Levels,
         layout: "/admin"
-    },
-    {
-        path: "/icons",
-        name: "Иконки",
-        icon: "ni ni-planet text-blue",
-        component: Icons,
-        layout: "/admin"
-    },
+    },  
     {
         path: "/user-profile",
         component: Profile,
