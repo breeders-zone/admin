@@ -24,6 +24,8 @@ import levels from "./levels";
 import header from "./header";
 import faqs from "./faqs";
 import faq from "./faq";
+import documents from "./documents";
+import documentReducer from "./document";
 
 const createRootReducer = (history) => combineReducers({
     header,
@@ -45,6 +47,8 @@ const createRootReducer = (history) => combineReducers({
     reports,
     faqs,
     faq,
+    document: documentReducer,
+    documents,
     level,
     levels,
     user,

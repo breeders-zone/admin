@@ -1,14 +1,18 @@
 import React, {Component} from "react";
 import Header from "../components/Headers/Header";
 import Error404 from "./Error404";
-import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner, Table} from "reactstrap";
+import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner} from "reactstrap";
 import {Formik} from "formik";
 import {connect} from "react-redux";
+import {EditorState, ContentState, convertToRaw } from "draft-js";
+import htmlToDraft from 'html-to-draftjs';
+import draftToHtml from 'draftjs-to-html';
 import {withDataService} from "../components/hoc";
-import {clearGene, setGene, setGeneRequest} from "../actions";
+import {clearDocument, setDocument, setDocumentRequest} from "../actions";
+import Editor from "../components/Editor";
 import Helmet from "react-helmet";
 
-class Gene extends Component {
+class Document extends Component {
     state = {
         isEdit: false,
         is404: false
@@ -16,22 +20,22 @@ class Gene extends Component {
 
     componentDidMount() {
         const {
-            getGene,
-            setGene,
-            setGeneRequest,
+            getDocument,
+            setDocument,
+            setDocumentRequest,
             match: {params, path}
         } = this.props;
 
-        if (path === '/admin/genes/add') {
+        if (path === '/admin/documents/add') {
             this.setState({isEdit: true});
-            return setGeneRequest(false);
+            return setDocumentRequest(false);
         }
 
-        setGeneRequest(true);
-        getGene(params.id)
+        setDocumentRequest(true);
+        getDocument(params.label)
             .then( (data) => {
-                setGene(data);
-                setGeneRequest(false);
+                setDocument(data);
+                setDocumentRequest(false);
             })
             .catch( (error) => {
                 if (error.response.status === 404) {
@@ -41,26 +45,37 @@ class Gene extends Component {
     }
 
     componentWillUnmount() {
-        const {clearGene} = this.props;
-        clearGene();
+        const {clearDocument} = this.props;
+        clearDocument();
     }
 
     onSubmit = (data, actions) => {
         const {
-            gene,
-            setGene,
-            setGeneData,
-            updateGene,
-            getGene,
+            document,
+            setDocument,
+            setDocumentData,
+            updateDocument,
+            getDocument,
             match: {params, path}
         } = this.props;
 
-        if (path === '/admin/genes/add') {
-            setGeneData(data)
+        const rawContentState = convertToRaw(data.description.getCurrentContent());
+        const description = draftToHtml(rawContentState);
+
+        if (document.label === data.label) {
+            delete  data.label;
+        }
+
+        if (path === '/admin/documents/add') {
+            setDocumentData({
+                ...data,
+                description
+            })
                 .then( ({message}) => {
                     actions.setStatus(message);
                     actions.setValues({
-                        ...gene
+                        ...document,
+                        description: EditorState.createEmpty()
                     });
                     actions.setSubmitting(false)
                 })
@@ -81,13 +96,23 @@ class Gene extends Component {
             return;
         }
 
-        updateGene(params.id, data)
+        updateDocument(params.label, {
+            ...data,
+            description
+        })
             .then( async ({message}) => {
                 this.setState({isEdit: false});
-                const data = await getGene(params.id);
-                setGene(data);
+                const data = await getDocument(params.label);
+                setDocument(data);
                 actions.setStatus(message);
-                actions.setValues(data);
+                const blocksFromHtml = htmlToDraft(data.description ? data.description : '');
+                const { contentBlocks, entityMap } = blocksFromHtml;
+                const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+                const editorState = EditorState.createWithContent(contentState);
+                actions.setValues({
+                    data,
+                    description: editorState
+                });
                 actions.setSubmitting(false)
             })
             .catch( (error) => {
@@ -95,9 +120,10 @@ class Gene extends Component {
                     const errors = error.response.data.errors;
 
                     actions.setErrors({
+                        label: errors.label ? errors.label[0] : '',
                         title: errors.title ? errors.title[0] : '',
-                        type: errors.type ? errors.type[0] : '',
-                        kinds: errors.kinds ? errors.kinds[0] : ''
+                        description: errors.description ? errors.description[0] : '',
+                        user_agree: errors.user_agree ? errors.user_agree[0] : ''
                     });
                 }
             });
@@ -105,18 +131,26 @@ class Gene extends Component {
 
     render() {
         const {
-            gene,
-            allKinds,
+            document,
             match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
 
-        if (gene.request)
+        const blocksFromHtml = htmlToDraft(document.description ? document.description : '');
+        const { contentBlocks, entityMap } = blocksFromHtml;
+        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
+        const editorState = EditorState.createWithContent(contentState);
+
+        if (document.request)
             return (
                 <React.Fragment>
-                    <Helmet>
-                        <title>Загрузка | Breeders Zone</title>
-                    </Helmet>
+                    {
+                        path === '/admin/documents/:id' ?
+                            <Helmet>
+                                <title>{!document.request ?  document.title : 'Загрузка'} | Breeders Zone</title>
+                            </Helmet>
+                            : null
+                    }
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -138,16 +172,16 @@ class Gene extends Component {
         return (
             <React.Fragment>
                 {
-                    path === '/admin/genes/:id' ?
+                    path === '/admin/documents/:label' ?
                         <Helmet>
-                            <title>{!gene.request ?  gene.title : 'Загрузка'} | Breeders Zone</title>
+                            <title>{!document.request ?  document.title : 'Загрузка'} | Breeders Zone</title>
                         </Helmet>
                         : null
                 }
                 {
-                    path === '/admin/genes/add' ?
+                    path === '/admin/documents/add' ?
                         <Helmet>
-                            <title>Добавить ген | Breeders Zone</title>
+                            <title>Добавить документ | Breeders Zone</title>
                         </Helmet>
                         : null
                 }
@@ -155,7 +189,8 @@ class Gene extends Component {
                 <Container className="mt--7" fluid>
                     <Formik
                         initialValues={{
-                            ...gene
+                            ...document,
+                            description: editorState
                         }}
                         onSubmit={this.onSubmit}
                     >
@@ -197,16 +232,16 @@ class Gene extends Component {
                                                 <Card>
                                                     <CardHeader className="d-flex justify-content-between">
                                                         {
-                                                            path !== "/admin/genes/add" ?
+                                                            path !== "/admin/documents/add" ?
                                                                 (
                                                                     <React.Fragment>
-                                                                        <h3 className="m-0">{gene.title}</h3>
+                                                                        <h3 className="m-0">{document.title}</h3>
                                                                         <button
                                                                             type="button"
                                                                             className="btn btn-primary"
                                                                             onClick={() => {
                                                                                 if (isEdit) {
-                                                                                    setValues(gene);
+                                                                                    setValues(document);
                                                                                 }
                                                                                 this.setState({isEdit: !isEdit})
                                                                             }}
@@ -215,12 +250,12 @@ class Gene extends Component {
                                                                         </button>
                                                                     </React.Fragment>
                                                                 )
-                                                                :  <h3 className="m-0">Добавить ген</h3>
+                                                                :  <h3 className="m-0">Добавить документ</h3>
                                                         }
                                                     </CardHeader>
                                                     <CardBody>
                                                         <Row className="mb-3">
-                                                            <Col xs={12} md={6}>
+                                                            <Col xs={12} md={4}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Название:</h3>
                                                                     {
@@ -232,28 +267,77 @@ class Gene extends Component {
                                                                                 onBlur={handleBlur}
                                                                                 value={values.title}
                                                                             />
-                                                                            : <p>{gene.title}</p>
+                                                                            : <p>{document.title}</p>
                                                                     }
                                                                 </div>
                                                             </Col>
-                                                            <Col xs={12} md={6}>
+                                                            <Col xs={12} md={4}>
                                                                 <div className="d-flex">
-                                                                    <h3 className="mr-3">Тип:</h3>
+                                                                    <h3 className="mr-3">Адрес:</h3>
                                                                     {
                                                                         isEdit ?
                                                                             <Input
                                                                                 className="form-control-alternative"
-                                                                                name="type"
-                                                                                type="select"
+                                                                                name="label"
+                                                                                placeholder="how-to или what-is"
                                                                                 onChange={handleChange}
                                                                                 onBlur={handleBlur}
-                                                                                value={values.type}
-                                                                            >
-                                                                                <option value="recessive">Recessive</option>
-                                                                                <option value="dominant">Dominant</option>
-                                                                                <option value="other">Other</option>
-                                                                            </Input>
-                                                                            : <p>{gene.type}</p>
+                                                                                value={values.label}
+                                                                            />
+                                                                            : <p>{document.label}</p>
+                                                                    }
+                                                                </div>
+                                                            </Col>
+                                                            <Col xs={12} md={4}>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3">Соглашение при регистрации:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            <React.Fragment>
+                                                                                <Input
+                                                                                    id="user_agree_true"
+                                                                                    className="form-control-alternative position-absolute"
+                                                                                    name="user_agree"
+                                                                                    type="radio"
+                                                                                    onChange={() => setFieldValue('user_agree', true)}
+                                                                                    onBlur={handleBlur}
+                                                                                    style={{
+                                                                                        opacity: 0
+                                                                                    }}
+                                                                                />
+                                                                                <Input
+                                                                                    id="user_agree_false"
+                                                                                    className="form-control-alternative position-absolute"
+                                                                                    name="user_agree"
+                                                                                    type="radio"
+                                                                                    onChange={() => setFieldValue('user_agree', false)}
+                                                                                    onBlur={handleBlur}
+                                                                                    style={{
+                                                                                        opacity: 0
+                                                                                    }}
+                                                                                />
+                                                                                <label htmlFor="user_agree_true" className={values.user_agree ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
+                                                                                <label htmlFor="user_agree_false" className={!values.user_agree ? 'font-weight-bold' : ''}>Нет</label>
+                                                                            </React.Fragment>
+                                                                            : <p>{document.user_agree ? 'Да' : 'Нет'}</p>
+                                                                    }
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className="mb-3">
+                                                            <Col xs={12}>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3">Подробнее:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            <Editor state={values.description} onChange={(state) => setFieldValue('description', state)}/>
+                                                                            : (
+                                                                                <Card className="w-100">
+                                                                                    <CardBody>
+                                                                                        <div dangerouslySetInnerHTML={ { __html: document.description } }></div>
+                                                                                    </CardBody>
+                                                                                </Card>
+                                                                            )
                                                                     }
                                                                 </div>
                                                             </Col>
@@ -276,76 +360,6 @@ class Gene extends Component {
                                                 </Card>
                                             </Col>
                                         </Row>
-                                        <Row className="justify-content-center">
-                                            <Col xs={12} md={6} lg={4}>
-                                                <Card>
-                                                    <CardHeader className="d-flex justify-content-between">
-                                                        <h1>Категории</h1>
-                                                        {
-                                                            isEdit && allKinds.length > 0 ?
-                                                                <button
-                                                                    type="button"
-                                                                    className="btn btn-primary"
-                                                                    onClick={() => {
-                                                                        const kindsValues = values.kinds;
-                                                                        kindsValues.push(allKinds[0]);
-                                                                        setFieldValue('kinds', kindsValues);
-                                                                    }}
-                                                                >
-                                                                    Добавить
-                                                                </button>
-                                                                : null
-                                                        }
-                                                    </CardHeader>
-                                                    <Table className="align-items-center table-flush" responsive>
-                                                        <thead className="thead-light">
-                                                        <tr>
-                                                            <th scope="col">Русское название</th>
-                                                            {
-                                                                isEdit ?
-                                                                    <th className="col"></th>
-                                                                    : null
-                                                            }
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        {
-                                                            !isEdit ?
-                                                                gene.kinds.map( (item, idx) => <tr key={"kinds-" + idx}><td>{item.title_rus}</td></tr>)
-                                                                : values.kinds.map( (item, idx) => (
-                                                                    <tr key={"locality-" + idx}>
-                                                                        <td className="w-100">
-                                                                            <Input
-                                                                                className="form-control-alternative"
-                                                                                name={"kind-" + idx}
-                                                                                value={item.id}
-                                                                                type="select"
-                                                                                onChange={(e) => {
-                                                                                    const kindsValues = values.kinds;
-                                                                                    kindsValues[idx] = allKinds.find((item) => item.id === Number(e.target.value));
-                                                                                    setFieldValue('kinds', kindsValues);
-                                                                                }}
-                                                                            >
-                                                                                {
-                                                                                    allKinds.map( (item) => <option key={"kind-" + idx} value={item.id}>{item.title_rus}</option>)
-                                                                                }
-                                                                            </Input>
-                                                                        </td>
-                                                                        <td onClick={() => {
-                                                                            const kindsValue = values.kinds;
-                                                                            kindsValue.splice(idx, 1);
-                                                                            setFieldValue('kinds', kindsValue);
-                                                                        }}>
-                                                                            <i className="ni ni-lg ni-fat-remove"></i>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))
-                                                        }
-                                                        </tbody>
-                                                    </Table>
-                                                </Card>
-                                            </Col>
-                                        </Row>
                                     </Form>
                                 )
                             }
@@ -357,17 +371,16 @@ class Gene extends Component {
     }
 }
 
-const mapMethodsToProps = ({getGene, updateGene, setGene: setGeneData}) => ({
-    getGene,
-    updateGene,
-    setGeneData
+const mapMethodsToProps = ({getDocument, updateDocument, setDocument: setDocumentData}) => ({
+    getDocument,
+    updateDocument,
+    setDocumentData
 });
 
-const mapStateToProps = ({kinds: {all: allKinds}, gene}) => ({
-    allKinds,
-    gene
+const mapStateToProps = ({document}) => ({
+    document
 });
 
-export default connect(mapStateToProps, {setGene, setGeneRequest, clearGene})(
-    withDataService(Gene, mapMethodsToProps)
+export default connect(mapStateToProps, {setDocument, setDocumentRequest, clearDocument})(
+    withDataService(Document, mapMethodsToProps)
 )

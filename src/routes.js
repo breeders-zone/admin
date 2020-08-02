@@ -41,6 +41,8 @@ import Level from "./views/Level";
 import Levels from "./views/Levels";
 import Faqs from "./views/Faqs";
 import Faq from "./views/Faq";
+import Documents from "./views/Documents";
+import Document from "./views/Document";
 
 var routes = [
     {
@@ -113,6 +115,23 @@ var routes = [
         name: "FAQ",
         icon: "ni ni-books text-blue",
         component: Faqs,
+        layout: "/admin"
+    },
+    {
+        path: "/documents/add",
+        component: Document,
+        layout: "/admin"
+    },
+    {
+        path: "/documents/:label",
+        component: Document,
+        layout: "/admin"
+    },
+    {
+        path: "/documents",
+        name: "Документы",
+        icon: "ni ni-folder-17 text-yellow  ",
+        component: Documents,
         layout: "/admin"
     },
     {
@@ -233,14 +252,7 @@ var routes = [
         icon: "ni ni-bullet-list-67 text-blue",
         component: Levels,
         layout: "/admin"
-    },
-    {
-        path: "/icons",
-        name: "Иконки",
-        icon: "ni ni-planet text-blue",
-        component: Icons,
-        layout: "/admin"
-    },
+    },  
     {
         path: "/user-profile",
         component: Profile,

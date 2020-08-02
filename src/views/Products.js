@@ -22,6 +22,7 @@ import {connect} from "react-redux";
 import {toUrl} from "../utils";
 import {Link} from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
+import Helmet from "react-helmet";
 
 class Products extends Component {
 
@@ -90,6 +91,9 @@ class Products extends Component {
 
         return (
             <React.Fragment>
+                <Helmet>
+                    <title>Продукты | Breeders Zone</title>
+                </Helmet>
                 <Header />
                 <Container className="mt--7" fluid>
                     {/* Table */}
@@ -151,7 +155,10 @@ class Products extends Component {
                                     <tr>
                                         <th scope="col">Изображение и название</th>
                                         <th scope="col">Цена</th>
-                                        <th scope="col">Категория</th>
+                                        <th
+                                            scope="col"
+                                            className={(!productsRequest && products.data.length === 0 ) || productsRequest ? 'w-100' : ''}
+                                        >Категория</th>
                                         <th scope="col">Подкатегория</th>
                                         <th scope="col">Магазин</th>
                                         <th scope="col" />
@@ -166,6 +173,7 @@ class Products extends Component {
                                                     <td className="d-flex justify-content-center"><Spinner/></td>
                                                     <td></td>
                                                     <td></td>
+                                                    <td></td>
                                                 </tr> : null
 
                                     }
@@ -177,6 +185,7 @@ class Products extends Component {
                                                 <td className="text-center">
                                                     <p className="m-0 my-3">Похоже продуктов нет.</p>
                                                 </td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr> : null

@@ -6,6 +6,7 @@ import {Formik} from "formik";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearTrait, setTrait, setTraitRequest} from "../actions";
+import Helmet from "react-helmet";
 
 class Trait extends Component {
     state = {
@@ -112,6 +113,9 @@ class Trait extends Component {
         if (trait.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -132,6 +136,20 @@ class Trait extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/subcategories/:id' ?
+                        <Helmet>
+                            <title>{!trait.request ?  trait.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path === '/admin/subcategories/add' ?
+                        <Helmet>
+                            <title>Добавить вид гена | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

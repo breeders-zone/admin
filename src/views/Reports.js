@@ -17,6 +17,7 @@ import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {deleteReport, setReports, setReportsRequest} from "../actions";
 import Pagination from "../components/Pagination/Pagination";
+import Helmet from "react-helmet";
 
 class Genes extends Component {
     componentDidMount() {
@@ -45,6 +46,9 @@ class Genes extends Component {
 
         return (
             <React.Fragment>
+                <Helmet>
+                    <title>Жалобы | Breeders Zone</title>
+                </Helmet>
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Row>
@@ -65,12 +69,28 @@ class Genes extends Component {
                                     </thead>
                                     <tbody>
                                     {
+                                        !reports.request && reports.data.length === 0 ?
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td colSpan="3" className="d-flex justify-content-center">
+                                                    <p className="m-0">Жалоб нет.</p>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            : null
+                                    }
+                                    {
                                         reports.request ?
                                             <tr>
+                                                <td></td>
                                                 <td></td>
                                                 <td colSpan="3" className="d-flex justify-content-center">
                                                     <Spinner/>
                                                 </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             : reports.data.map( (item) => (
                                                 <tr>

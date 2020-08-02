@@ -16,6 +16,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {deleteFaq, setFaqs, setFaqsRequest} from "../actions";
+import Helmet from "react-helmet";
 
 class Faqs extends Component {
     componentDidMount() {
@@ -44,6 +45,9 @@ class Faqs extends Component {
 
         return (
             <React.Fragment>
+                <Helmet>
+                    <title>FAQ | Breeders Zone</title>
+                </Helmet>
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Row>
@@ -59,12 +63,24 @@ class Faqs extends Component {
                                     <thead className="thead-light">
                                     <tr>
                                         <th scope="col">Адрес</th>
-                                        <th scope="col">Название</th>
+                                        <th scope="col" className={(!faqs.request && faqs.data.length === 0) || faqs.request  ? 'w-100' : null}>Название</th>
                                         <th scope="col">Есть на главной</th>
                                         <th scope="col" />
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {
+                                        !faqs.request && faqs.data.length === 0 ?
+                                            <tr>
+                                                <td></td>
+                                                <td className="d-flex justify-content-center">
+                                                    <p className="m-0">FAQ нет.</p>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            : null
+                                    }
                                     {
                                         faqs.request ?
                                             <tr>
@@ -72,6 +88,8 @@ class Faqs extends Component {
                                                 <td colSpan="3" className="d-flex justify-content-center">
                                                     <Spinner/>
                                                 </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
                                             : faqs.data.map( (item) => (
                                                 <tr key={item.label}>
@@ -90,7 +108,7 @@ class Faqs extends Component {
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        <Link to={`/admin/genes/${item.label}`}>
+                                                        <Link to={`/admin/faq/${item.label}`}>
                                                             <Media className="align-items-center text-dark">
                                                                 {item.is_index ? 'Да' : 'Нет'}
                                                             </Media>

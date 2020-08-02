@@ -16,11 +16,15 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {deleteKind} from "../actions";
+import Helmet from "react-helmet";
 
 const Kinds = (props) => {
     const {allKinds, deleteKind, kindsRequest} = props;
     return (
         <React.Fragment>
+            <Helmet>
+                <title>Категории | Breeders Zone</title>
+            </Helmet>
             <Header/>
             <Container className="mt--7" fluid>
                 <Row>

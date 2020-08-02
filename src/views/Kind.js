@@ -7,6 +7,7 @@ import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spi
 import Error404 from "./Error404";
 import {Formik} from "formik";
 import Dropzone from "react-dropzone";
+import Helmet from "react-helmet";
 
 class Kind extends Component {
     state = {
@@ -151,6 +152,9 @@ class Kind extends Component {
         if (kind.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -171,6 +175,20 @@ class Kind extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/kinds/:id' ?
+                        <Helmet>
+                            <title>{!kind.request ?  kind.title_rus : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path === '/admin/kinds/add' ?
+                        <Helmet>
+                            <title>Добавить категорию | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

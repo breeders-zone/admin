@@ -29,6 +29,7 @@ import {isLogin} from "../utils";
 import {connect} from "react-redux";
 import {getUser} from "../actions";
 import {withErrorBoundary} from "../components/hoc";
+import {Helmet} from "react-helmet";
 
 class Admin extends React.Component {
     componentDidMount() {
@@ -74,7 +75,10 @@ class Admin extends React.Component {
         if (!isLogin())
             return <Redirect to="/auth/login"/>;
         return (
-            <>
+            <React.Fragment>
+                <Helmet>
+                    <title>Админ панель | Breeders Zone</title>
+                </Helmet>
                 <Sidebar
                     {...this.props}
                     routes={routes}
@@ -92,9 +96,10 @@ class Admin extends React.Component {
                         <AdminFooter />
                     </Container>
                 </div>
-            </>
+            </React.Fragment>
         );
     }
 }
+
 
 export default connect(null, {getUser})(Admin);

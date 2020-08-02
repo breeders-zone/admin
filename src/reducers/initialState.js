@@ -1,6 +1,6 @@
 const initialState = {
-    profile: {
-        name: ''
+    head: {
+        title: 'Админ панель | Breeders Zone'
     },
     header: {
         newUsers: {
@@ -13,6 +13,9 @@ const initialState = {
             total: 0,
             request: true
         }
+    },
+    profile: {
+        name: ''
     },
     kind: {
         request: true,
@@ -85,6 +88,17 @@ const initialState = {
         in_index: false
     },
     faqs: {
+        request: true,
+        data: []
+    },
+    document: {
+        request: true,
+        label: '',
+        title: '',
+        description: '',
+        user_agree: false
+    },
+    documents: {
         request: true,
         data: []
     },

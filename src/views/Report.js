@@ -7,6 +7,7 @@ import {withDataService} from "../components/hoc";
 import {clearReport, setReport, setReportRequest} from "../actions";
 import ProductForm from "../components/ProductForm";
 import DivorceForm from "../components/DivorceForm/DivorceForm";
+import Helmet from "react-helmet";
 
 class report extends Component {
     state = {
@@ -47,13 +48,17 @@ class report extends Component {
 
     render() {
         const {
-            report
+            report,
+            match: {path}
         } = this.props;
         const {is404} = this.state;
 
         if (report.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -74,6 +79,13 @@ class report extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/report/:id' ?
+                        <Helmet>
+                            <title>{!report.request ?  report.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Row className="mb-3">

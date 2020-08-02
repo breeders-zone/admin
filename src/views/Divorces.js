@@ -20,6 +20,7 @@ import {connect} from "react-redux";
 import {toUrl} from "../utils";
 import {Link} from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
+import Helmet from "react-helmet";
 
 class Divorces extends Component {
 
@@ -88,6 +89,9 @@ class Divorces extends Component {
         const {options, divorcesRequest} = divorces;
         return (
             <React.Fragment>
+                <Helmet>
+                    <title>Разводы | Breeders Zone</title>
+                </Helmet>
                 <Header />
                 <Container className="mt--7" fluid>
                     {/* Table */}
@@ -162,7 +166,9 @@ class Divorces extends Component {
                                             <tr>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                                 <td className="d-flex justify-content-center"><Spinner/></td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr> : null
@@ -173,9 +179,11 @@ class Divorces extends Component {
                                             <tr>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                                 <td className="text-center">
-                                                    <p className="m-0 my-3">Похоже разводов нет.</p>
+                                                    <p className="m-0">Похоже разводов нет.</p>
                                                 </td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr> : null

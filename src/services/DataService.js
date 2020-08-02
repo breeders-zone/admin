@@ -959,6 +959,82 @@ class DataService {
             .then((res) => res.data);
     };
 
+    getDocuments = (options) => {
+        const query = window.qs.stringify(options);
+        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/documents?' +  query, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }
+        })
+            .then((res) => res.data);
+    };
+
+    getDocument = (label) => {
+        const token = localStorage.getItem('token');
+        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/documents/' + label,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then( (res) => res.data)
+    };
+
+    setDocument = (data) => {
+        const token = localStorage.getItem('token');
+        return Axios.post(
+            `${process.env.REACT_APP_API_DOMAIN}/api/documents`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    boundary: Math.random().toString().substr(2),
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+
+    updateDocument = (label, data) => {
+        const token = localStorage.getItem('token');
+        return Axios.put(
+            `${process.env.REACT_APP_API_DOMAIN}/api/documents/${label}`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    boundary: Math.random().toString().substr(2),
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+    deleteDocument = (label) => {
+        const token = localStorage.getItem('token');
+
+        return Axios.delete(
+            `${process.env.REACT_APP_API_DOMAIN}/api/documents/${label}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
 
 }
 

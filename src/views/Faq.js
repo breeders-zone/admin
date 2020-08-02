@@ -10,6 +10,7 @@ import draftToHtml from 'draftjs-to-html';
 import {withDataService} from "../components/hoc";
 import {clearFaq, setFaq, setFaqRequest} from "../actions";
 import Editor from "../components/Editor";
+import Helmet from "react-helmet";
 
 class Faq extends Component {
     state = {
@@ -143,6 +144,9 @@ class Faq extends Component {
         if (faq.request)
             return (
                 <React.Fragment>
+                    <Helmet>
+                        <title>Загрузка | Breeders Zone</title>
+                    </Helmet>
                     <Header/>
                     <Container className="mt--7" fluid>
                         <Row>
@@ -163,6 +167,20 @@ class Faq extends Component {
 
         return (
             <React.Fragment>
+                {
+                    path === '/admin/faq/:label' ?
+                        <Helmet>
+                            <title>{!faq.request ?  faq.title : 'Загрузка'} | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
+                {
+                    path === '/admin/faq/add' ?
+                        <Helmet>
+                            <title>Добавить FAQ | Breeders Zone</title>
+                        </Helmet>
+                        : null
+                }
                 <Header/>
                 <Container className="mt--7" fluid>
                     <Formik

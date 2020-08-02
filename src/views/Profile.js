@@ -37,6 +37,7 @@ import * as Yup from "yup";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {setProfile} from "../actions";
+import Helmet from "react-helmet";
 
 const Profile = (props) => {
     const {profile} = props;
@@ -87,6 +88,9 @@ const Profile = (props) => {
     if (profile.request) {
         return (
             <React.Fragment>
+                <Helmet>
+                    <title>Профиль админа | Breeders Zone</title>
+                </Helmet>
                 <UserHeader />
                 {/* Page content */}
                 <Container className="mt--7" fluid>

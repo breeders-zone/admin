@@ -15,38 +15,38 @@ import {
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
-import {deleteTrait, setTraits, setTraitsRequest} from "../actions";
+import {deleteDocument, setDocuments, setDocumentsRequest} from "../actions";
 import Helmet from "react-helmet";
 
-class Traits extends Component {
+class Documents extends Component {
     componentDidMount() {
-        this.updateTraits();
+        this.updateDocuments();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.location.search !== this.props.location.search) {
-            this.updateTraits();
+            this.updateDocuments();
         }
     }
 
-    updateTraits = () => {
-        const {getTraits, setTraits, router, setTraitsRequest} = this.props;
+    updateDocuments = () => {
+        const {getDocuments, setDocuments, router, setDocumentsRequest} = this.props;
 
-        setTraitsRequest(true);
-        getTraits(router.location.query)
+        setDocumentsRequest(true);
+        getDocuments(router.location.query)
             .then( (data) => {
-                setTraits(data);
-                setTraitsRequest(false);
+                setDocuments(data);
+                setDocumentsRequest(false);
             });
     };
 
     render() {
-        const { traits, deleteTrait } = this.props;
+        const { documents, deleteDocument } = this.props;
 
         return (
             <React.Fragment>
                 <Helmet>
-                    <title>Виды генов | Breeders Zone</title>
+                    <title>Документы | Breeders Zone</title>
                 </Helmet>
                 <Header/>
                 <Container className="mt--7" fluid>
@@ -54,30 +54,27 @@ class Traits extends Component {
                         <Col xs={12}>
                             <Card>
                                 <CardHeader className="d-flex justify-content-between align-items-center">
-                                    <h1>Типы генов</h1>
-                                    <Link to="/admin/traits/add" className="btn btn-primary">
+                                    <h1>Документы</h1>
+                                    <Link to="/admin/documents/add" className="btn btn-primary">
                                         Добавить
                                     </Link>
                                 </CardHeader>
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                     <tr>
-                                        <th scope="col">ID</th>
-                                        <th
-                                            scope="col"
-                                            className={(!traits.request && traits.data.length === 0 ) || traits.request ? 'w-100' : ''}
-                                        >Название</th>
-                                        <th scope="col">Тип</th>
+                                        <th scope="col">Адрес</th>
+                                        <th scope="col" className={(!documents.request && documents.data.length === 0) || documents.request  ? 'w-100' : null}>Название</th>
+                                        <th scope="col">Соглашение с регистрацией</th>
                                         <th scope="col" />
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {
-                                        !traits.request && traits.data.length === 0 ?
+                                        !documents.request && documents.data.length === 0 ?
                                             <tr>
                                                 <td></td>
-                                                <td colSpan="3" className="d-flex justify-content-center">
-                                                    <p className="m-0">Генов нет</p>
+                                                <td className="d-flex justify-content-center">
+                                                    <p className="m-0">Документов нет.</p>
                                                 </td>
                                                 <td></td>
                                                 <td></td>
@@ -85,33 +82,35 @@ class Traits extends Component {
                                             : null
                                     }
                                     {
-                                        traits.request ?
+                                        documents.request ?
                                             <tr>
                                                 <td></td>
                                                 <td colSpan="3" className="d-flex justify-content-center">
                                                     <Spinner/>
                                                 </td>
+                                                <td></td>
+                                                <td></td>
                                             </tr>
-                                            : traits.data.map( (item) => (
-                                                <tr key={item.id}>
+                                            : documents.data.map( (item) => (
+                                                <tr key={item.label}>
                                                     <th scope="row">
-                                                        <Link to={`/admin/traits/${item.id}`}>
+                                                        <Link to={`/admin/documents/${item.label}`}>
                                                             <Media className="align-items-center text-dark">
-                                                                {item.id}
+                                                                {item.label}
                                                             </Media>
                                                         </Link>
                                                     </th>
                                                     <td>
-                                                        <Link to={`/admin/traits/${item.id}`}>
+                                                        <Link to={`/admin/documents/${item.label}`}>
                                                             <Media className="align-items-center text-dark">
                                                                 {item.title}
                                                             </Media>
                                                         </Link>
                                                     </td>
                                                     <td>
-                                                        <Link to={`/admin/genes/${item.id}`}>
+                                                        <Link to={`/admin/documents/${item.label}`}>
                                                             <Media className="align-items-center text-dark">
-                                                                {item.type}
+                                                                {item.user_agree ? 'Да' : 'Нет'}
                                                             </Media>
                                                         </Link>
                                                     </td>
@@ -129,12 +128,12 @@ class Traits extends Component {
                                                             </DropdownToggle>
                                                             <DropdownMenu className="dropdown-menu-arrow" right>
 
-                                                                <Link to={`/admin/traits/${item.id}`}>
+                                                                <Link to={`/admin/documents/${item.label}`}>
                                                                     <DropdownItem>
                                                                         Подробнее
                                                                     </DropdownItem>
                                                                 </Link>
-                                                                <Link to={`/admin/traits/${item.id}`}>
+                                                                <Link to={`/admin/documents/${item.label}`}>
                                                                     <DropdownItem>
                                                                         Редактировать
                                                                     </DropdownItem>
@@ -143,7 +142,7 @@ class Traits extends Component {
                                                                     href="#"
                                                                     onClick={e => {
                                                                         e.preventDefault();
-                                                                        deleteTrait(item.id)
+                                                                        deleteDocument(item.label)
                                                                     }}
                                                                 >
                                                                     <span className="text-danger">Удалить</span>
@@ -165,15 +164,15 @@ class Traits extends Component {
     }
 }
 
-const mapMethodsToProps = ({getTraits}) => ({
-    getTraits
+const mapMethodsToProps = ({getDocuments}) => ({
+    getDocuments
 });
 
-const mapStateToProps = ({traits, router}) => ({
-    traits,
+const mapStateToProps = ({documents, router}) => ({
+    documents,
     router
 });
 
-export default connect(mapStateToProps, {setTraits, deleteTrait, setTraitsRequest})(
-    withDataService(Traits, mapMethodsToProps)
+export default connect(mapStateToProps, {setDocuments, deleteDocument, setDocumentsRequest})(
+    withDataService(Documents, mapMethodsToProps)
 )

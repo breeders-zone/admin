@@ -47,6 +47,7 @@ import {
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
+import Helmet from "react-helmet";
 
 class Index extends React.Component {
     constructor(props){
@@ -69,7 +70,10 @@ class Index extends React.Component {
     };
     render() {
         return (
-            <>
+            <React.Fragment>
+                <Helmet>
+                    <title>Рабочий стол | Breeders Zone</title>
+                </Helmet>
                 <Header />
                 {/* Page content */}
                 <Container className="mt--7" fluid>
@@ -340,7 +344,7 @@ class Index extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-            </>
+            </React.Fragment>
         );
     }
 }
