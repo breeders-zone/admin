@@ -54,9 +54,12 @@ const users = (state, action) => {
                 data: [...payload]
             };
         case 'DELETE_USER':
+            const userIndex = state.data.findIndex((item) => item.id === payload);
+            const users = state.user.data;
+            users.splice(userIndex, 1);
             return {
                 ...state,
-                data: payload
+                data: users
             };
         default:
             return state
