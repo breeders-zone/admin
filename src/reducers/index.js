@@ -26,6 +26,7 @@ import faqs from "./faqs";
 import faq from "./faq";
 import documents from "./documents";
 import documentReducer from "./document";
+import initialState from "./initialState";
 
 const createRootReducer = (history) => combineReducers({
     header,
@@ -58,3 +59,7 @@ const createRootReducer = (history) => combineReducers({
 });
 
 export default createRootReducer;
+
+export {
+    initialState
+}

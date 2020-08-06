@@ -4,7 +4,7 @@ import {toFormData} from "../utils";
 class DataService {
 
     login = (data) => {
-        return Axios.post(process.env.REACT_APP_API_DOMAIN + '/api/auth/login',
+        return Axios.post(process.env.REACT_APP_API_DOMAIN_URL + '/api/auth/login',
             {
                 ...data,
                 isAdmin: true
@@ -23,7 +23,7 @@ class DataService {
     logout = () => {
         const token = localStorage.getItem('token');
 
-        return Axios.post(process.env.REACT_APP_API_DOMAIN + '/api/auth/logout',
+        return Axios.post(process.env.REACT_APP_API_DOMAIN_URL + '/api/auth/logout',
             {
                 isAdmin: true
             },
@@ -41,7 +41,7 @@ class DataService {
     getProfile = () => {
         const token = localStorage.getItem('token');
 
-        return Axios.post(process.env.REACT_APP_API_DOMAIN + '/api/auth/me',
+        return Axios.post(process.env.REACT_APP_API_DOMAIN_URL + '/api/auth/me',
             {
                 isAdmin: true
             },
@@ -59,7 +59,7 @@ class DataService {
     updateProfile = (adminId, data) => {
         const token = localStorage.getItem('token');
 
-        return Axios.put(process.env.REACT_APP_API_DOMAIN + '/api/admin/' + adminId,
+        return Axios.put(process.env.REACT_APP_API_DOMAIN_URL + '/api/admin/' + adminId,
             data,
             {
                 headers: {
@@ -75,7 +75,7 @@ class DataService {
     getNewUsers = () => {
         const token = localStorage.getItem('token');
 
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/new-users',
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/new-users',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ class DataService {
     getNewProducts = () => {
         const token = localStorage.getItem('token');
 
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/new-products',
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/new-products',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ class DataService {
     };
 
     getKinds = () => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/kinds',
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/kinds',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ class DataService {
 
     getKind = (kindId) => {
         return Axios.get(
-            `${process.env.REACT_APP_API_DOMAIN}/api/kinds/${kindId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/kinds/${kindId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -132,7 +132,7 @@ class DataService {
         const formData = toFormData(data);
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/kinds`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/kinds`,
             formData,
             {
                 headers: {
@@ -152,7 +152,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/kinds/${kindId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/kinds/${kindId}`,
             formData,
             {
                 headers: {
@@ -170,7 +170,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/kinds/${kindId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/kinds/${kindId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -183,7 +183,7 @@ class DataService {
     };
 
     getSubcategories = () => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/subcategories',
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/subcategories',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -196,7 +196,7 @@ class DataService {
 
     getSubcategory = (subcategoryId) => {
         return Axios.get(
-            `${process.env.REACT_APP_API_DOMAIN}/api/subcategories/${subcategoryId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/subcategories/${subcategoryId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -211,7 +211,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/subcategories`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/subcategories`,
             data,
             {
                 headers: {
@@ -228,7 +228,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.put(
-            `${process.env.REACT_APP_API_DOMAIN}/api/subcategories/${subcategoryId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/subcategories/${subcategoryId}`,
             data,
             {
                 headers: {
@@ -245,7 +245,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/subcategories/${subcategoryId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/subcategories/${subcategoryId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -258,7 +258,7 @@ class DataService {
     };
 
     getLocalities = () => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/localities',
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/localities',
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -271,7 +271,7 @@ class DataService {
 
     getLocality = (localityId) => {
         return Axios.get(
-            `${process.env.REACT_APP_API_DOMAIN}/api/localities/${localityId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/localities/${localityId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -286,7 +286,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/localities`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/localities`,
             data,
             {
                 headers: {
@@ -303,7 +303,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.put(
-            `${process.env.REACT_APP_API_DOMAIN}/api/localities/${localityId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/localities/${localityId}`,
             data,
             {
                 headers: {
@@ -320,7 +320,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/localities/${localityId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/localities/${localityId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -334,7 +334,7 @@ class DataService {
 
     getGenes = (options = {}) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/genes?' + query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/genes?' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
@@ -345,7 +345,7 @@ class DataService {
 
     getGene = (geneId) => {
         return Axios.get(
-            `${process.env.REACT_APP_API_DOMAIN}/api/genes/${geneId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/genes/${geneId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -360,7 +360,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/genes`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/genes`,
             data,
             {
                 headers: {
@@ -377,7 +377,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.put(
-            `${process.env.REACT_APP_API_DOMAIN}/api/genes/${geneId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/genes/${geneId}`,
             data,
             {
                 headers: {
@@ -394,7 +394,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/genes/${geneId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/genes/${geneId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -408,7 +408,7 @@ class DataService {
 
     getTraits = (options = {}) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/traits?' + query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/traits?' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
@@ -419,7 +419,7 @@ class DataService {
 
     getTrait = (traitId) => {
         return Axios.get(
-            `${process.env.REACT_APP_API_DOMAIN}/api/traits/${traitId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits/${traitId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -434,7 +434,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/traits`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits`,
             data,
             {
                 headers: {
@@ -451,7 +451,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.put(
-            `${process.env.REACT_APP_API_DOMAIN}/api/traits/${traitId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits/${traitId}`,
             data,
             {
                 headers: {
@@ -468,7 +468,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/traits/${traitId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits/${traitId}`,
             {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -484,7 +484,7 @@ class DataService {
         const query = window.qs.stringify(options);
         const token = localStorage.getItem('token');
 
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/products?' + query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/products?' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -496,7 +496,7 @@ class DataService {
 
     getProduct = (productId) => {
         const token = localStorage.getItem('token');
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/products/' + productId,
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/products/' + productId,
             {
                     headers: {
                         'Content-Type': 'application/json',
@@ -514,7 +514,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/products/${productId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/products/${productId}`,
             formData,
             {
                 headers: {
@@ -532,7 +532,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/products/${productId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/products/${productId}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -546,7 +546,7 @@ class DataService {
 
     searchMorphs = (data = {q: '', options: []}) => {
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/search/morphs',
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/search/morphs',
             {
                 q: data.q,
                 options: data.options
@@ -564,7 +564,7 @@ class DataService {
     getDivorces = (options) => {
         const query = window.qs.stringify(options);
 
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/divorces?' + query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/divorces?' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
@@ -574,7 +574,7 @@ class DataService {
     };
 
     getDivorce = (divorceId) => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/divorces/' + divorceId, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/divorces/' + divorceId, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json'
@@ -589,7 +589,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/divorces/${divorceId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/divorces/${divorceId}`,
             formData,
             {
                 headers: {
@@ -607,7 +607,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/divorces/${divorceId}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/divorces/${divorceId}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -622,7 +622,7 @@ class DataService {
     getUsers = (options) => {
         const query = window.qs.stringify(options);
 
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/users?' + query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/users?' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -632,7 +632,7 @@ class DataService {
     };
 
     getUser = (userId) => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/users/' + userId, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/users/' + userId, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -647,7 +647,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/users/' + userId,
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/users/' + userId,
             formData,
             {
                 headers: {
@@ -662,7 +662,7 @@ class DataService {
     deleteUser = (userId) => {
         const token = localStorage.getItem('token');
 
-        return Axios.delete(process.env.REACT_APP_API_DOMAIN + '/api/users/' + userId, {
+        return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/users/' + userId, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -673,7 +673,7 @@ class DataService {
     };
 
     getShop = (shopName) => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/shops/' + shopName, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -688,7 +688,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/shops/' + shopName,
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName,
             formData,
             {
                 headers: {
@@ -703,7 +703,7 @@ class DataService {
     deleteShop = (shopName) => {
         const token = localStorage.getItem('token');
 
-        return Axios.delete(process.env.REACT_APP_API_DOMAIN + '/api/shops/' + shopName, {
+        return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -715,7 +715,7 @@ class DataService {
 
     getReports = (options) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/reports?' +  query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/reports?' +  query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -725,7 +725,7 @@ class DataService {
     };
 
     getReport = (reportId) => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/reports/' +  reportId, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/reports/' +  reportId, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -736,7 +736,7 @@ class DataService {
 
     deleteReport = (reportId) => {
         const token = localStorage.getItem('token');
-        return Axios.delete(process.env.REACT_APP_API_DOMAIN + '/api/reports/' +  reportId, {
+        return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/reports/' +  reportId, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -748,7 +748,7 @@ class DataService {
 
     getGuardLevels = (options) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/guard-levels?' +  query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels?' +  query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -758,7 +758,7 @@ class DataService {
     };
 
     getGuardLevel = (level) => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/guard-levels/' +  level, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels/' +  level, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -772,7 +772,7 @@ class DataService {
         const formData = toFormData(data);
 
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/guard-levels',
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels',
             formData,
             {
                 headers: {
@@ -790,7 +790,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/guard-levels/' + level,
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels/' + level,
             formData,
             {
                 headers: {
@@ -804,7 +804,7 @@ class DataService {
 
     deleteGuardLevel = (level) => {
         const token = localStorage.getItem('token');
-        return Axios.delete(process.env.REACT_APP_API_DOMAIN + '/api/guard-levels/' +  level, {
+        return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels/' +  level, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -816,7 +816,7 @@ class DataService {
 
     getBreederLevels = (options) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/breeder-levels?' +  query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels?' +  query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -826,7 +826,7 @@ class DataService {
     };
 
     getBreederLevel = (level) => {
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/breeder-levels/' +  level, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels/' +  level, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -840,7 +840,7 @@ class DataService {
         const formData = toFormData(data);
 
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/breeder-levels',
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels',
             formData,
             {
                 headers: {
@@ -858,7 +858,7 @@ class DataService {
         formData.append('_method', 'PUT');
 
         return Axios.post(
-            process.env.REACT_APP_API_DOMAIN + '/api/breeder-levels/' + level,
+            process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels/' + level,
             formData,
             {
                 headers: {
@@ -872,7 +872,7 @@ class DataService {
 
     deleteBreederLevel = (level) => {
         const token = localStorage.getItem('token');
-        return Axios.delete(process.env.REACT_APP_API_DOMAIN + '/api/breeder-levels/' +  level, {
+        return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels/' +  level, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -885,7 +885,7 @@ class DataService {
 
     getFaqs = (options) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/faq?' +  query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/faq?' +  query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -896,7 +896,7 @@ class DataService {
 
     getFaq = (label) => {
         const token = localStorage.getItem('token');
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/faq/' + label,
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/faq/' + label,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -911,7 +911,7 @@ class DataService {
     setFaq = (data) => {
         const token = localStorage.getItem('token');
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/faq`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/faq`,
             data,
             {
                 headers: {
@@ -929,7 +929,7 @@ class DataService {
     updateFaq = (label, data) => {
         const token = localStorage.getItem('token');
         return Axios.put(
-            `${process.env.REACT_APP_API_DOMAIN}/api/faq/${label}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/faq/${label}`,
             data,
             {
                 headers: {
@@ -947,7 +947,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/faq/${label}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/faq/${label}`,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -961,7 +961,7 @@ class DataService {
 
     getDocuments = (options) => {
         const query = window.qs.stringify(options);
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/documents?' +  query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/documents?' +  query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
@@ -972,7 +972,7 @@ class DataService {
 
     getDocument = (label) => {
         const token = localStorage.getItem('token');
-        return Axios.get(process.env.REACT_APP_API_DOMAIN + '/api/documents/' + label,
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/documents/' + label,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -987,7 +987,7 @@ class DataService {
     setDocument = (data) => {
         const token = localStorage.getItem('token');
         return Axios.post(
-            `${process.env.REACT_APP_API_DOMAIN}/api/documents`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/documents`,
             data,
             {
                 headers: {
@@ -1005,7 +1005,7 @@ class DataService {
     updateDocument = (label, data) => {
         const token = localStorage.getItem('token');
         return Axios.put(
-            `${process.env.REACT_APP_API_DOMAIN}/api/documents/${label}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/documents/${label}`,
             data,
             {
                 headers: {
@@ -1023,7 +1023,7 @@ class DataService {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
-            `${process.env.REACT_APP_API_DOMAIN}/api/documents/${label}`,
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/documents/${label}`,
             {
                 headers: {
                     'Content-Type': 'application/json',

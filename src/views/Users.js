@@ -166,7 +166,7 @@ class Users extends Component {
                                                 <th scope="col">Логотип магазина</th>
                                                 <th scope="col">Имя</th>
                                                 <th scope="col">Фамилия</th>
-                                                <th scope="col">Отчество</th>
+                                                <th scope="col" className={(!users.request && users.data.length === 0 ) || users.request ? 'w-100' : ''}>Отчество</th>
                                                 <th scope="col">Магазин</th>
                                                 <th scope="col">Активен</th>
                                                 <th scope="col">Хранитель</th>
@@ -186,6 +186,13 @@ class Users extends Component {
                                                         <td></td>
                                                         <td></td>
                                                         <td className="d-flex"><p className="m-auto font-weight-light">Похоже пользователей нет</p></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
                                                     </tr>
                                                     : null
                                             }
@@ -197,6 +204,13 @@ class Users extends Component {
                                                         <td></td>
                                                         <td></td>
                                                         <td className="d-flex"><Spinner className="m-auto"/></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
                                                     </tr>
                                                     : users.data.map( (item, idx) => (
                                                         <tr key={item.id}>

@@ -115,6 +115,7 @@ class Subcategory extends Component {
             subcategory,
             allKinds,
             localities,
+            location,
             match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
@@ -163,7 +164,8 @@ class Subcategory extends Component {
                 <Container className="mt--7" fluid>
                     <Formik
                         initialValues={{
-                            ...subcategory
+                            ...subcategory,
+                            kinds: location.state && location.state.kind ? [location.state.kind, ...subcategory.kinds] : subcategory.kinds
                         }}
                         onSubmit={this.onSubmit}
                     >

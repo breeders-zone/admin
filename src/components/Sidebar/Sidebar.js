@@ -51,6 +51,7 @@ import {
     Row,
     Col
 } from "reactstrap";
+import {connect} from "react-redux";
 
 var ps;
 
@@ -99,7 +100,7 @@ class Sidebar extends React.Component {
         });
     };
     render() {
-        const { bgColor, routes, logo } = this.props;
+        const { bgColor, routes, logo, profile } = this.props;
         let navbarBrandProps;
         if (logo && logo.innerLink) {
             navbarBrandProps = {
@@ -129,66 +130,46 @@ class Sidebar extends React.Component {
                     </button>
                     {/* Brand */}
                     {logo ? (
-                        <NavbarBrand className="pt-0" {...navbarBrandProps}>
-                            <img
-                                alt={logo.imgAlt}
-                                className="navbar-brand-img"
-                                src={logo.imgSrc}
-                            />
+                        <NavbarBrand className="p-0 text-left" {...navbarBrandProps}>
+                            {
+                                logo.imgSrc ?
+                                    <img
+                                        alt={logo.imgAlt}
+                                        className="navbar-brand-img"
+                                        src={logo.imgSrc}
+                                    />
+                                    : <h2 className="m-0">{logo.text}</h2>
+                            }
                         </NavbarBrand>
                     ) : null}
                     {/* User */}
                     <Nav className="align-items-center d-md-none">
                         <UncontrolledDropdown nav>
-                            <DropdownToggle nav className="nav-link-icon">
-                                <i className="ni ni-bell-55" />
-                            </DropdownToggle>
-                            <DropdownMenu
-                                aria-labelledby="navbar-default_dropdown_1"
-                                className="dropdown-menu-arrow"
-                                right
-                            >
-                                <DropdownItem>Action</DropdownItem>
-                                <DropdownItem>Another action</DropdownItem>
-                                <DropdownItem divider />
-                                <DropdownItem>Something else here</DropdownItem>
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
-                        <UncontrolledDropdown nav>
                             <DropdownToggle nav>
                                 <Media className="align-items-center">
-                  <span className="avatar avatar-sm rounded-circle">
-                    <img
-                        alt="..."
-                        src={require("assets/img/theme/team-1-800x800.jpg")}
-                    />
-                  </span>
+                                  <span className="avatar avatar-sm rounded-circle">
+                                    <i className="ni ni-3x ni-circle-08"></i>
+                                  </span>
                                 </Media>
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-arrow" right>
                                 <DropdownItem className="noti-title" header tag="div">
-                                    <h6 className="text-overflow m-0">Welcome!</h6>
+                                    <h6 className="text-overflow m-0">Привет {profile.name}!</h6>
                                 </DropdownItem>
                                 <DropdownItem to="/admin/user-profile" tag={Link}>
                                     <i className="ni ni-single-02" />
-                                    <span>My profile</span>
-                                </DropdownItem>
-                                <DropdownItem to="/admin/user-profile" tag={Link}>
-                                    <i className="ni ni-settings-gear-65" />
-                                    <span>Settings</span>
-                                </DropdownItem>
-                                <DropdownItem to="/admin/user-profile" tag={Link}>
-                                    <i className="ni ni-calendar-grid-58" />
-                                    <span>Activity</span>
-                                </DropdownItem>
-                                <DropdownItem to="/admin/user-profile" tag={Link}>
-                                    <i className="ni ni-support-16" />
-                                    <span>Support</span>
+                                    <span>Мой профиль</span>
                                 </DropdownItem>
                                 <DropdownItem divider />
-                                <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
+                                <DropdownItem
+                                    href="#"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        logout()
+                                    }}
+                                >
                                     <i className="ni ni-user-run" />
-                                    <span>Logout</span>
+                                    <span>Выйти</span>
                                 </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
@@ -199,19 +180,23 @@ class Sidebar extends React.Component {
                         <div className="navbar-collapse-header d-md-none">
                             <Row>
                                 {logo ? (
-                                    <Col className="collapse-brand" xs="6">
+                                    <Col className="collapse-brand" xs="9">
                                         {logo.innerLink ? (
                                             <Link to={logo.innerLink}>
                                                 <img alt={logo.imgAlt} src={logo.imgSrc} />
                                             </Link>
                                         ) : (
                                             <a href={logo.outterLink}>
-                                                <img alt={logo.imgAlt} src={logo.imgSrc} />
+                                                {
+                                                    logo.imgSrc ?
+                                                        <img alt={logo.imgAlt} src={logo.imgSrc} />
+                                                        : <h2 className="m-0">{logo.text}</h2>
+                                                }
                                             </a>
                                         )}
                                     </Col>
                                 ) : null}
-                                <Col className="collapse-close" xs="6">
+                                <Col className="collapse-close" xs="3">
                                     <button
                                         className="navbar-toggler"
                                         type="button"
@@ -223,22 +208,6 @@ class Sidebar extends React.Component {
                                 </Col>
                             </Row>
                         </div>
-                        {/* Form */}
-                        <Form className="mt-4 mb-3 d-md-none">
-                            <InputGroup className="input-group-rounded input-group-merge">
-                                <Input
-                                    aria-label="Search"
-                                    className="form-control-rounded form-control-prepended"
-                                    placeholder="Search"
-                                    type="search"
-                                />
-                                <InputGroupAddon addonType="prepend">
-                                    <InputGroupText>
-                                        <span className="fa fa-search" />
-                                    </InputGroupText>
-                                </InputGroupAddon>
-                            </InputGroup>
-                        </Form>
                         <Nav navbar>{this.createLinks(routes)}</Nav>
                     </Collapse>
                 </Container>
@@ -268,4 +237,8 @@ Sidebar.propTypes = {
     })
 };
 
-export default Sidebar;
+const mapStateToProps = ({profile}) => ({
+    profile
+});
+
+export default connect(mapStateToProps)(Sidebar);

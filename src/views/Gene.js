@@ -107,6 +107,7 @@ class Gene extends Component {
         const {
             gene,
             allKinds,
+            location,
             match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
@@ -155,7 +156,8 @@ class Gene extends Component {
                 <Container className="mt--7" fluid>
                     <Formik
                         initialValues={{
-                            ...gene
+                            ...gene,
+                            kinds: location.state && location.state.kind ? [location.state.kind, ...gene.kinds] : gene.kinds
                         }}
                         onSubmit={this.onSubmit}
                     >
