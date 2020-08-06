@@ -18,9 +18,13 @@ import {withDataService} from "../components/hoc";
 import {deleteGene, setGenes, setGenesOptionSearch, setGenesRequest} from "../actions";
 import Pagination from "../components/Pagination/Pagination";
 import Helmet from "react-helmet";
+import {toUrl} from "../utils";
+import {initialState} from "../reducers";
 
 class Genes extends Component {
     componentDidMount() {
+        const {setGenesRequest} = this.props;
+        setGenesRequest(false);
         this.updateGenes();
     }
 
@@ -33,12 +37,15 @@ class Genes extends Component {
     updateGenes = () => {
         const {getGenes, setGenes, router, setGenesRequest} = this.props;
 
-        setGenesRequest(true);
-        getGenes(router.location.query)
-            .then( (data) => {
-                setGenes(data);
-                setGenesRequest(false)
-            });
+        if (router.location.query.kind || router.location.query.q) {
+            setGenes(initialState.genes);
+            setGenesRequest(true);
+            getGenes(router.location.query)
+                .then( (data) => {
+                    setGenes(data);
+                    setGenesRequest(false)
+                });
+        }
     };
 
     search = (e) => {
@@ -51,7 +58,8 @@ class Genes extends Component {
     };
 
     render() {
-        const { genes, deleteGene, setGenesOptionSearch } = this.props;
+        const { kinds, genes, router, deleteGene, setGenesOptionSearch } = this.props;
+        const selectedKind = kinds.all.find((item) => toUrl(item.title_eng) === router.location.query.kind);
 
         return (
             <React.Fragment>
@@ -79,22 +87,75 @@ class Genes extends Component {
                                             </InputGroup>
                                         </FormGroup>
                                     </Form>
-                                    <Link to="/admin/genes/add" className="btn btn-primary">
-                                        Добавить
-                                    </Link>
+                                    <div className="d-flex align-items-center">
+                                        <UncontrolledDropdown>
+                                            <DropdownToggle
+                                                className="d-flex align-items-center"
+                                                href="#"
+                                                size="sm"
+                                                color=""
+                                                onClick={(e) => e.preventDefault()}
+                                            >
+                                                <span>{router.location.query.kind && selectedKind ? selectedKind.title_rus : 'Все категории'}</span><i className="ni ni-bold-down"></i>
+                                            </DropdownToggle>
+                                            <DropdownMenu className="dropdown-menu-arrow" right>
+                                                {
+                                                    kinds.all.map( (item) => (
+                                                        <DropdownItem
+                                                            to={`/admin/genes?kind=${toUrl(item.title_eng)}`}
+                                                            tag={Link}
+                                                            key={item.title_rus}
+                                                        >
+                                                            {item.title_rus}
+                                                        </DropdownItem>
+                                                    ))
+                                                }
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                        {
+                                            router.location.query.kind
+                                            || router.location.query.q ?
+                                                <Link
+                                                    to={{
+                                                        pathname: "/admin/genes/add",
+                                                        state: {kind: selectedKind }
+                                                    }}
+                                                    className="btn btn-primary"
+                                                >
+                                                    Добавить
+                                                </Link>
+                                                : null
+                                        }
+                                    </div>
                                 </CardHeader>
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                     <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col" className={(!genes.request && genes.data.length === 0 ) || genes.request ? 'w-100' : ''}>Название</th>
+                                        <th scope="col">
+                                            {
+                                                router.location.query.kind
+                                                || router.location.query.q ?
+                                                    'ID'
+                                                    : ''
+                                            }
+                                        </th>
+                                        <th scope="col" className={(!genes.request && genes.data.length === 0 ) || genes.request ? 'w-100' : ''}>
+                                            {
+                                                router.location.query.kind
+                                                || router.location.query.q ?
+                                                    'Название'
+                                                    : 'Категория'
+                                            }
+                                        </th>
                                         <th scope="col">Тип</th>
                                         <th scope="col" />
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {
-                                        !genes.request && genes.data.length === 0 ?
+                                        (router.location.query.kind || router.location.query.q)
+                                        && !genes.request
+                                        && genes.data.length === 0 ?
                                             <tr>
                                                 <td></td>
                                                 <td colSpan="3" className="d-flex justify-content-center">
@@ -106,7 +167,7 @@ class Genes extends Component {
                                             : null
                                     }
                                     {
-                                        genes.request ?
+                                        genes.request || kinds.request ?
                                             <tr>
                                                 <td></td>
                                                 <td colSpan="3" className="d-flex justify-content-center">
@@ -115,7 +176,11 @@ class Genes extends Component {
                                                 <td></td>
                                                 <td></td>
                                             </tr>
-                                            : genes.data.map( (item) => (
+                                            : null
+                                    }
+                                    {
+                                        (router.location.query.kind || router.location.query.q) ?
+                                            genes.data.map( (item) => (
                                                 <tr key={item.id}>
                                                     <th scope="row">
                                                         <Link to={`/admin/genes/${item.id}`}>
@@ -176,12 +241,32 @@ class Genes extends Component {
                                                     </td>
                                                 </tr>
                                             ))
+                                            : kinds.all.map( (item) => (
+                                                <tr key={item.id}>
+                                                    <th scope="row">
+                                                        <Link to={`/admin/genes?kind=${toUrl(item.title_eng)}`}>
+                                                            <Media className="align-items-center text-dark">
+                                                                <i className="ni ni-lg ni-folder-17 text-yellow"></i>
+                                                            </Media>
+                                                        </Link>
+                                                    </th>
+                                                    <td>
+                                                        <Link to={`/admin/genes?kind=${toUrl(item.title_eng)}`}>
+                                                            <Media className="align-items-center text-dark">
+                                                                {item.title_rus} ({item.title_eng})
+                                                            </Media>
+                                                        </Link>
+                                                    </td>
+                                                    <td></td>
+                                                    <td className="text-right"></td>
+                                                </tr>
+                                            ))
                                     }
                                     </tbody>
                                 </Table>
                                 <CardFooter className="py-4">
                                     {
-                                        genes.last_page ?
+                                        genes.last_page && (router.location.query.kind || router.location.query.q) ?
                                             <Pagination totalItems={genes.last_page} pageSize={1} defaultActivePage={genes.current_page}/>
                                             : null
                                     }
@@ -199,7 +284,8 @@ const mapMethodsToProps = ({getGenes}) => ({
     getGenes
 });
 
-const mapStateToProps = ({genes, router}) => ({
+const mapStateToProps = ({kinds, genes, router}) => ({
+    kinds,
     genes,
     router
 });
