@@ -23,6 +23,7 @@ import { Container, Row } from "reactstrap";
 import routes from "routes.js";
 import {isLogin} from "../utils";
 import Helmet from "react-helmet";
+import AuthNavbar from "../components/Navbars/AuthNavbar";
 
 class Auth extends React.Component {
     componentDidMount() {
@@ -56,8 +57,9 @@ class Auth extends React.Component {
                 <Helmet>
                     <title>Вход | Breeders Zone</title>
                 </Helmet>
+                <AuthNavbar/>
                 <div className="main-content">
-                    <div className="header bg-gradient-info pt-4 pb-7 pb-lg-8">
+                    <div className="header bg-gradient-info pt-8 pb-7 pb-lg-8">
                         <div className="separator separator-bottom separator-skew zindex-100">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +77,7 @@ class Auth extends React.Component {
                         </div>
                     </div>
                     {/* Page content */}
-                    <Container className="mt--8 pt-8 pb-7">
+                    <Container className="mt--8 pb-7">
                         <Row className="justify-content-center">
                             <Switch>
                                 {this.getRoutes(routes)}
