@@ -5,9 +5,10 @@ import {clearKind, setKind, setKindRequest, setKinds} from "../actions";
 import Header from "../components/Headers/Header";
 import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner, Table} from "reactstrap";
 import Error404 from "./Error404";
-import {Formik} from "formik";
+import {ErrorMessage, Formik} from "formik";
 import Dropzone from "react-dropzone";
 import Helmet from "react-helmet";
+import * as Yup from "yup";
 
 class Kind extends Component {
     state = {
@@ -201,6 +202,15 @@ class Kind extends Component {
                             previewsSquare: []
                         }}
                         onSubmit={this.onSubmit}
+                        validationSchema={Yup.object().shape({
+                            title_rus: Yup.string()
+                                .required('Русское название должно быть указано'),
+                            title_eng: Yup.string()
+                                .required('Латинское название должно быть указано'),
+                            group: Yup.string()
+                                .lowercase('Группа должна быть указана в нижнем регистре')
+                                .required('Латинское название должно быть указано'),
+                        })}
                     >
                         {
                             ({
@@ -249,7 +259,14 @@ class Kind extends Component {
                                                                             className="btn btn-primary"
                                                                             onClick={() => {
                                                                                 if (isEdit) {
-                                                                                    setValues(kind);
+                                                                                    setValues({
+                                                                                        ...kind,
+                                                                                        has_subcategories: kind.has_subcategories ? '1' : '0',
+                                                                                        acceptedFileHeader: null,
+                                                                                        acceptedFileSquare: null,
+                                                                                        previewsHeader: [],
+                                                                                        previewsSquare: []
+                                                                                    });
                                                                                 }
                                                                                 this.setState({isEdit: !isEdit})
                                                                             }}
@@ -278,6 +295,11 @@ class Kind extends Component {
                                                                             />
                                                                             : <p>{kind.title_rus}</p>
                                                                     }
+                                                                    <ErrorMessage name="title_rus">
+                                                                        {
+                                                                            msg => <div className="text-danger">{msg}</div>
+                                                                        }
+                                                                    </ErrorMessage>
                                                                 </div>
                                                             </Col>
                                                             <Col xs={12} md={6}>
@@ -294,6 +316,11 @@ class Kind extends Component {
                                                                             />
                                                                             : <p>{kind.title_eng}</p>
                                                                     }
+                                                                    <ErrorMessage name="title_eng">
+                                                                        {
+                                                                            msg => <div className="text-danger">{msg}</div>
+                                                                        }
+                                                                    </ErrorMessage>
                                                                 </div>
                                                             </Col>
                                                         </Row>
@@ -312,6 +339,11 @@ class Kind extends Component {
                                                                             />
                                                                             : <p>{kind.group}</p>
                                                                     }
+                                                                    <ErrorMessage name="group">
+                                                                        {
+                                                                            msg => <div className="text-danger">{msg}</div>
+                                                                        }
+                                                                    </ErrorMessage>
                                                                 </div>
                                                             </Col>
                                                             <Col xs={12} md={6}>
@@ -447,6 +479,11 @@ class Kind extends Component {
                                                                        </Dropzone>
                                                                        : null
                                                                }
+                                                               <ErrorMessage name="logo_square">
+                                                                   {
+                                                                       msg => <div className="text-danger">{msg}</div>
+                                                                   }
+                                                               </ErrorMessage>
                                                            </Col>
                                                            <Col xs={12} className="mb-3">
                                                                <h2>Фото для шапки:</h2>
@@ -512,6 +549,11 @@ class Kind extends Component {
                                                                        </Dropzone>
                                                                        : null
                                                                }
+                                                               <ErrorMessage name="logo_header">
+                                                                   {
+                                                                       msg => <div className="text-danger">{msg}</div>
+                                                                   }
+                                                               </ErrorMessage>
                                                            </Col>
                                                        </Row>
                                                     </CardBody>
