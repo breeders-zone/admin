@@ -264,7 +264,7 @@ class Divorces extends Component {
                                                 </td>
                                                 <td>
                                                     <Badge color="" className="badge-dot mr-4">
-                                                        {item.subcategory.title}
+                                                        {item.subcategory ? item.subcategory.title : 'Нет'}
                                                     </Badge>
                                                 </td>
                                                 <td>
