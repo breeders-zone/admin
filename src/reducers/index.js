@@ -27,8 +27,10 @@ import faq from "./faq";
 import documents from "./documents";
 import documentReducer from "./document";
 import initialState from "./initialState";
+import stats from "./stats/stats";
 
 const createRootReducer = (history) => combineReducers({
+    stats,
     header,
     kind,
     kinds,

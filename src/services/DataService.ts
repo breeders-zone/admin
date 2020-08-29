@@ -1,9 +1,12 @@
 import Axios from "axios";
 import {toFormData} from "../utils";
+import {IAdminData, ILoginData, ISetDocumentData, ISetFaqData, IUpdateDocumentData, IUpdateFaqData} from "./types";
 
 class DataService {
+    YMApiUrl = 'https://api-metrika.yandex.net/stat/v1/data';
+    YMByTime = `${this.YMApiUrl}/bytime`;
 
-    login = (data) => {
+    login = (data: ILoginData) => {
         return Axios.post(process.env.REACT_APP_API_DOMAIN_URL + '/api/auth/login',
             {
                 ...data,
@@ -56,7 +59,7 @@ class DataService {
             .then(res => res.data)
     };
 
-    updateProfile = (adminId, data) => {
+    updateProfile = (adminId: string|number, data: IAdminData) => {
         const token = localStorage.getItem('token');
 
         return Axios.put(process.env.REACT_APP_API_DOMAIN_URL + '/api/admin/' + adminId,
@@ -114,7 +117,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getKind = (kindId) => {
+    getKind = (kindId: string|number) => {
         return Axios.get(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/kinds/${kindId}`,
             {
@@ -127,7 +130,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setKind = (data) => {
+    setKind = (data: any /*TODO create kind data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
 
@@ -146,7 +149,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateKind = (kindId, data) => {
+    updateKind = (kindId: string|number, data: any /*TODO create kind data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -166,7 +169,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteKind = (kindId) => {
+    deleteKind = (kindId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -194,7 +197,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getSubcategory = (subcategoryId) => {
+    getSubcategory = (subcategoryId: string|number) => {
         return Axios.get(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/subcategories/${subcategoryId}`,
             {
@@ -207,7 +210,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setSubcategory = (data) => {
+    setSubcategory = (data: any /*TODO create subcategory data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.post(
@@ -224,7 +227,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateSubcategory = (subcategoryId, data) => {
+    updateSubcategory = (subcategoryId: string|number, data: any /*TODO create subcategory data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.put(
@@ -241,7 +244,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteSubcategory = (subcategoryId) => {
+    deleteSubcategory = (subcategoryId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -269,7 +272,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getLocality = (localityId) => {
+    getLocality = (localityId: string|number) => {
         return Axios.get(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/localities/${localityId}`,
             {
@@ -282,7 +285,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setLocality = (data) => {
+    setLocality = (data: any /*TODO create locality data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.post(
@@ -299,7 +302,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateLocality = (localityId, data) => {
+    updateLocality = (localityId: string|number, data: any /*TODO create locality data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.put(
@@ -316,7 +319,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteLocality = (localityId) => {
+    deleteLocality = (localityId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -343,7 +346,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getGene = (geneId) => {
+    getGene = (geneId: string|number) => {
         return Axios.get(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/genes/${geneId}`,
             {
@@ -356,7 +359,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setGene = (data) => {
+    setGene = (data: any /*TODO create gene data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.post(
@@ -373,7 +376,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateGene = (geneId, data) => {
+    updateGene = (geneId: string|number, data: any /*TODO create gene data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.put(
@@ -390,7 +393,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteGene = (geneId) => {
+    deleteGene = (geneId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -417,7 +420,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getTrait = (traitId) => {
+    getTrait = (traitId: string|number) => {
         return Axios.get(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits/${traitId}`,
             {
@@ -430,7 +433,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setTrait = (data) => {
+    setTrait = (data: any /*TODO create trait data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.post(
@@ -447,7 +450,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateTrait = (traitId, data) => {
+    updateTrait = (traitId: string|number, data: any /*TODO create trait data*/) => {
         const token = localStorage.getItem('token');
 
         return Axios.put(
@@ -464,7 +467,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteTrait = (traitId) => {
+    deleteTrait = (traitId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -480,7 +483,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getProducts = (options) => {
+    getProducts = (options: any) => {
         const query = window.qs.stringify(options);
         const token = localStorage.getItem('token');
 
@@ -494,7 +497,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getProduct = (productId) => {
+    getProduct = (productId: string|number) => {
         const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/products/' + productId,
             {
@@ -508,7 +511,7 @@ class DataService {
             .then( (res) => res.data)
     };
 
-    updateProduct = (productId, data) => {
+    updateProduct = (productId: string|number, data: any /*TODO create product data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -528,7 +531,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteProduct = (productId) => {
+    deleteProduct = (productId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -561,7 +564,7 @@ class DataService {
             .then((res) => res.data)
     };
 
-    getDivorces = (options) => {
+    getDivorces = (options: any) => {
         const query = window.qs.stringify(options);
 
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/divorces?' + query, {
@@ -573,7 +576,7 @@ class DataService {
             .then( (res) => res.data);
     };
 
-    getDivorce = (divorceId) => {
+    getDivorce = (divorceId: string|number) => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/divorces/' + divorceId, {
             headers: {
                 'Content-Type': 'application/json',
@@ -583,7 +586,7 @@ class DataService {
             .then( (res) => res.data)
     };
 
-    updateDivorce = (divorceId, data) => {
+    updateDivorce = (divorceId: string|number, data: any /*TODO create divorce data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -603,7 +606,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteDivorce = (divorceId) => {
+    deleteDivorce = (divorceId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -619,7 +622,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getUsers = (options) => {
+    getUsers = (options: any) => {
         const query = window.qs.stringify(options);
 
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/users?' + query, {
@@ -631,7 +634,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getUser = (userId) => {
+    getUser = (userId: string|number) => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/users/' + userId, {
             headers: {
                 'Content-Type': 'application/json',
@@ -641,7 +644,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateUser = (userId, data) => {
+    updateUser = (userId: string|number, data: any /*TODO create user data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -659,7 +662,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteUser = (userId) => {
+    deleteUser = (userId: string|number) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/users/' + userId, {
@@ -672,7 +675,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getShop = (shopName) => {
+    getShop = (shopName: string) => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName, {
             headers: {
                 'Content-Type': 'application/json',
@@ -682,7 +685,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateShop = (shopName, data) => {
+    updateShop = (shopName: string, data: any /*TODO create shop data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -700,7 +703,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteShop = (shopName) => {
+    deleteShop = (shopName: string) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName, {
@@ -713,7 +716,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getReports = (options) => {
+    getReports = (options: any) => {
         const query = window.qs.stringify(options);
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/reports?' +  query, {
             headers: {
@@ -724,7 +727,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getReport = (reportId) => {
+    getReport = (reportId: string|number) => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/reports/' +  reportId, {
             headers: {
                 'Content-Type': 'application/json',
@@ -734,7 +737,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteReport = (reportId) => {
+    deleteReport = (reportId: string|number) => {
         const token = localStorage.getItem('token');
         return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/reports/' +  reportId, {
             headers: {
@@ -746,7 +749,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getGuardLevels = (options) => {
+    getGuardLevels = (options: any) => {
         const query = window.qs.stringify(options);
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels?' +  query, {
             headers: {
@@ -757,7 +760,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getGuardLevel = (level) => {
+    getGuardLevel = (level: string|number) => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels/' +  level, {
             headers: {
                 'Content-Type': 'application/json',
@@ -767,7 +770,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setGuardLevel = (data) => {
+    setGuardLevel = (data: any /*TODO create level data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
 
@@ -784,7 +787,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateGuardLevel = (level, data) => {
+    updateGuardLevel = (level: string|number, data: any /*TODO create level data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -802,7 +805,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteGuardLevel = (level) => {
+    deleteGuardLevel = (level: string|number) => {
         const token = localStorage.getItem('token');
         return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/guard-levels/' +  level, {
             headers: {
@@ -814,7 +817,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getBreederLevels = (options) => {
+    getBreederLevels = (options: any) => {
         const query = window.qs.stringify(options);
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels?' +  query, {
             headers: {
@@ -825,7 +828,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getBreederLevel = (level) => {
+    getBreederLevel = (level: string|number) => {
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels/' +  level, {
             headers: {
                 'Content-Type': 'application/json',
@@ -835,7 +838,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    setBreederLevel = (data) => {
+    setBreederLevel = (data: any /*TODO create level data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
 
@@ -852,7 +855,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateBreederLevel = (level, data) => {
+    updateBreederLevel = (level: number|string, data: any /*TODO create level data*/) => {
         const token = localStorage.getItem('token');
         const formData = toFormData(data);
         formData.append('_method', 'PUT');
@@ -870,7 +873,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteBreederLevel = (level) => {
+    deleteBreederLevel = (level: number|string) => {
         const token = localStorage.getItem('token');
         return Axios.delete(process.env.REACT_APP_API_DOMAIN_URL + '/api/breeder-levels/' +  level, {
             headers: {
@@ -883,7 +886,7 @@ class DataService {
     };
 
 
-    getFaqs = (options) => {
+    getFaqs = (options: any) => {
         const query = window.qs.stringify(options);
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/faq?' +  query, {
             headers: {
@@ -894,7 +897,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getFaq = (label) => {
+    getFaq = (label: string) => {
         const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/faq/' + label,
             {
@@ -908,7 +911,7 @@ class DataService {
             .then( (res) => res.data)
     };
 
-    setFaq = (data) => {
+    setFaq = (data: ISetFaqData) => {
         const token = localStorage.getItem('token');
         return Axios.post(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/faq`,
@@ -926,7 +929,7 @@ class DataService {
     };
 
 
-    updateFaq = (label, data) => {
+    updateFaq = (label: string, data: IUpdateFaqData) => {
         const token = localStorage.getItem('token');
         return Axios.put(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/faq/${label}`,
@@ -943,7 +946,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteFaq = (label) => {
+    deleteFaq = (label: string) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -959,7 +962,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getDocuments = (options) => {
+    getDocuments = (options: any) => {
         const query = window.qs.stringify(options);
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/documents?' +  query, {
             headers: {
@@ -970,7 +973,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getDocument = (label) => {
+    getDocument = (label: string) => {
         const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/documents/' + label,
             {
@@ -984,7 +987,7 @@ class DataService {
             .then( (res) => res.data)
     };
 
-    setDocument = (data) => {
+    setDocument = (data: ISetDocumentData) => {
         const token = localStorage.getItem('token');
         return Axios.post(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/documents`,
@@ -1002,7 +1005,7 @@ class DataService {
     };
 
 
-    updateDocument = (label, data) => {
+    updateDocument = (label:string, data: IUpdateDocumentData) => {
         const token = localStorage.getItem('token');
         return Axios.put(
             `${process.env.REACT_APP_API_DOMAIN_URL}/api/documents/${label}`,
@@ -1019,7 +1022,7 @@ class DataService {
             .then((res) => res.data);
     };
 
-    deleteDocument = (label) => {
+    deleteDocument = (label: string) => {
         const token = localStorage.getItem('token');
 
         return Axios.delete(
@@ -1035,7 +1038,16 @@ class DataService {
             .then((res) => res.data);
     };
 
+    //STATS
+    getViewsStats = () => {
+        return Axios.get(`${this.YMByTime}?metrics=ym:s:hits&date1=30daysAgo&date2=today&group=day&id=${process.env.REACT_APP_YM_ACCOUNT}`)
+            .then((res) => res.data);
+    };
 
+    getPageViewsStats = (limit: number = 0) => {
+        return Axios.get(`${this.YMApiUrl}?metrics=ym:pv:pageviews,ym:pv:users&dimensions=ym:pv:URL${limit ? `&limit=${limit}` : ''}&id=${process.env.REACT_APP_YM_ACCOUNT}`)
+            .then((res) => res.data);
+    };
 }
 
 export default DataService

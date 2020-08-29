@@ -110,7 +110,7 @@ class Document extends Component {
                 const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
                 const editorState = EditorState.createWithContent(contentState);
                 actions.setValues({
-                    data,
+                    ...data,
                     description: editorState
                 });
                 actions.setSubmitting(false)

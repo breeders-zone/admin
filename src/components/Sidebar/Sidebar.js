@@ -231,9 +231,9 @@ Sidebar.propTypes = {
         // it will be rendered as simple <a href="...">...</a> tag
         outterLink: PropTypes.string,
         // the image src of the logo
-        imgSrc: PropTypes.string.isRequired,
+        imgSrc: PropTypes.string,
         // the alt for the img
-        imgAlt: PropTypes.string.isRequired
+        imgAlt: PropTypes.string
     })
 };
 

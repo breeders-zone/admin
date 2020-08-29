@@ -1,5 +1,6 @@
 import React, {useState} from "react";
-import {FormGroup, Input, Label} from "reactstrap";
+import {DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, UncontrolledDropdown} from "reactstrap";
+import {CompactPicker} from "react-color";
 
 const LinkComponent = (props) => {
     const {config, onChange, currentState} = props;
@@ -7,37 +8,31 @@ const LinkComponent = (props) => {
     const [linkText, setLinkText] = useState(currentState.selectionText);
     const [link, setLink] = useState('');
     const [isWindow, setWindow] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    const toggle = () => setDropdownOpen(prevState => !prevState);
 
 
     const unlink = () => onChange('unlink');
     return (
         <div className="d-flex align-items-center position-relative">
-            {
-                config.options.map((item) => (
-                    <div
-                        key={item}
-                        onClick={() => {
-                            if (item === 'link') {
-                                setLinkText(currentState.selectionText);
-                                setDropdown(!isDropdown);
-                                return;
-                            }
-                            unlink();
-                        }}
-                        className="btn btn-secondary btn-sm editor-style"
-                    >
+            <UncontrolledDropdown isOpen={dropdownOpen} toggle={toggle}>
+                <DropdownToggle
+                    className="d-flex align-items-center"
+                    href="#"
+                    size="sm"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setLinkText(currentState.selectionText);
+                    }}
+                >
+                    <span>
                         <i
-                            className={`fas fa-lg fa-${item} m-0`}
-                        >
-
-                        </i>
-                    </div>
-                ))
-            }
-
-
-            {
-                isDropdown ?
+                            className="fas fa-lg fa-link m-0"
+                        ></i>
+                    </span>
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-arrow p-0">
                     <div className="editor-dropdown rounded">
                         <FormGroup className="mb-2">
                             <Label className="mb-1" htmlFor="link-text">Текст ссылки:</Label>
@@ -78,6 +73,7 @@ const LinkComponent = (props) => {
                                     setWindow(false);
                                     onChange('link', linkText, link, isWindow ? '_blank' : '_self');
                                     setDropdown(false);
+                                    toggle();
                                 }
                             }}
                             type="button"
@@ -86,8 +82,16 @@ const LinkComponent = (props) => {
                             Дабавить
                         </button>
                     </div>
-                    : null
-            }
+                </DropdownMenu>
+            </UncontrolledDropdown>
+            <div
+                onClick={() => unlink()}
+                className="btn btn-secondary btn-sm editor-style"
+            >
+                <i
+                    className="fas fa-lg fa-unlink m-0"
+                ></i>
+            </div>
             <div className="editor-divider"></div>
         </div>
     )

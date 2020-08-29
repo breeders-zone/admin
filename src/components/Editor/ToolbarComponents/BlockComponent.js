@@ -1,5 +1,5 @@
 import React from "react";
-import {DropdownItem, DropdownMenu, DropdownToggle, Input, UncontrolledDropdown} from "reactstrap";
+import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from "reactstrap";
 
 const BlockComponent = (props) => {
     const {config, currentState, onChange} = props;

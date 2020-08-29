@@ -93,7 +93,7 @@ Chart.elements.Rectangle.prototype.draw = function() {
     startCorner = 0;
   }
 
-  function cornerAt(index) {
+  function cornerAt(index: number) {
     return corners[(startCorner + index) % 4];
   }
 
@@ -115,7 +115,7 @@ Chart.elements.Rectangle.prototype.draw = function() {
     let x = corners[1][0];
     let y = corners[1][1];
     // eslint-disable-next-line
-    var radius = cornerRadius;
+    let radius: number = cornerRadius;
 
     // Fix radius being too large
     if (radius > height / 2) {
@@ -175,11 +175,63 @@ var colors = {
 };
 
 // Methods
+interface IChartOptions {
+  [key: string]: any,
+  defaults: {
+    global: {
+      defaultFontFamily: string;
+      layout: {
+        padding: number
+      };
+      defaultFontSize: number;
+      defaultColor: string;
+      legend: {
+        display: boolean;
+        position: string;
+        labels: {
+          padding: number;
+          usePointStyle: boolean }
+      };
+      responsive: boolean;
+      elements: {
+        arc: {
+          backgroundColor: string;
+          borderColor: string;
+          borderWidth: number
+        };
+        line: {
+          tension: number;
+          borderColor: string;
+          backgroundColor: string;
+          borderWidth: number;
+          borderCapStyle: string
+        };
+        rectangle: {
+          backgroundColor: string
+        };
+        point: {
+          backgroundColor: string;
+          radius: number
+        }
+      };
+      defaultFontColor: string;
+      maintainAspectRatio: boolean;
+      tooltips: {
+        mode: string;
+        intersect: boolean;
+        enabled: boolean
+      }
+    };
+    doughnut: {
+      legendCallback: (chart: { data: any }) => string; cutoutPercentage: number
+    }
+  }
+}
 
 // Chart.js global options
-function chartOptions() {
+function chartOptions():IChartOptions  {
   // Options
-  var options = {
+  let options: IChartOptions = {
     defaults: {
       global: {
         responsive: true,
@@ -228,11 +280,13 @@ function chartOptions() {
       },
       doughnut: {
         cutoutPercentage: 83,
-        legendCallback: function(chart) {
+        legendCallback: function(chart: {
+          data: any
+        }) {
           var data = chart.data;
           var content = "";
 
-          data.labels.forEach(function(label, index) {
+          data.labels.forEach(function(label: string, index: number) {
             var bgColor = data.datasets[0].backgroundColor[index];
 
             content += '<span class="chart-legend-item">';
@@ -267,7 +321,7 @@ function chartOptions() {
     ticks: {
       beginAtZero: true,
       padding: 10,
-      callback: function(value) {
+      callback: function(value: number) {
         if (!(value % 10)) {
           return value;
         }
@@ -291,8 +345,8 @@ function chartOptions() {
 }
 
 // Parse global options
-function parseOptions(parent, options) {
-  for (var item in options) {
+function parseOptions(parent: typeof Chart, options: IChartOptions) {
+  for (let item in options) {
     if (typeof options[item] !== "object") {
       parent[item] = options[item];
     } else {
@@ -301,8 +355,7 @@ function parseOptions(parent, options) {
   }
 }
 
-// Example 1 of Chart inside src/views/Index.js (Sales value - Card)
-let chartExample1 = {
+const chartLine = {
   options: {
     scales: {
       yAxes: [
@@ -312,9 +365,9 @@ let chartExample1 = {
             zeroLineColor: colors.gray[900]
           },
           ticks: {
-            callback: function(value) {
-              if (!(value % 10)) {
-                return "$" + value + "k";
+            callback: function(value: number) {
+              if (!(value % 5)) {
+                return value;
               }
             }
           }
@@ -323,7 +376,7 @@ let chartExample1 = {
     },
     tooltips: {
       callbacks: {
-        label: function(item, data) {
+        label: function(item: any, data: any) {
           var label = data.datasets[item.datasetIndex].label || "";
           var yLabel = item.yLabel;
           var content = "";
@@ -338,38 +391,25 @@ let chartExample1 = {
       }
     }
   },
-  data1: canvas => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 80, 80]
-        }
-      ]
-    };
+  data: {
+    labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [
+      {
+        label: "Performance",
+        data: [0, 20, 10, 30, 15, 40, 20, 80, 80]
+      }
+    ]
   },
-  data2: canvas => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 5, 25, 10, 30, 15, 40, 40]
-        }
-      ]
-    };
-  }
 };
 
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+// Example 2 of Chart inside src/views/Index.ts (Total orders - Card)
 let chartExample2 = {
   options: {
     scales: {
       yAxes: [
         {
           ticks: {
-            callback: function(value) {
+            callback: function(value: number) {
               if (!(value % 10)) {
                 //return '$' + value + 'k'
                 return value;
@@ -381,7 +421,7 @@ let chartExample2 = {
     },
     tooltips: {
       callbacks: {
-        label: function(item, data) {
+        label: function(item: any, data: any) {
           var label = data.datasets[item.datasetIndex].label || "";
           var yLabel = item.yLabel;
           var content = "";
@@ -406,9 +446,9 @@ let chartExample2 = {
   }
 };
 
-module.exports = {
-  chartOptions, // used inside src/views/Index.js
-  parseOptions, // used inside src/views/Index.js
-  chartExample1, // used inside src/views/Index.js
-  chartExample2 // used inside src/views/Index.js
+export {
+  chartOptions, // used inside src/views/Index.ts
+  parseOptions, // used inside src/views/Index.ts
+  chartLine, // used inside src/views/Index.ts
+  chartExample2 // used inside src/views/Index.ts
 };
