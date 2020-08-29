@@ -12,9 +12,17 @@ import HistoryComponent from "./ToolbarComponents/HistoryComponent";
 import LinkComponent from "./ToolbarComponents/LinkComponent";
 import FontFamilyComponent from "./ToolbarComponents/FontFamilyComponent";
 import ColorPickerComponent from "./ToolbarComponents/ColorPickerComponent";
+import {stateFromHTML} from "draft-js-import-html";
 
 const Editor = (props) => {
     const { state = EditorState.createEmpty(), onChange } = props;
+
+    const handlePastedText = (text, html) => {
+        const blockMap = stateFromHTML(html || text).blockMap;
+        const newState = Modifier.replaceWithFragment(state.getCurrentContent(), state.getSelection(), blockMap);
+        onChange(EditorState.push(state, newState, 'insert-fragment'));
+        return true
+    };
 
     return (
         <div className="editor form-control form-control-alternative text-dark">
@@ -24,6 +32,7 @@ const Editor = (props) => {
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
                 onEditorStateChange={onChange}
+                handlePastedText={handlePastedText}
                 toolbar={{
                     options: [
                         'inline',
