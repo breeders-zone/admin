@@ -20,7 +20,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 // reactstrap components
 import { Container, Row } from "reactstrap";
 
-import routes from "routes.js";
+import routes from "../routes.js";
 import {isLogin} from "../utils";
 import Helmet from "react-helmet";
 import AuthNavbar from "../components/Navbars/AuthNavbar";
