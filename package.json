@@ -43,6 +43,19 @@
   ],
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.13.1",
+    "@types/chart.js": "^2.9.24",
+    "@types/classnames": "^2.2.10",
+    "@types/jest": "^26.0.10",
+    "@types/moment": "^2.13.0",
+    "@types/node": "^14.6.0",
+    "@types/qs": "^6.9.4",
+    "@types/react-color": "^3.0.4",
+    "@types/react-custom-scrollbars": "^4.0.7",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-draft-wysiwyg": "^1.13.0",
+    "@types/react-helmet": "^6.1.0",
+    "@types/react-redux": "^7.1.9",
+    "@types/reactstrap": "^8.5.1",
     "awesome-debounce-promise": "^2.1.0",
     "axios": "^0.19.2",
     "chart.js": "2.9.3",
@@ -59,6 +72,7 @@
     "qs": "^6.9.4",
     "react": "16.13.1",
     "react-chartjs-2": "2.9.0",
+    "react-color": "^2.18.1",
     "react-copy-to-clipboard": "5.0.2",
     "react-custom-scrollbars": "^4.2.1",
     "react-datetime": "2.16.3",
@@ -80,11 +94,11 @@
   "devDependencies": {
     "@types/googlemaps": "3.39.9",
     "@types/markerclustererplus": "2.1.33",
-    "@types/react": "16.9.42",
+    "@types/react": "^16.9.42",
     "eslint-plugin-flowtype": "5.2.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "memoize-one": "^5.1.1",
-    "typescript": "3.9.6"
+    "typescript": "^3.9.6"
   }
 }
