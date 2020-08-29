@@ -15,10 +15,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "views/Index.js";
+import Index from "./views/Index";
 import Profile from "./views/Profile";
 import Login from "./views/Login";
-import Icons from "views/examples/Icons.js";
 import Products from "./views/Products";
 import Product from "./views/Product";
 import Divorces from "./views/Divorces";
@@ -252,7 +251,7 @@ var routes = [
         icon: "ni ni-bullet-list-67 text-blue",
         component: Levels,
         layout: "/admin"
-    },  
+    },
     {
         path: "/user-profile",
         component: Profile,

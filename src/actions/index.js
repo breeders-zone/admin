@@ -24,3 +24,4 @@ export * from "./faqs";
 export * from "./faq";
 export * from "./documents";
 export * from "./document";
+export * from "./stats";
