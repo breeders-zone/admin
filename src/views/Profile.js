@@ -31,7 +31,7 @@ import {
     Col, Spinner, Alert
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader";
+import UserHeader from "../components/Headers/UserHeader";
 import {ErrorMessage, Formik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
