@@ -181,3 +181,11 @@ $border-radius: 5px;
 .table-responsive {
   min-height: 300px;
 }
+
+.document {
+  line-height: 1.5 !important;
+
+  p {
+    margin: 0;
+  }
+}
