@@ -4,13 +4,13 @@ import Error404 from "./Error404";
 import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner} from "reactstrap";
 import {Formik} from "formik";
 import {connect} from "react-redux";
-import {EditorState, ContentState, convertToRaw } from "draft-js";
-import htmlToDraft from 'html-to-draftjs';
-import draftToHtml from 'draftjs-to-html';
+import {EditorState} from "draft-js";
 import {withDataService} from "../components/hoc";
 import {clearFaq, setFaq, setFaqRequest} from "../actions";
 import Editor from "../components/Editor";
 import Helmet from "react-helmet";
+import {stateFromHTML} from "draft-js-import-html";
+import {stateToHTML} from "draft-js-export-html";
 
 class Faq extends Component {
     state = {
@@ -56,11 +56,11 @@ class Faq extends Component {
             setFaqData,
             updateFaq,
             getFaq,
+            history,
             match: {params, path}
         } = this.props;
 
-        const rawContentState = convertToRaw(data.description.getCurrentContent());
-        const description = draftToHtml(rawContentState);
+        const description = stateToHTML(data.description.getCurrentContent());
 
         if (faq.label === data.label) {
             delete  data.label;
@@ -102,18 +102,18 @@ class Faq extends Component {
         })
             .then( async ({message}) => {
                 this.setState({isEdit: false});
-                const data = await getFaq(params.label);
-                setFaq(data);
+                const faq = await getFaq(data.label ? data.label : params.label);
+                setFaq(faq);
                 actions.setStatus(message);
-                const blocksFromHtml = htmlToDraft(data.description ? data.description : '');
-                const { contentBlocks, entityMap } = blocksFromHtml;
-                const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-                const editorState = EditorState.createWithContent(contentState);
+                const editorState = EditorState.createWithContent((stateFromHTML(document.description ? document.description : '')));
                 actions.setValues({
-                    data,
+                    faq,
                     description: editorState
                 });
-                actions.setSubmitting(false)
+                actions.setSubmitting(false);
+                if (data.label) {
+                    history.push(`/admin/documents/${data.label}`, {message})
+                }
             })
             .catch( (error) => {
                 if (error.response.status === 422) {
@@ -132,14 +132,12 @@ class Faq extends Component {
     render() {
         const {
             faq,
+            location,
             match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
 
-        const blocksFromHtml = htmlToDraft(faq.description ? faq.description : '');
-        const { contentBlocks, entityMap } = blocksFromHtml;
-        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-        const editorState = EditorState.createWithContent(contentState);
+        const editorState = EditorState.createWithContent((stateFromHTML(document.description ? document.description : '')));
 
         if (faq.request)
             return (
@@ -217,9 +215,9 @@ class Faq extends Component {
                                 return (
                                     <Form onSubmit={handleSubmit}>
                                         {
-                                            status ?
+                                            status || (location.state && location.state.message) ?
                                                 <Alert color="success" className="mb-3">
-                                                    {status}
+                                                    {status ? status : location.state.message}
                                                 </Alert>
                                                 : null
                                         }
@@ -237,7 +235,10 @@ class Faq extends Component {
                                                                             className="btn btn-primary"
                                                                             onClick={() => {
                                                                                 if (isEdit) {
-                                                                                    setValues(faq);
+                                                                                    setValues({
+                                                                                        ...faq,
+                                                                                        description: editorState
+                                                                                    });
                                                                                 }
                                                                                 this.setState({isEdit: !isEdit})
                                                                             }}
@@ -329,7 +330,7 @@ class Faq extends Component {
                                                                             <Editor state={values.description} onChange={(state) => setFieldValue('description', state)}/>
                                                                             : (
                                                                                 <Card className="w-100">
-                                                                                    <CardBody>
+                                                                                    <CardBody className="document">
                                                                                         <div dangerouslySetInnerHTML={ { __html: faq.description } }></div>
                                                                                     </CardBody>
                                                                                 </Card>
