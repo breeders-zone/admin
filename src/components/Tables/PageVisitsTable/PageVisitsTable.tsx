@@ -49,8 +49,8 @@ const PageVisitsTable = (props: IPageVisitsTableProps) => {
                         </thead>
                         <tbody>
                         {
-                            visits.map((item) => (
-                                <tr>
+                            visits.map((item, idx) => (
+                                <tr key={idx}>
                                     <th scope="row">{item.dimensions[0].name}</th>
                                     <td>{item.metrics[0]}</td>
                                     <td>{item.metrics[1]}</td>
