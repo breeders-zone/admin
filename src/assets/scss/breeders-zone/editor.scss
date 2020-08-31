@@ -3,6 +3,116 @@
     height: auto;
     padding: 0;
 
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+        margin-bottom: $headings-margin-bottom !important;
+        font-family: $headings-font-family !important;
+        font-weight: $headings-font-weight !important;
+        line-height: $headings-line-height !important;
+        color: $headings-color !important;
+
+        .public-DraftStyleDefault-block {
+            margin: 0 !important;
+            margin-bottom: $headings-margin-bottom !important;
+            font-family: $headings-font-family !important;
+            font-weight: $headings-font-weight !important;
+            line-height: $headings-line-height !important;
+            font-size: inherit;
+        }
+    }
+
+    h1, .h1 { font-size: $h1-font-size !important; }
+    h2, .h2 { font-size: $h2-font-size !important; }
+    h3, .h3 { font-size: $h3-font-size !important; }
+    h4, .h4 { font-size: $h4-font-size !important; }
+    h5, .h5 { font-size: $h5-font-size !important; }
+    h6, .h6 { font-size: $h6-font-size !important; }
+
+    .lead {
+        font-size: $lead-font-size;
+        font-weight: $lead-font-weight;
+    }
+
+    p {
+        font-weight: $lead-font-weight;
+        font-size: $lead-font-size;
+        margin-top: 0;
+        margin-bottom: 1rem;
+    }
+
+    // Type display classes
+    .display-1 {
+        font-size: $display1-size;
+        font-weight: $display1-weight;
+        line-height: $display-line-height;
+    }
+    .display-2 {
+        font-size: $display2-size;
+        font-weight: $display2-weight;
+        line-height: $display-line-height;
+    }
+    .display-3 {
+        font-size: $display3-size;
+        font-weight: $display3-weight;
+        line-height: $display-line-height;
+    }
+    .display-4 {
+        font-size: $display4-size;
+        font-weight: $display4-weight;
+        line-height: $display-line-height;
+    }
+
+
+    //
+    // Horizontal rules
+    //
+
+    hr {
+        margin-top: $hr-margin-y;
+        margin-bottom: $hr-margin-y;
+        border: 0;
+        border-top: $hr-border-width solid $hr-border-color;
+    }
+
+
+    //
+    // Emphasis
+    //
+
+    small,
+    .small {
+        font-size: $small-font-size;
+        font-weight: $font-weight-normal;
+    }
+
+    mark,
+    .mark {
+        padding: $mark-padding;
+        background-color: $mark-bg;
+    }
+
+    // Builds on `abbr`
+    .initialism {
+        font-size: 90%;
+        text-transform: uppercase;
+    }
+
+    // Blockquotes
+    .blockquote {
+        margin-bottom: $spacer;
+        font-size: $blockquote-font-size;
+    }
+
+    .blockquote-footer {
+        display: block;
+        font-size: 80%; // back to default font-size
+        color: $blockquote-small-color;
+
+        &::before {
+            content: "\2014 \00A0"; // em dash, nbsp
+        }
+    }
+
     .DraftEditor {
         &-root {
             width: 100%;
@@ -32,6 +142,35 @@
 
     .public-DraftStyleDefault-block {
         margin: 0 !important;
+        font-weight: $lead-font-weight;
+        font-size: 1rem;
+    }
+
+    .public-DraftStyleDefault-ul,
+    .public-DraftStyleDefault-ol,
+    .public-DraftStyleDefault-dl {
+        margin-top: 0 !important;
+        margin-bottom: 1rem;
+    }
+
+    .public-DraftStyleDefault-ul {
+        display: block;
+        list-style-type: disc;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 40px;
+    }
+
+    .public-DraftStyleDefault-ol {
+        display: block;
+        list-style-type: decimal;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 40px;
     }
 
     &-editor .public-DraftEditorPlaceholder-root,

@@ -4,13 +4,13 @@ import Error404 from "./Error404";
 import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner} from "reactstrap";
 import {Formik} from "formik";
 import {connect} from "react-redux";
-import {EditorState, ContentState, convertToRaw } from "draft-js";
-import htmlToDraft from 'html-to-draftjs';
-import draftToHtml from 'draftjs-to-html';
+import {EditorState} from "draft-js";
 import {withDataService} from "../components/hoc";
 import {clearDocument, setDocument, setDocumentRequest} from "../actions";
 import Editor from "../components/Editor";
 import Helmet from "react-helmet";
+import {stateToHTML} from 'draft-js-export-html';
+import {stateFromHTML} from "draft-js-import-html";
 
 class Document extends Component {
     state = {
@@ -56,11 +56,11 @@ class Document extends Component {
             setDocumentData,
             updateDocument,
             getDocument,
+            history,
             match: {params, path}
         } = this.props;
 
-        const rawContentState = convertToRaw(data.description.getCurrentContent());
-        const description = draftToHtml(rawContentState);
+        const description = stateToHTML(data.description.getCurrentContent());
 
         if (document.label === data.label) {
             delete  data.label;
@@ -102,18 +102,18 @@ class Document extends Component {
         })
             .then( async ({message}) => {
                 this.setState({isEdit: false});
-                const data = await getDocument(params.label);
-                setDocument(data);
+                const document = await getDocument(data.label ? data.label : params.label);
+                setDocument(document);
                 actions.setStatus(message);
-                const blocksFromHtml = htmlToDraft(data.description ? data.description : '');
-                const { contentBlocks, entityMap } = blocksFromHtml;
-                const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-                const editorState = EditorState.createWithContent(contentState);
+                const editorState = EditorState.createWithContent((stateFromHTML(document.description ? document.description : '')));
                 actions.setValues({
-                    ...data,
+                    ...document,
                     description: editorState
                 });
-                actions.setSubmitting(false)
+                actions.setSubmitting(false);
+                if (data.label) {
+                    history.push(`/admin/documents/${data.label}`, {message})
+                }
             })
             .catch( (error) => {
                 if (error.response.status === 422) {
@@ -132,14 +132,12 @@ class Document extends Component {
     render() {
         const {
             document,
+            location,
             match: {path}
         } = this.props;
         const {isEdit, is404} = this.state;
 
-        const blocksFromHtml = htmlToDraft(document.description ? document.description : '');
-        const { contentBlocks, entityMap } = blocksFromHtml;
-        const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);
-        const editorState = EditorState.createWithContent(contentState);
+        const editorState = EditorState.createWithContent((stateFromHTML(document.description ? document.description : '')));
 
         if (document.request)
             return (
@@ -221,9 +219,9 @@ class Document extends Component {
                                 return (
                                     <Form onSubmit={handleSubmit}>
                                         {
-                                            status ?
+                                            status || (location.state && location.state.message) ?
                                                 <Alert color="success" className="mb-3">
-                                                    {status}
+                                                    {status ? status : location.state.message}
                                                 </Alert>
                                                 : null
                                         }
@@ -241,7 +239,10 @@ class Document extends Component {
                                                                             className="btn btn-primary"
                                                                             onClick={() => {
                                                                                 if (isEdit) {
-                                                                                    setValues(document);
+                                                                                    setValues({
+                                                                                        ...document,
+                                                                                        description: editorState
+                                                                                    });
                                                                                 }
                                                                                 this.setState({isEdit: !isEdit})
                                                                             }}
@@ -333,7 +334,7 @@ class Document extends Component {
                                                                             <Editor state={values.description} onChange={(state) => setFieldValue('description', state)}/>
                                                                             : (
                                                                                 <Card className="w-100">
-                                                                                    <CardBody>
+                                                                                    <CardBody className="document">
                                                                                         <div dangerouslySetInnerHTML={ { __html: document.description } }></div>
                                                                                     </CardBody>
                                                                                 </Card>

@@ -28,7 +28,7 @@ const Editor = (props) => {
         <div className="editor form-control form-control-alternative text-dark">
             <DraftEditor
                 editorState={state}
-                toolbarClassName="editor-panel"
+                toolbarClassName="editor-panel sticky-top"
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
                 onEditorStateChange={onChange}
