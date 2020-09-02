@@ -184,6 +184,7 @@ class Faq extends Component {
                     <Formik
                         initialValues={{
                             ...faq,
+                            sort: faq.sort || '',
                             description: editorState
                         }}
                         onSubmit={this.onSubmit}
@@ -252,7 +253,7 @@ class Faq extends Component {
                                                     </CardHeader>
                                                     <CardBody>
                                                         <Row className="mb-3">
-                                                            <Col xs={12} md={4}>
+                                                            <Col xs={12} md={6}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Название:</h3>
                                                                     {
@@ -268,7 +269,7 @@ class Faq extends Component {
                                                                     }
                                                                 </div>
                                                             </Col>
-                                                            <Col xs={12} md={4}>
+                                                            <Col xs={12} md={6}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Адрес:</h3>
                                                                     {
@@ -285,7 +286,26 @@ class Faq extends Component {
                                                                     }
                                                                 </div>
                                                             </Col>
-                                                            <Col xs={12} md={4}>
+                                                        </Row>
+                                                        <Row className="mb-3">
+                                                            <Col xs={12} md={6}>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3">Сортировка:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            <Input
+                                                                                className="form-control-alternative"
+                                                                                name="sort"
+                                                                                placeholder="Желательно указывать 100, 200 и тд (не обязательно)"
+                                                                                onChange={handleChange}
+                                                                                onBlur={handleBlur}
+                                                                                value={values.sort}
+                                                                            />
+                                                                            : <p>{faq.sort}</p>
+                                                                    }
+                                                                </div>
+                                                            </Col>
+                                                            <Col xs={12} md={6}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Есть на главной:</h3>
                                                                     {

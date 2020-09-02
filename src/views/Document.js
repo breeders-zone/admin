@@ -188,6 +188,7 @@ class Document extends Component {
                     <Formik
                         initialValues={{
                             ...document,
+                            sort: document.sort || '',
                             description: editorState
                         }}
                         onSubmit={this.onSubmit}
@@ -256,7 +257,7 @@ class Document extends Component {
                                                     </CardHeader>
                                                     <CardBody>
                                                         <Row className="mb-3">
-                                                            <Col xs={12} md={4}>
+                                                            <Col xs={12} md={6}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Название:</h3>
                                                                     {
@@ -272,7 +273,7 @@ class Document extends Component {
                                                                     }
                                                                 </div>
                                                             </Col>
-                                                            <Col xs={12} md={4}>
+                                                            <Col xs={12} md={6}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Адрес:</h3>
                                                                     {
@@ -289,7 +290,26 @@ class Document extends Component {
                                                                     }
                                                                 </div>
                                                             </Col>
-                                                            <Col xs={12} md={4}>
+                                                        </Row>
+                                                        <Row className="mb-3">
+                                                            <Col xs={12} md={6}>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3">Сортировка:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            <Input
+                                                                                className="form-control-alternative"
+                                                                                name="sort"
+                                                                                placeholder="Желательно указывать 100, 200 и тд (не обязательно)"
+                                                                                onChange={handleChange}
+                                                                                onBlur={handleBlur}
+                                                                                value={values.sort}
+                                                                            />
+                                                                            : <p>{document.sort}</p>
+                                                                    }
+                                                                </div>
+                                                            </Col>
+                                                            <Col xs={12} md={6}>
                                                                 <div className="d-flex">
                                                                     <h3 className="mr-3">Соглашение при регистрации:</h3>
                                                                     {
