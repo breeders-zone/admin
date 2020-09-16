@@ -226,7 +226,7 @@ class Locality extends Component {
                                                                         </button>
                                                                     </React.Fragment>
                                                                 )
-                                                                :  <h3 className="m-0">Добавить подкатегорию</h3>
+                                                                :  <h3 className="m-0">Добавить локалитет</h3>
                                                         }
                                                     </CardHeader>
                                                     <CardBody>
