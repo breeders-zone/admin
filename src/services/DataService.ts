@@ -1,6 +1,7 @@
 import Axios from "axios";
 import {toFormData} from "../utils";
 import {IAdminData, ILoginData, ISetDocumentData, ISetFaqData, IUpdateDocumentData, IUpdateFaqData} from "./types";
+import {ITraitGroup} from "../reducers/traits/types";
 
 class DataService {
     YMApiUrl = 'https://api-metrika.yandex.net/stat/v1/data';
@@ -408,6 +409,84 @@ class DataService {
         )
             .then((res) => res.data);
     };
+
+    getTraitsGroups = (options = {}) => {
+        const query = window.qs.stringify(options);
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/traits-groups?' + query, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            }
+        })
+            .then( (res) => res.data);
+    };
+
+    getTraitGroup = (traitId: string|number): Promise<ITraitGroup> => {
+        return Axios.get(
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits-groups/${traitId}`,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Accept: 'application/json',
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+    setTraitGroup = (data: any /*TODO create trait data*/): Promise<{
+        message: string,
+        data: ITraitGroup
+    }> => {
+        const token = localStorage.getItem('token');
+
+        return Axios.post(
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits-groups`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+    updateTraitGroup = (traitId: string|number, data: any /*TODO create trait data*/) => {
+        const token = localStorage.getItem('token');
+
+        return Axios.put(
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits-groups/${traitId}`,
+            data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
+    deleteTraitGroup = (traitId: string|number) => {
+        const token = localStorage.getItem('token');
+
+        return Axios.delete(
+            `${process.env.REACT_APP_API_DOMAIN_URL}/api/traits-groups/${traitId}`,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Accept: 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+            .then((res) => res.data);
+    };
+
 
     getTraits = (options = {}) => {
         const query = window.qs.stringify(options);
