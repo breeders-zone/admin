@@ -21,6 +21,13 @@ $border-radius: 5px;
   white-space: nowrap!important;
 }
 
+
+.cursor {
+  &-pointer {
+    cursor: pointer !important;
+  }
+}
+
 .morph {
   &s{
     display: flex;

@@ -13,7 +13,7 @@ import subcategory from "./subcategory";
 import locality from "./locality";
 import genes from "./genes";
 import gene from "./gene";
-import traits from "./traits";
+import traits from "./traits/traits";
 import trait from "./trait";
 import users from "./users";
 import user from "./user";
@@ -28,8 +28,11 @@ import documents from "./documents";
 import documentReducer from "./document";
 import initialState from "./initialState";
 import stats from "./stats/stats";
+import {History} from "history";
+import {IStatsState} from "./stats/types";
+import {ITraitsState, ITraitState} from "./traits/types";
 
-const createRootReducer = (history) => combineReducers({
+const createRootReducer = (history: History) => combineReducers({
     stats,
     header,
     kind,
@@ -60,8 +63,15 @@ const createRootReducer = (history) => combineReducers({
     router: connectRouter(history)
 });
 
+export type State = {
+    stats: IStatsState,
+    traits: ITraitsState,
+    trait: ITraitState
+};
+
 export default createRootReducer;
 
 export {
-    initialState
+    initialState,
+
 }
