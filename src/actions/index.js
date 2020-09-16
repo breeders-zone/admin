@@ -11,7 +11,7 @@ export * from "./subcategory";
 export * from "./locality";
 export * from "./genes";
 export * from "./gene";
-export * from "./traits";
+export * from "./traits/traits";
 export * from "./trait";
 export * from "./users";
 export * from "./user";
