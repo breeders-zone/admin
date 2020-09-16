@@ -30,7 +30,7 @@ import Localities from "./views/Localities";
 import Locality from "./views/Locality";
 import Genes from "./views/Genes";
 import Gene from "./views/Gene";
-import Traits from "./views/Traits";
+import Traits from "./views/Traits/Traits";
 import Trait from "./views/Trait";
 import Users from "./views/Users";
 import User from "./views/User";

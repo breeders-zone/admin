@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {withDataService} from "../components/hoc";
 import {clearTrait, setTrait, setTraitRequest} from "../actions";
 import Helmet from "react-helmet";
+import {setTraitsGroups} from "../actions";
 
 class Trait extends Component {
     state = {
@@ -19,17 +20,33 @@ class Trait extends Component {
             getTrait,
             setTrait,
             setTraitRequest,
+            getTraitsGroups,
+            setTraitsGroups,
+            traitsGroups = [],
             match: {params, path}
         } = this.props;
 
         if (path === '/admin/traits/add') {
             this.setState({isEdit: true});
-            return setTraitRequest(false);
+            if (traitsGroups.length === 0) {
+                getTraitsGroups()
+                    .then((data) => {
+                        setTraitsGroups(data);
+                        setTraitRequest(false)
+                    });
+                return;
+            }
+            setTraitRequest(false);
+            return;
         }
 
         setTraitRequest(true);
         getTrait(params.id)
-            .then( (data) => {
+            .then( async (data) => {
+                if (traitsGroups.length === 0) {
+                    const traitsGroupsData = await getTraitsGroups();
+                    setTraitsGroups(traitsGroupsData);
+                }
                 setTrait(data);
                 setTraitRequest(false);
             })
@@ -106,9 +123,13 @@ class Trait extends Component {
     render() {
         const {
             trait,
-            match: {path}
+            traitsGroups,
+            match: {path},
+            location
         } = this.props;
         const {isEdit, is404} = this.state;
+
+        const trait_group = trait.trait_group_id ? trait.trait_group_id : 'null';
 
         if (trait.request)
             return (
@@ -154,7 +175,8 @@ class Trait extends Component {
                 <Container className="mt--7" fluid>
                     <Formik
                         initialValues={{
-                            ...trait
+                            ...trait,
+                            trait_group_id: location.state && location.state.trait_group ? location.state.trait_group : trait_group
                         }}
                         onSubmit={this.onSubmit}
                     >
@@ -257,6 +279,30 @@ class Trait extends Component {
                                                                 </div>
                                                             </Col>
                                                         </Row>
+                                                        <Row className="mb-3 justify-content-end">
+                                                            <Col xs={12} md={6}>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3">Раздел:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            <Input
+                                                                                className="form-control-alternative"
+                                                                                name="trait_group_id"
+                                                                                type="select"
+                                                                                onChange={handleChange}
+                                                                                onBlur={handleBlur}
+                                                                                value={values.trait_group_id}
+                                                                            >
+                                                                                <option value="null">Нет раздела</option>
+                                                                                {
+                                                                                    traitsGroups.map((item) => <option value={item.id}>{item.title} ({item.type})</option>)
+                                                                                }
+                                                                            </Input>
+                                                                            : <p>{trait.trait_group ? trait.trait_group.title : 'Нет'}</p>
+                                                                    }
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
                                                         {
                                                             isEdit ?
                                                                 <Row className="justify-content-center">
@@ -286,16 +332,18 @@ class Trait extends Component {
     }
 }
 
-const mapMethodsToProps = ({getTrait, updateTrait, setTrait: setTraitData}) => ({
+const mapMethodsToProps = ({getTrait, updateTrait, setTrait: setTraitData, getTraitsGroups}) => ({
     getTrait,
     updateTrait,
-    setTraitData
+    setTraitData,
+    getTraitsGroups
 });
 
-const mapStateToProps = ({trait}) => ({
-    trait
+const mapStateToProps = ({trait, traits: {traitsGroups}}) => ({
+    trait,
+    traitsGroups
 });
 
-export default connect(mapStateToProps, {setTrait, setTraitRequest, clearTrait})(
+export default connect(mapStateToProps, {setTrait, setTraitRequest, clearTrait, setTraitsGroups})(
     withDataService(Trait, mapMethodsToProps)
 )
