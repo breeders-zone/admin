@@ -31,17 +31,12 @@ class Products extends Component {
     componentDidMount() {
         const {router: {location: {query}}, allKinds} = this.props;
         this.updateProducts();
-        if (query.kind && allKinds.length > 0) {
-            const kind = allKinds.find((item) => item.title_eng.toLowerCase() === query.kind.replace('-', ' '))
-            this.selectKind(kind)
-        }
 
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.location.search !== this.props.location.search) {
             this.updateProducts();
-
         }
 
         if (prevProps.allKinds !== this.props.allKinds) {

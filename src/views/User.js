@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Header from "../components/Headers/Header";
-import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner, Table} from "reactstrap";
+import {Alert, Card, CardBody, CardHeader, Col, Container, Form, Input, Row, Spinner, Table, Modal, ModalBody, ModalHeader, ModalFooter} from "reactstrap";
 import {Formik} from "formik";
 import Dropzone from "react-dropzone";
 import {withDataService} from "../components/hoc";
@@ -8,13 +8,16 @@ import {connect} from "react-redux";
 import {addUserKind, clearUser, deleteUserKind, setUser, setUserKind, setUserRequest} from "../actions";
 import Error404 from "./Error404";
 import Helmet from "react-helmet";
+import ImageCrop from "../components/ImageCrop";
 
 class User extends Component {
     state = {
         profileRequest: false,
         isProfileEdit: false,
         isShopEdit: false,
-        is404: false
+        is404: false,
+        changeLogo: false,
+        logoRequest: false
     };
 
     componentDidMount() {
@@ -87,14 +90,7 @@ class User extends Component {
             match: {params}
         } = this.props;
 
-        const newData = {
-            ...data,
-            logo: data.acceptedFileLogo
-        };
-
-        delete newData.acceptedFileLogo;
-
-        updateShop(user.company_name, newData)
+        updateShop(user.company_name, data)
             .then(async ({success}) => {
                 const data = await getUser(params.id);
                 setUser(data);
@@ -109,6 +105,27 @@ class User extends Component {
             });
     };
 
+    onCompleteLogoCrop = (crop) => {
+        const {
+            updateShop,
+            getUser,
+            user,
+            setUser,
+            match: {params}
+        } = this.props;
+
+        this.setState({logoRequest: true});
+        updateShop(user.company_name, {logo: crop}, true)
+            .then(async ({success}) => {
+                const data = await getUser(params.id);
+                setUser(data);
+                this.setState({
+                    logoRequest: false,
+                    changeLogo: false
+                });
+            });
+    };
+
     render() {
         const {
             user,
@@ -119,7 +136,7 @@ class User extends Component {
             setUser,
             match: {path}
         } = this.props;
-        const {isShopEdit, isProfileEdit, is404, profileRequest} = this.state;
+        const {isShopEdit, isProfileEdit, is404, profileRequest, changeLogo, logoRequest} = this.state;
 
         if (user.request || allKinds.length === 0) {
             return (
@@ -343,8 +360,8 @@ class User extends Component {
                                                                                         opacity: 0
                                                                                     }}
                                                                                 />
-                                                                                <label htmlFor="is_breeder_true" className={values.is_breeder  === 1 || values.is_breeder === '1' ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
-                                                                                <label htmlFor="is_breeder_false" className={values.is_breeder  === 0 || values.is_breeder === '0' ? 'font-weight-bold' : ''}>Нет</label>
+                                                                                <label htmlFor="is_breeder_true" className={values.is_breeder || values.is_breeder === '1' ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
+                                                                                <label htmlFor="is_breeder_false" className={!values.is_breeder || values.is_breeder === '0' ? 'font-weight-bold' : ''}>Нет</label>
                                                                             </React.Fragment>
                                                                         )
                                                                         : <p className="m-0">{user.is_breeder ? 'Да' : 'Нет'}</p>
@@ -382,8 +399,8 @@ class User extends Component {
                                                                                         opacity: 0
                                                                                     }}
                                                                                 />
-                                                                                <label htmlFor="active_true" className={values.active  === 1 || values.active === '1' ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
-                                                                                <label htmlFor="active_false" className={values.active  === 0 || values.active === '0' ? 'font-weight-bold' : ''}>Нет</label>
+                                                                                <label htmlFor="active_true" className={values.active || values.active === '1' ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
+                                                                                <label htmlFor="active_false" className={!values.active || values.active === '0' ? 'font-weight-bold' : ''}>Нет</label>
                                                                             </React.Fragment>
                                                                         )
                                                                         : <p className="m-0">{user.active ? 'Да' : 'Нет'}</p>
@@ -421,8 +438,8 @@ class User extends Component {
                                                                                         opacity: 0
                                                                                     }}
                                                                                 />
-                                                                                <label htmlFor="is_guard_true" className={values.is_guard  === 1 || values.is_guard === '1' ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
-                                                                                <label htmlFor="is_guard_false" className={values.is_guard === 0 || values.is_guard === '0' ? 'font-weight-bold' : ''}>Нет</label>
+                                                                                <label htmlFor="is_guard_true" className={values.is_guard || values.is_guard === '1' ? 'mr-2 font-weight-bold' : 'mr-2'}>Да</label>
+                                                                                <label htmlFor="is_guard_false" className={!values.is_guard || values.is_guard === '0' ? 'font-weight-bold' : ''}>Нет</label>
                                                                             </React.Fragment>
                                                                         )
                                                                         : <p className="m-0">{user.is_guard ? 'Да' : 'Нет'}</p>
@@ -540,6 +557,27 @@ class User extends Component {
                             }
                         }
                     </Formik>
+                    <Modal
+                        isOpen={changeLogo}
+                        oggle={() =>  this.setState({changeLogo: false})}
+                        centered
+                    >
+                        <ModalHeader toggle={() =>  this.setState({changeLogo: false})}>Загрузка новой фотографии</ModalHeader>
+                        <ModalBody>
+                            {
+                                !logoRequest ?
+                                    <ImageCrop onComplete={this.onCompleteLogoCrop} aspect={1}/>
+                                    : (
+                                        <div className="d-flex w-100 h-100">
+                                            <Spinner className="m-auto"/>
+                                        </div>
+                                    )
+                            }
+                        </ModalBody>
+                        <ModalFooter>
+                            <p className="w-100 text-center">Если у Вас возникают проблемы с загрузкой, попробуйте выбрать фотографию меньшего размера.</p>
+                        </ModalFooter>
+                    </Modal>
                     {
                         user.is_breeder ?
                             (
@@ -947,62 +985,29 @@ class User extends Component {
                                                             <CardBody>
                                                                 <Row>
                                                                     <Col xs={12}>
-                                                                        {
-                                                                            user.logo_img_url ?
-                                                                                <img src={user.logo_img_url} alt="Фото профиля" className="img-fluid mb-2 rounded"/>
-                                                                                : <p className="mb-2">Пользователь пока не добавил своё фото</p>
-                                                                        }
-                                                                        {
-                                                                            isShopEdit ?
-                                                                                <Dropzone
-                                                                                    onDrop={acceptedFiles => {
-                                                                                        const previews = [];
-                                                                                        for (let item of acceptedFiles){
-                                                                                            previews.push(URL.createObjectURL(item))
-                                                                                        }
-                                                                                        setFieldValue('previewsLogo', [...previews]);
-                                                                                        setFieldValue('acceptedFileLogo', acceptedFiles[0]);
+                                                                        <div className="d-inline-block position-relative">
+                                                                            {
+                                                                                isShopEdit &&
+                                                                                <span
+                                                                                    className="rounded cursor-pointer"
+                                                                                    style={{
+                                                                                        position: "absolute",
+                                                                                        top: 5,
+                                                                                        right: 5,
+                                                                                        padding: 3,
+                                                                                        background: '#fff'
                                                                                     }}
+                                                                                    onClick={() => this.setState({changeLogo: true})}
                                                                                 >
-                                                                                    {
-                                                                                        ({getRootProps, getInputProps}) => (
-                                                                                            <div {...getRootProps()}  className="p-3 row m-0 mb-2 rounded shadow w-100">
-                                                                                                <input {...getInputProps()} name="dropzone"/>
-                                                                                                {
-                                                                                                    values.previewsLogo.length > 0 ?
-                                                                                                        values.previewsLogo.map( (item, idx) => (
-                                                                                                            <Col
-                                                                                                                key={item}
-                                                                                                                xs={6}
-                                                                                                                className="slider-item position-relative rounded"
-                                                                                                            >
-                                                                                                                <img src={item} className="img-fluid rounded" alt="main"/>
-                                                                                                                <span
-                                                                                                                    style={{
-                                                                                                                        position: 'absolute',
-                                                                                                                        top: 3,
-                                                                                                                        right: 13,
-                                                                                                                        cursor: 'pointer'
-                                                                                                                    }}
-                                                                                                                    onClick={(e) => {
-                                                                                                                        e.stopPropagation();
-
-                                                                                                                        setFieldValue('acceptedFileLogo', null);
-                                                                                                                        setFieldValue('previewsLogo', []);
-                                                                                                                    }}
-                                                                                                                >
-                                                                                                    <i className="ni ni-2x ni-fat-remove text-danger"></i>
-                                                                                                </span>
-                                                                                                            </Col>
-                                                                                                        ))
-                                                                                                        : <p className="text-center font-weight-bold m-auto">Перетащите файлы сюда или кликните, чтобы выбрать файл</p>
-                                                                                                }
-                                                                                            </div>
-                                                                                        )
-                                                                                    }
-                                                                                </Dropzone>
-                                                                                : null
-                                                                        }
+                                                                                    <i className="fas fa-pen fa-lg"></i>
+                                                                                </span>
+                                                                            }
+                                                                            {
+                                                                                user.logo_img_url ?
+                                                                                    <img src={user.logo_img_url} alt="Фото профиля" className="img-fluid mb-2 rounded"/>
+                                                                                    : <p className="mb-2">Пользователь пока не добавил своё фото</p>
+                                                                            }
+                                                                        </div>
                                                                     </Col>
                                                                 </Row>
                                                             </CardBody>
