@@ -88,11 +88,14 @@ class ProductForm extends Component{
         this.setState({ searchInput : '' })
     };
 
-    onSearch = (e) => {
+    onSearch = (e, kind_id) => {
         const {setProductSearchMorphsResult} = this.props;
         this.setState({searchInput: e.target.value});
         debounceSearch({
-            q: e.target.value
+            q: e.target.value,
+            options: {
+                id: Number(kind_id)
+            }
         }).then( data => setProductSearchMorphsResult(data));
     };
 
@@ -222,7 +225,10 @@ class ProductForm extends Component{
                 </Card>
             );
 
-        const subcategory_id = typeof allKinds.find((item) => item.id === product.kind_id).subcategories !== 'undefined' ? allKinds.find((item) => item.id === product.kind_id).subcategories[0].id : '';
+        const subcategory_id = typeof allKinds.find((item) => item.id === product.kind_id).subcategories !== 'undefined'
+                && allKinds.find((item) => item.id === product.kind_id).subcategories.length !== 0
+                ? allKinds.find((item) => item.id === product.kind_id).subcategories[0].id
+                : '';
 
         return (
             <Formik
@@ -249,7 +255,7 @@ class ProductForm extends Component{
                             then: Yup.string()
                                 .nullable()
                                 .test('match', 'Данная подкатегория не пренадлежит выбранной категории', function () {
-                                    return allKinds.find( (item) => item.id === this.parent.kind_id).has_subcategories
+                                    return allKinds.find( (item) => item.id === this.parent.kind_id).has_subcategories && allKinds.find( (item) => item.id === this.parent.kind_id).subcategories.length > 0
                                 })
                                 .required('Подкатегория должна быть указанна')
                         }),
@@ -520,7 +526,7 @@ class ProductForm extends Component{
                                                                     onBlur={() => setTimeout(() => {
                                                                         this.setState({searchInputBlur: false});
                                                                     }, 200)}
-                                                                    onChange={this.onSearch}
+                                                                    onChange={(e) => this.onSearch(e, values.kind_id)}
                                                                     onKeyDown={this.onSelectMorph}
                                                                     value={searchInput}
                                                                 />
@@ -531,7 +537,7 @@ class ProductForm extends Component{
                                                                 (
                                                                     <ul className="morphs d-inline-flex flex-column list-unstyled search-morphs shadow" ref={this.searchList}>
                                                                         {
-                                                                            product.searchMorphsResult.map( ({gene, trait}, idx) => (
+                                                                            product.searchMorphsResult.map( ({gene, trait, label}, idx) => (
                                                                                 <li
                                                                                     key={`${gene.title}-${trait.title}-${gene.id}`}
                                                                                     className={"search-morphs-item " + (product.selectedMorphIdx === idx ? "selected" : "")}
@@ -540,7 +546,7 @@ class ProductForm extends Component{
                                                                                         this.clearSearchInput();
                                                                                     }}
                                                                                 >
-                                                                                    <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.title}`)} d-inline-block`}>
+                                                                                    <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.trait_group ? trait.trait_group.label : trait.title}`)} d-inline-block`}>
                                                                                         {trait.title} {gene.title}
                                                                                     </div>
                                                                                 </li>
@@ -552,8 +558,8 @@ class ProductForm extends Component{
                                                         }
                                                         <div className="morphs flex-wrap">
                                                             {
-                                                                product.morphs.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
-                                                                    <div className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
+                                                                product.morphs.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle, trait_group}}, idx) => (
+                                                                    <div className={`morph-indicator morph-${type}-${toUrl(trait_group ? trait_group.label : traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
                                                                         {traitTitle} {geneTitle}
                                                                         {
                                                                             isEdit ?
