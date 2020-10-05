@@ -85,7 +85,7 @@ class DivorceFrom extends Component {
 
     };
 
-    onSearch = (e, isMale = true) => {
+    onSearch = (e, kind_id, isMale = true) => {
         const {setDivorceSearchMorphsMaleResult, setDivorceSearchMorphsFemaleResult} = this.props;
         if (isMale) {
             this.setState({searchInputMale: e.target.value});
@@ -94,7 +94,10 @@ class DivorceFrom extends Component {
         }
 
         debounceSearch({
-            q: e.target.value
+            q: e.target.value,
+            options: {
+                id: Number(kind_id)
+            }
         }).then( data => {
             if (isMale) {
                 setDivorceSearchMorphsMaleResult(data);
@@ -176,20 +179,20 @@ class DivorceFrom extends Component {
                 this.setState({isEdit: false});
                 actions.setSubmitting(false);
             })
-            .catch((error) => {
-                if (error.response.status === 422) {
-                    const errors = error.response.data.errors;
-                    actions.setErrors({
-                        kind_id: errors.kind_id ? errors.kind_id[0] : '',
-                        subcategory_id: errors.subcategory_id ? errors.subcategory_id[0] : '',
-                        cb: errors.cb ? errors.cb[0] : '',
-                        acceptedFilesExit: errors.acceptedFilesExit ? errors.acceptedFilesExit[0] : '',
-                        male: errors.male ? errors.male[0] : '',
-                        female: errors.female ? errors.female[0] : '',
-                    });
-                }
-                actions.setSubmitting(false);
-            });
+            // .catch((error) => {
+            //     if (error.response.status === 422) {
+            //         const errors = error.response.data.errors;
+            //         actions.setErrors({
+            //             kind_id: errors.kind_id ? errors.kind_id[0] : '',
+            //             subcategory_id: errors.subcategory_id ? errors.subcategory_id[0] : '',
+            //             cb: errors.cb ? errors.cb[0] : '',
+            //             acceptedFilesExit: errors.acceptedFilesExit ? errors.acceptedFilesExit[0] : '',
+            //             male: errors.male ? errors.male[0] : '',
+            //             female: errors.female ? errors.female[0] : '',
+            //         });
+            //     }
+            //     actions.setSubmitting(false);
+            // });
     };
 
     render() {
@@ -278,15 +281,6 @@ class DivorceFrom extends Component {
                             .required('Название должно быть указанно'),
                         kind_id: Yup.string()
                             .required('Категория должна быть указанна'),
-                        subcategory_id: Yup.string()
-                            .when('kind_id', {
-                                is: true,
-                                then: Yup.string()
-                                    .test('match', 'Данная подкатегория не пренадлежит выбранной категории', function () {
-                                        return allKinds.find( (item) => item.id === this.parent.kind_id).has_subcategories
-                                    })
-                                    .required('Подкатегория должна быть указанна')
-                            }),
                         male: Yup.array(),
                         female: Yup.array(),
                         cb: Yup.date('Дата не правильно введена')
@@ -302,7 +296,7 @@ class DivorceFrom extends Component {
                              setValues,
                              values,
                              isSubmitting,
-                             status
+                             status,
                          }) => {
                             const selectedKind = allKinds.find((item) => item.id === Number(values.kind_id));
 
@@ -488,7 +482,7 @@ class DivorceFrom extends Component {
                                                                                 onBlur={() => setTimeout(() => {
                                                                                     this.setState({searchInputMaleBlur: false});
                                                                                 }, 200)}
-                                                                                onChange={this.onSearch}
+                                                                                onChange={(e) => this.onSearch(e, values.kind_id)}
                                                                                 onKeyDown={(e) => this.onSelectMorph(e, true, {setFieldValue, values})}
                                                                                 value={searchInputMale}
                                                                             />
@@ -508,7 +502,7 @@ class DivorceFrom extends Component {
                                                                                                     this.clearSearchInput();
                                                                                                 }}
                                                                                             >
-                                                                                                <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.title}`)} d-inline-block`}>
+                                                                                                <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.trait_group ? trait.trait_group.label : trait.title}`)} d-inline-block`}>
                                                                                                     {trait.title} {gene.title}
                                                                                                 </div>
                                                                                             </li>
@@ -520,8 +514,8 @@ class DivorceFrom extends Component {
                                                                     }
                                                                     <div className="morphs flex-wrap">
                                                                         {
-                                                                            values.male.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
-                                                                                <p className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
+                                                                            values.male.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle, trait_group}}, idx) => (
+                                                                                <p className={`morph-indicator morph-${type}-${toUrl(trait_group ? trait_group.label : traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
                                                                                     {traitTitle} {geneTitle}
                                                                                     {
                                                                                         isEdit ?
@@ -563,7 +557,7 @@ class DivorceFrom extends Component {
                                                                                 onBlur={() => setTimeout(() => {
                                                                                     this.setState({searchInputFemaleBlur: false});
                                                                                 }, 200)}
-                                                                                onChange={(e) => this.onSearch(e, false)}
+                                                                                onChange={(e) => this.onSearch(e, values.kind_id, false)}
                                                                                 onKeyDown={(e) => this.onSelectMorph(e, false, {setFieldValue, values})}
                                                                                 value={searchInputFemale}
                                                                             />
@@ -583,7 +577,7 @@ class DivorceFrom extends Component {
                                                                                                     this.clearSearchInput(false);
                                                                                                 }}
                                                                                             >
-                                                                                                <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.title}`)} d-inline-block`}>
+                                                                                                <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.trait_group ? trait.trait_group.label : trait.title}`)} d-inline-block`}>
                                                                                                     {trait.title} {gene.title}
                                                                                                 </div>
                                                                                             </li>
@@ -595,8 +589,8 @@ class DivorceFrom extends Component {
                                                                     }
                                                                     <div className="morphs flex-wrap">
                                                                         {
-                                                                            values.female.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
-                                                                                <p className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
+                                                                            values.female.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle, trait_group}}, idx) => (
+                                                                                <p className={`morph-indicator morph-${type}-${toUrl(trait_group ? trait_group.label : traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
                                                                                     {traitTitle} {geneTitle}
                                                                                     {
                                                                                         isEdit ?
