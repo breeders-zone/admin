@@ -764,14 +764,18 @@ class DataService {
             .then((res) => res.data);
     };
 
-    updateShop = (shopName: string, data: any /*TODO create shop data*/) => {
+    updateShop = (shopName: string, data: any /*TODO create shop data*/, isFormData = false) => {
         const token = localStorage.getItem('token');
-        const formData = toFormData(data);
-        formData.append('_method', 'PUT');
+        if (isFormData) {
+            const formData = toFormData(data);
+            formData.append('_method', 'PUT');
+            data = formData
+        }
 
-        return Axios.post(
+
+        return Axios[isFormData ? 'post' : 'put'](
             process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName,
-            formData,
+            data,
             {
                 headers: {
                     'Content-Type': 'application/json',
