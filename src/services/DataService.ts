@@ -704,20 +704,24 @@ class DataService {
     getUsers = (options: any) => {
         const query = window.qs.stringify(options);
 
+        const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/users?' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
             .then((res) => res.data);
     };
 
     getUser = (userId: string|number) => {
+        const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/users/' + userId, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
             .then((res) => res.data);
@@ -755,10 +759,12 @@ class DataService {
     };
 
     getShop = (shopName: string) => {
+        const token = localStorage.getItem('token');
         return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/shops/' + shopName, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
+                'Authorization': `Bearer ${token}`
             }
         })
             .then((res) => res.data);
