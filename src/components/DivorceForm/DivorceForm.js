@@ -22,7 +22,7 @@ import {
     setDivorceSearchMorphsMaleResult, setSelectedMorphFemaleIdx, setSelectedMorphMaleIdx
 } from "../../actions";
 import {Link, withRouter} from "react-router-dom";
-import {toUrl} from "../../utils";
+import {compareMorph, toUrl} from "../../utils";
 import AwesomeDebouncePromise from "awesome-debounce-promise";
 import {DataService} from "../../services";
 import ReactDatetime from "react-datetime";
@@ -179,20 +179,20 @@ class DivorceFrom extends Component {
                 this.setState({isEdit: false});
                 actions.setSubmitting(false);
             })
-            // .catch((error) => {
-            //     if (error.response.status === 422) {
-            //         const errors = error.response.data.errors;
-            //         actions.setErrors({
-            //             kind_id: errors.kind_id ? errors.kind_id[0] : '',
-            //             subcategory_id: errors.subcategory_id ? errors.subcategory_id[0] : '',
-            //             cb: errors.cb ? errors.cb[0] : '',
-            //             acceptedFilesExit: errors.acceptedFilesExit ? errors.acceptedFilesExit[0] : '',
-            //             male: errors.male ? errors.male[0] : '',
-            //             female: errors.female ? errors.female[0] : '',
-            //         });
-            //     }
-            //     actions.setSubmitting(false);
-            // });
+            .catch((error) => {
+                if (error.response.status === 422) {
+                    const errors = error.response.data.errors;
+                    actions.setErrors({
+                        kind_id: errors.kind_id ? errors.kind_id[0] : '',
+                        subcategory_id: errors.subcategory_id ? errors.subcategory_id[0] : '',
+                        cb: errors.cb ? errors.cb[0] : '',
+                        acceptedFilesExit: errors.acceptedFilesExit ? errors.acceptedFilesExit[0] : '',
+                        male: errors.male ? errors.male[0] : '',
+                        female: errors.female ? errors.female[0] : '',
+                    });
+                }
+                actions.setSubmitting(false);
+            });
     };
 
     render() {
@@ -453,7 +453,7 @@ class DivorceFrom extends Component {
                                                                                             }
                                                                                         </Input>
                                                                                     )
-                                                                                    : <p>{divorce.subcategory.title}</p>
+                                                                                    : <p>{divorce.subcategory ? divorce.subcategory.title : 'Нет'}</p>
                                                                             }
                                                                         </div>
                                                                         <ErrorMessage name="subcategory_id">
@@ -477,7 +477,7 @@ class DivorceFrom extends Component {
                                                                                 className="form-control-alternative w-100 mb-2"
                                                                                 name="morphs-search"
                                                                                 type="text"
-                                                                                placeholder="Начние вводить морфу"
+                                                                                placeholder="Начните вводить морфу"
                                                                                 onFocus={() => this.setState({searchInputMaleBlur: true})}
                                                                                 onBlur={() => setTimeout(() => {
                                                                                     this.setState({searchInputMaleBlur: false});
@@ -503,7 +503,7 @@ class DivorceFrom extends Component {
                                                                                                 }}
                                                                                             >
                                                                                                 <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.trait_group ? trait.trait_group.label : trait.title}`)} d-inline-block`}>
-                                                                                                    {trait.title} {gene.title}
+                                                                                                    {compareMorph(trait.title, gene.title)}
                                                                                                 </div>
                                                                                             </li>
                                                                                         ))
@@ -516,7 +516,7 @@ class DivorceFrom extends Component {
                                                                         {
                                                                             values.male.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle, trait_group}}, idx) => (
                                                                                 <p className={`morph-indicator morph-${type}-${toUrl(trait_group ? trait_group.label : traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
-                                                                                    {traitTitle} {geneTitle}
+                                                                                    {compareMorph(traitTitle, geneTitle)}
                                                                                     {
                                                                                         isEdit ?
                                                                                             <i
@@ -552,7 +552,7 @@ class DivorceFrom extends Component {
                                                                                 className="form-control-alternative w-100 mb-2"
                                                                                 name="morphs-search"
                                                                                 type="text"
-                                                                                placeholder="Начние вводить морфу"
+                                                                                placeholder="Начните вводить морфу"
                                                                                 onFocus={() => this.setState({searchInputFemaleBlur: true})}
                                                                                 onBlur={() => setTimeout(() => {
                                                                                     this.setState({searchInputFemaleBlur: false});
@@ -578,7 +578,7 @@ class DivorceFrom extends Component {
                                                                                                 }}
                                                                                             >
                                                                                                 <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.trait_group ? trait.trait_group.label : trait.title}`)} d-inline-block`}>
-                                                                                                    {trait.title} {gene.title}
+                                                                                                    {compareMorph(trait.title, gene.title)}
                                                                                                 </div>
                                                                                             </li>
                                                                                         ))
@@ -591,7 +591,7 @@ class DivorceFrom extends Component {
                                                                         {
                                                                             values.female.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle, trait_group}}, idx) => (
                                                                                 <p className={`morph-indicator morph-${type}-${toUrl(trait_group ? trait_group.label : traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
-                                                                                    {traitTitle} {geneTitle}
+                                                                                    {compareMorph(traitTitle, geneTitle)}
                                                                                     {
                                                                                         isEdit ?
                                                                                             <i

@@ -31,7 +31,7 @@ class Products extends Component {
     componentDidMount() {
         const {router: {location: {query}}, allKinds} = this.props;
         this.updateProducts();
-
+        console.log(this.props.router)
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -42,16 +42,16 @@ class Products extends Component {
         if (prevProps.allKinds !== this.props.allKinds) {
             const {router: {location: {query}}, allKinds} = this.props;
             if (query.kind && allKinds.length > 0) {
-                const kind = allKinds.find((item) => item.title_eng.toLowerCase() === query.kind.replace('-', ' '))
+                const kind = allKinds.find((item) => item?.title_eng.toLowerCase().replace('-', ' ') === query.kind.replace('-', ' ').toLowerCase());
                 this.selectKind(kind)
             }
         }
     }
 
     updateProducts = () => {
-        const {getProducts, setProductsState, setProductsRequest, router: { location: {query} } } = this.props;
+        const {getProducts, setProductsState, setProductsRequest, router: { location: {search} } } = this.props;
         setProductsRequest(true);
-        getProducts(query)
+        getProducts({}, search.replace('?', ''))
             .then( (data) => {
                 setProductsState(data);
                 setProductsRequest(false);
@@ -68,7 +68,7 @@ class Products extends Component {
             return;
         }
         setProductsOptionsKind(kind.title_rus);
-        query.kind = toUrl(kind.title_eng);
+        query.kind = toUrl(kind.title_eng, true);
         history.push('?' + window.qs.stringify(query));
     };
 
@@ -82,7 +82,7 @@ class Products extends Component {
     };
 
     render() {
-        const {products, options, allKinds, productsRequest, setProductsOptionsSearch, deleteProduct} = this.props;
+        const {products, options, allKinds, productsRequest, setProductsOptionsSearch, deleteProduct, router, history} = this.props;
 
         return (
             <React.Fragment>
@@ -112,42 +112,83 @@ class Products extends Component {
                                         </FormGroup>
                                     </Form>
 
-                                    <UncontrolledDropdown>
-                                        <DropdownToggle
-                                            className="d-flex align-items-center"
-                                            href="#"
-                                            size="sm"
-                                            color=""
-                                            onClick={(e) => e.preventDefault()}
-                                        >
-                                            <span>{options.kind ? options.kind : 'Все категории'}</span><i className="ni ni-bold-down"></i>
-                                        </DropdownToggle>
-                                        <DropdownMenu className="dropdown-menu-arrow" right>
-                                            {
-                                                options.kind ?
-                                                    <DropdownItem
-                                                        onClick={() => this.selectKind('all')}
-                                                    >
-                                                        Все категории
-                                                    </DropdownItem>
-                                                    : null
-                                            }
-                                            {
-                                                allKinds.map( (item) => (
-                                                    <DropdownItem
-                                                        key={item.title_rus}
-                                                        onClick={() => this.selectKind(item)}
-                                                    >
-                                                        {item.title_rus}
-                                                    </DropdownItem>
-                                                ))
-                                            }
-                                        </DropdownMenu>
-                                    </UncontrolledDropdown>
+                                    <div>
+                                        <UncontrolledDropdown>
+                                            <DropdownToggle
+                                                className="d-flex align-items-center"
+                                                href="#"
+                                                size="sm"
+                                                color=""
+                                                onClick={(e) => e.preventDefault()}
+                                            >
+                                                <span>{router.location.query.created && router.location.query.created === 'desc' ? 'Сначала новые' : 'Сначала старые'}</span><i className="ni ni-bold-down"></i>
+                                            </DropdownToggle>
+                                            <DropdownMenu className="dropdown-menu-arrow" right>
+                                                <DropdownItem
+                                                    className="cursor-pointer"
+                                                    onClick={() => {
+                                                        const query = router.location.query;
+                                                        query.created = 'desc';
+
+                                                        history.push('?' + window.qs.stringify(query));
+                                                    }}
+                                                >
+                                                    Сначала новые
+                                                </DropdownItem>
+                                                <DropdownItem
+                                                    className="cursor-pointer"
+                                                    onClick={() => {
+                                                        const query = router.location.query;
+                                                        query.created = 'asc';
+
+                                                        history.push('?' + window.qs.stringify(query));
+                                                    }}
+                                                >
+                                                    Сначала старые
+                                                </DropdownItem>
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                        <UncontrolledDropdown>
+                                            <DropdownToggle
+                                                className="d-flex align-items-center"
+                                                href="#"
+                                                size="sm"
+                                                color=""
+                                                onClick={(e) => e.preventDefault()}
+                                            >
+                                                <span>{options.kind ? options.kind : 'Все категории'}</span><i className="ni ni-bold-down"></i>
+                                            </DropdownToggle>
+                                            <DropdownMenu className="dropdown-menu-arrow" right>
+                                                {
+                                                    options.kind ?
+                                                        <DropdownItem
+                                                            className="cursor-pointer"
+                                                            onClick={() => this.selectKind('all')}
+                                                        >
+                                                            Все категории
+                                                        </DropdownItem>
+                                                        : null
+                                                }
+                                                {
+                                                    allKinds.map( (item) => (
+                                                        <DropdownItem
+                                                            className="cursor-pointer"
+                                                            key={item.title_rus}
+                                                            onClick={() => this.selectKind(item)}
+                                                        >
+                                                            {item.title_rus}
+                                                        </DropdownItem>
+                                                    ))
+                                                }
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                    </div>
                                 </CardHeader>
                                 <Table className="align-items-center table-flush" responsive>
                                     <thead className="thead-light">
                                     <tr>
+                                        <th scope="col">Номер в системе</th>
+                                        <th>Уникальный идентификатор</th>
                                         <th scope="col">Изображение и название</th>
                                         <th scope="col">Цена</th>
                                         <th
@@ -165,7 +206,9 @@ class Products extends Component {
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
+                                                    <td></td>
                                                     <td className="d-flex justify-content-center"><Spinner/></td>
+                                                    <td></td>
                                                     <td></td>
                                                     <td></td>
                                                     <td></td>
@@ -177,9 +220,11 @@ class Products extends Component {
                                             <tr>
                                                 <td></td>
                                                 <td></td>
+                                                <td></td>
                                                 <td className="text-center">
                                                     <p className="m-0 my-3">Похоже продуктов нет.</p>
                                                 </td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
@@ -188,6 +233,8 @@ class Products extends Component {
                                     {
                                             !productsRequest ? products.data.map( (item) => (
                                                 <tr key={item.id}>
+                                                    <th scope="row">{item.id}</th>
+                                                    <th scope="row">{item.article}</th>
                                                     <th scope="row">
                                                        <Link
                                                            to={`/admin/products/${item.id}`}>

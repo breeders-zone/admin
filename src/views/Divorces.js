@@ -17,7 +17,7 @@ import {
     deleteDivorce, setDivorcesOptionsSearch
 } from "../actions";
 import {connect} from "react-redux";
-import {toUrl} from "../utils";
+import {compareMorph, toUrl} from "../utils";
 import {Link} from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
 import Helmet from "react-helmet";
@@ -297,7 +297,7 @@ class Divorces extends Component {
                                                         {
                                                             item.male.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
                                                                 <p className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={'male-' + geneTitle + '-' + traitTitle}>
-                                                                    {traitTitle} {geneTitle}
+                                                                    {compareMorph(traitTitle, geneTitle)}
                                                                 </p>
                                                             ))
                                                         }
@@ -308,7 +308,7 @@ class Divorces extends Component {
                                                         {
                                                             item.female.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle}}, idx) => (
                                                                 <p className={`morph-indicator morph-${type}-${toUrl(traitTitle)} mb-2`} key={'male-' + geneTitle + '-' + traitTitle}>
-                                                                    {traitTitle} {geneTitle}
+                                                                    {compareMorph(traitTitle, geneTitle)}
                                                                 </p>
                                                             ))
                                                         }
