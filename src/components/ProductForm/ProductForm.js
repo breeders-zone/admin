@@ -22,7 +22,7 @@ import {
     setProductSearchMorphsResult,
     setSelectedMorphIdx
 } from "../../actions";
-import {toUrl} from "../../utils";
+import {toUrl, compareMorph} from "../../utils";
 import moment from "moment";
 import {Link, withRouter} from "react-router-dom";
 import Slider from "react-slick";
@@ -521,7 +521,7 @@ class ProductForm extends Component{
                                                                     className="form-control-alternative w-100 mb-2"
                                                                     name="morphs-search"
                                                                     type="text"
-                                                                    placeholder="Начние вводить морфу"
+                                                                    placeholder="Начните вводить морфу"
                                                                     onFocus={() => this.setState({searchInputBlur: true})}
                                                                     onBlur={() => setTimeout(() => {
                                                                         this.setState({searchInputBlur: false});
@@ -547,7 +547,7 @@ class ProductForm extends Component{
                                                                                     }}
                                                                                 >
                                                                                     <div className={`morph-indicator morph-${toUrl(`${gene.type}-${trait.trait_group ? trait.trait_group.label : trait.title}`)} d-inline-block`}>
-                                                                                        {trait.title} {gene.title}
+                                                                                        {compareMorph(trait.title, gene.title)}
                                                                                     </div>
                                                                                 </li>
                                                                             ))
@@ -560,7 +560,8 @@ class ProductForm extends Component{
                                                             {
                                                                 product.morphs.map( ({gene: {title: geneTitle, type}, trait: {title: traitTitle, trait_group}}, idx) => (
                                                                     <div className={`morph-indicator morph-${type}-${toUrl(trait_group ? trait_group.label : traitTitle)} mb-2`} key={geneTitle + '-' + traitTitle}>
-                                                                        {traitTitle} {geneTitle}
+
+                                                                        {compareMorph(traitTitle, geneTitle)}
                                                                         {
                                                                             isEdit ?
                                                                                 <i

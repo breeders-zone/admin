@@ -562,11 +562,11 @@ class DataService {
             .then((res) => res.data);
     };
 
-    getProducts = (options: any) => {
-        const query = window.qs.stringify(options);
+    getProducts = (options: any, query = '') => {
+        const newQuery = window.qs.stringify(options);
         const token = localStorage.getItem('token');
 
-        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/products?' + query, {
+        return Axios.get(process.env.REACT_APP_API_DOMAIN_URL + '/api/products?' + newQuery + '&' + query, {
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',

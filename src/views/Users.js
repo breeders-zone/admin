@@ -172,6 +172,7 @@ class Users extends Component {
                                                 <th scope="col">Хранитель</th>
                                                 <th scope="col">Название магазина</th>
                                                 <th scope="col">Электронная почта</th>
+                                                <th scope="col">Электронная почта подтверждена</th>
                                                 <th scope="col">Телефон</th>
                                                 <th scope="col">Локация</th>
                                                 <th scope="col" />
@@ -193,6 +194,7 @@ class Users extends Component {
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+                                                        <td></td>
                                                     </tr>
                                                     : null
                                             }
@@ -204,6 +206,7 @@ class Users extends Component {
                                                         <td></td>
                                                         <td></td>
                                                         <td className="d-flex"><Spinner className="m-auto"/></td>
+                                                        <td></td>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -271,6 +274,7 @@ class Users extends Component {
                                                             <td>{item.is_guard ? 'Да' : 'Нет'}</td>
                                                             <td>{item.company_name}</td>
                                                             <td>{item.email}</td>
+                                                            <td>{item.email_verified_at !== null ? 'Подвержена' : 'Не подтверждена'}</td>
                                                             <td>{item.phone}</td>
                                                             <td>{item.location}</td>
                                                             <td className="text-right">
