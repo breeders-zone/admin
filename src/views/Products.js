@@ -23,6 +23,7 @@ import {toUrl} from "../utils";
 import {Link} from "react-router-dom";
 import Pagination from "../components/Pagination/Pagination";
 import Helmet from "react-helmet";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 class Products extends Component {
 
@@ -266,7 +267,7 @@ class Products extends Component {
                                                            </Media>
                                                        </Link>
                                                     </th>
-                                                    <td>{item.price} RUB</td>
+                                                    <td>{item.price.find((item) => item.type === 'main').amount} {getSymbolFromCurrency(item.price.find((item) => item.type === 'main').currency)}</td>
                                                     <td>
                                                         <Badge color="" className="badge-dot mr-4">
                                                             {item.kind.title_rus}<br/>

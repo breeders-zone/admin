@@ -5,14 +5,21 @@ import AuthLayout from "../../layouts/Auth";
 import {withDataService} from "../hoc";
 import {connect} from "react-redux";
 import {setKinds} from "../../actions/kinds";
-import {setLocalities, setSubcategories} from "../../actions";
+import {setLocalities, setSubcategories, setCurrencies} from "../../actions";
 
 class App extends Component {
     componentDidMount() {
+        this.getCurrencies();
         this.getKindsPooling();
         this.getSubcategoriesPooling();
         this.getLocalitiesPooling();
     }
+
+    getCurrencies = () => {
+        const {getCurrencies: getCurrenciesProps, setCurrencies} = this.props;
+        getCurrenciesProps()
+            .then((data) => setCurrencies(data));
+    };
 
     getKindsPooling = () => {
         const { getKinds, setKinds } = this.props;
@@ -48,10 +55,11 @@ class App extends Component {
     }
 }
 
-const mapMethodsToProps = ({getKinds, getSubcategories, getLocalities}) => ({
+const mapMethodsToProps = ({getKinds, getSubcategories, getLocalities, getCurrencies}) => ({
     getKinds,
     getSubcategories,
-    getLocalities
+    getLocalities,
+    getCurrencies
 });
 
-export default connect(null, {setKinds, setSubcategories, setLocalities})(withDataService(App, mapMethodsToProps));
+export default connect(null, {setKinds, setSubcategories, setLocalities, setCurrencies})(withDataService(App, mapMethodsToProps));
