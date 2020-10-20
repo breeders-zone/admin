@@ -1137,6 +1137,18 @@ class DataService {
         return Axios.get(`${this.YMApiUrl}?metrics=ym:pv:pageviews,ym:pv:users&dimensions=ym:pv:URL${limit ? `&limit=${limit}` : ''}&id=${process.env.REACT_APP_YM_ACCOUNT}`)
             .then((res) => res.data);
     };
+
+    // Currencies
+    getCurrencies = (options = {}): Promise<Array<string>> => {
+        const query = window.qs.stringify(options);
+        return Axios.get('https://www.cbr-xml-daily.ru/daily_json.js?' +  query, {
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+            }
+        })
+            .then((res) => Object.keys(res.data.Valute));
+    };
 }
 
 export default DataService
