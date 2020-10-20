@@ -56,6 +56,7 @@ class Kind extends Component {
             setKindData({
                 title_eng: data.title_eng,
                 title_rus: data.title_rus,
+                sort: data.sort,
                 group: data.group,
                 has_subcategories: data.has_subcategories,
                 logo_square: data.acceptedFileSquare,
@@ -98,6 +99,7 @@ class Kind extends Component {
         updateKind(params.id, {
             title_eng: data.title_eng,
             title_rus: data.title_rus,
+            sort: data.sort,
             group: data.group,
             has_subcategories: data.has_subcategories,
             logo_square: data.acceptedFileSquare,
@@ -391,6 +393,30 @@ class Kind extends Component {
                                                                             )
                                                                             : <p>{kind.has_subcategories ? 'Есть' : 'Нет'}</p>
                                                                     }
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className="mb-3">
+                                                            <Col xs={12} md={6}>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3 text-nowrap">Сортировка:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            <Input
+                                                                                type="number"
+                                                                                className="form-control-alternative"
+                                                                                name="sort"
+                                                                                value={values.sort}
+                                                                                onChange={handleChange}
+                                                                                onBlur={handleBlur}
+                                                                            />
+                                                                            : <p>{kind.sort ? kind.sort : 'Не задана'}</p>
+                                                                    }
+                                                                    <ErrorMessage name="sort">
+                                                                        {
+                                                                            msg => <div className="text-danger">{msg}</div>
+                                                                        }
+                                                                    </ErrorMessage>
                                                                 </div>
                                                             </Col>
                                                         </Row>
