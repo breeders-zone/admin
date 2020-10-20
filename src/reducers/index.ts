@@ -28,11 +28,13 @@ import documents from "./documents";
 import documentReducer from "./document";
 import initialState from "./initialState";
 import stats from "./stats/stats";
+import currencies from "./currencies/currencies";
 import {History} from "history";
 import {IStatsState} from "./stats/types";
 import {ITraitsState, ITraitState} from "./traits/types";
 
 const createRootReducer = (history: History) => combineReducers({
+    currencies,
     stats,
     header,
     kind,
