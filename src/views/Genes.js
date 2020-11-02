@@ -59,7 +59,7 @@ class Genes extends Component {
 
     render() {
         const { kinds, genes, router, deleteGene, setGenesOptionSearch } = this.props;
-        const selectedKind = kinds.all.find((item) => toUrl(item.title_eng) === router.location.query.kind);
+        const selectedKind = kinds.all.find((item) => item.id === Number(router.location.query.kind));
 
         return (
             <React.Fragment>
@@ -102,7 +102,7 @@ class Genes extends Component {
                                                 {
                                                     kinds.all.map( (item) => (
                                                         <DropdownItem
-                                                            to={`/admin/genes?kind=${toUrl(item.title_eng)}`}
+                                                            to={`/admin/genes?kind=${item.id}`}
                                                             tag={Link}
                                                             key={item.title_rus}
                                                         >
@@ -244,14 +244,14 @@ class Genes extends Component {
                                             : kinds.all.map( (item) => (
                                                 <tr key={item.id}>
                                                     <th scope="row">
-                                                        <Link to={`/admin/genes?kind=${toUrl(item.title_eng)}`}>
+                                                        <Link to={`/admin/genes?kind=${item.id}`}>
                                                             <Media className="align-items-center text-dark">
                                                                 <i className="ni ni-lg ni-folder-17 text-yellow"></i>
                                                             </Media>
                                                         </Link>
                                                     </th>
                                                     <td>
-                                                        <Link to={`/admin/genes?kind=${toUrl(item.title_eng)}`}>
+                                                        <Link to={`/admin/genes?kind=${item.id}`}>
                                                             <Media className="align-items-center text-dark">
                                                                 {item.title_rus} ({item.title_eng})
                                                             </Media>
