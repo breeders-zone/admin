@@ -142,7 +142,6 @@ class ProductForm extends Component{
 
                 setProduct({
                     ...data,
-                    price,
                     initialMorphs: [...data.morphs]
                 });
                 actions.setValues({
