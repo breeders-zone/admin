@@ -138,12 +138,16 @@ class ProductForm extends Component{
                 this.setState({isEdit: false});
                 actions.setStatus(success);
                 const data = await dataService.getProduct(id);
+                const price = data.price.find((item) => item.currency === data.currency).amount;
+
                 setProduct({
                     ...data,
+                    price,
                     initialMorphs: [...data.morphs]
                 });
                 actions.setValues({
                     ...data,
+                    price,
                     acceptedFiles: [],
                     previews: [],
                     deletedImages: [],
@@ -230,10 +234,13 @@ class ProductForm extends Component{
                 ? allKinds.find((item) => item.id === product.kind_id).subcategories[0].id
                 : '';
 
+        const price = product.price.find((item) => item.currency === product.currency).amount;
+
         return (
             <Formik
                 initialValues={{
                     ...product,
+                    price,
                     subcategory_id: product.subcategory_id ?
                         product.subcategory_id
                         : subcategory_id,
