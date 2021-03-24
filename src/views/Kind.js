@@ -62,7 +62,8 @@ class Kind extends Component {
                 logo_square: data.acceptedFileSquare,
                 logo_header: data.acceptedFileHeader,
                 subcategories: data.subcategories,
-                localities: data.localities
+                localities: data.localities,
+                only_text: data.only_text
             })
                 .then( ({message}) => {
                     actions.setValues({
@@ -102,6 +103,7 @@ class Kind extends Component {
             sort: data.sort,
             group: data.group,
             has_subcategories: data.has_subcategories,
+            only_text: data.only_text,
             logo_square: data.acceptedFileSquare,
             logo_header: data.acceptedFileHeader,
             subcategories: data.subcategories,
@@ -198,6 +200,7 @@ class Kind extends Component {
                         initialValues={{
                             ...kind,
                             has_subcategories: kind.has_subcategories ? '1' : '0',
+                            only_text: kind.only_text ? '1' : '0',
                             acceptedFileHeader: null,
                             acceptedFileSquare: null,
                             previewsHeader: [],
@@ -392,6 +395,49 @@ class Kind extends Component {
                                                                                 </div>
                                                                             )
                                                                             : <p>{kind.has_subcategories ? 'Есть' : 'Нет'}</p>
+                                                                    }
+                                                                </div>
+                                                                <div className="d-flex">
+                                                                    <h3 className="mr-3 text-nowrap">Отключить заполнение пола и тд:</h3>
+                                                                    {
+                                                                        isEdit ?
+                                                                            (
+                                                                                <div>
+                                                                                    <Input
+                                                                                        id="only_text_true"
+                                                                                        className="form-control-alternative"
+                                                                                        name="only_text"
+                                                                                        type="radio"
+                                                                                        value={1}
+                                                                                        onChange={(e) => {
+                                                                                            setFieldValue('only_text', e.target.value);
+                                                                                        }}
+                                                                                        onBlur={handleBlur}
+                                                                                        style={{
+                                                                                            opacity: 0
+                                                                                        }}
+                                                                                    />
+                                                                                    <Input
+                                                                                        id="only_text_false"
+                                                                                        className="form-control-alternative"
+                                                                                        name="only_text"
+                                                                                        type="radio"
+                                                                                        value={0}
+                                                                                        onChange={(e) => {
+                                                                                            setFieldValue('only_text', e.target.value);
+                                                                                        }}
+                                                                                        onBlur={handleBlur}
+                                                                                        style={{
+                                                                                            opacity: 0
+                                                                                        }}
+                                                                                    />
+
+                                                                                    <label htmlFor="only_text_true" className={'mr-3' + (values.only_text === 1 || values.only_text === '1' ? ' font-weight-bold' : '')}>Да</label>
+                                                                                    <label htmlFor="only_text_false" className={values.only_text === 0 || values.only_text === '0' ? 'font-weight-bold' : ''}>Нет</label>
+
+                                                                                </div>
+                                                                            )
+                                                                            : <p>{kind.only_text ? 'Да' : 'Нет'}</p>
                                                                     }
                                                                 </div>
                                                             </Col>
