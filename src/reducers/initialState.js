@@ -126,11 +126,9 @@ const initialState = {
         initialLocalities: []
     },
     products: {
-        products: {
-            data: [],
-            current_page: null,
-            last_page: null
-        },
+        data: [],
+        current_page: null,
+        last_page: null,
         options: {
             kind: '',
             q: ''

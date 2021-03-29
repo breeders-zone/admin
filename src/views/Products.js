@@ -83,7 +83,7 @@ class Products extends Component {
     };
 
     render() {
-        const {products, options, allKinds, productsRequest, setProductsOptionsSearch, deleteProduct, router, history} = this.props;
+        const {data, last_page, current_page, options, allKinds, productsRequest, setProductsOptionsSearch, deleteProduct, router, history} = this.props;
 
         return (
             <React.Fragment>
@@ -194,7 +194,7 @@ class Products extends Component {
                                         <th scope="col">Цена</th>
                                         <th
                                             scope="col"
-                                            className={(!productsRequest && products.data.length === 0 ) || productsRequest ? 'w-100' : ''}
+                                            className={(!productsRequest && data.length === 0 ) || productsRequest ? 'w-100' : ''}
                                         >Категория</th>
                                         <th scope="col">Подкатегория</th>
                                         <th scope="col">Магазин</th>
@@ -217,7 +217,7 @@ class Products extends Component {
 
                                     }
                                     {
-                                        !productsRequest && products.data.length === 0 ?
+                                        !productsRequest && data.length === 0 ?
                                             <tr>
                                                 <td></td>
                                                 <td></td>
@@ -232,7 +232,7 @@ class Products extends Component {
                                             </tr> : null
                                     }
                                     {
-                                            !productsRequest ? products.data.map( (item) => (
+                                            !productsRequest ? data.map( (item) => (
                                                 <tr key={item.id}>
                                                     <th scope="row">{item.id}</th>
                                                     <th scope="row">{item.article}</th>
@@ -347,8 +347,8 @@ class Products extends Component {
                                 </Table>
                                 <CardFooter className="py-4">
                                     {
-                                        products.last_page ?
-                                            <Pagination totalItems={products.last_page} pageSize={1} defaultActivePage={products.current_page}/>
+                                        last_page ?
+                                            <Pagination totalItems={last_page} pageSize={1} defaultActivePage={current_page}/>
                                             : null
                                     }
                                 </CardFooter>
@@ -365,8 +365,10 @@ const mapMethodsToProps = ({ getProducts }) => ({
     getProducts
 });
 
-const mapStateToProps = ({products: {products, options, productsRequest}, kinds: {all: allKinds}, router}) => ({
-    products,
+const mapStateToProps = ({products: {data, last_page, current_page, options, productsRequest}, kinds: {all: allKinds}, router}) => ({
+    data,
+    last_page,
+    current_page,
     options,
     allKinds,
     productsRequest,
