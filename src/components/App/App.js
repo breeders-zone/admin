@@ -49,7 +49,7 @@ class App extends Component {
         return (
             <React.Fragment>
                 <Route path="/admin" render={props => <AdminLayout {...props} />} />
-                <Route path="/auth" render={props => <AuthLayout {...props} />} />
+                <Route path="/admin/auth" render={props => <AuthLayout {...props} />} />
             </React.Fragment>
         );
     }

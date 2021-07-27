@@ -31,6 +31,6 @@ export const setProfileRequest = (payload) => {
 export const logout = () => (dispatch) => {
     dataService.logout();
     localStorage.removeItem('token');
-    dispatch(push('/auth/login'));
+    dispatch(push('/admin/auth/login'));
     dispatch(setProfile({}));
 };

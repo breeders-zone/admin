@@ -138,7 +138,7 @@ class ProductForm extends Component{
                 this.setState({isEdit: false});
                 actions.setStatus(success);
                 const data = await dataService.getProduct(id);
-                const price = data.price.find((item) => item.currency === data.currency).amount;
+                const price = data.price;
 
                 setProduct({
                     ...data,
@@ -233,7 +233,7 @@ class ProductForm extends Component{
                 ? allKinds.find((item) => item.id === product.kind_id).subcategories[0].id
                 : '';
 
-        const price = product.price.find((item) => item.currency === product.currency).amount;
+        const price = product.price;
 
         return (
             <Formik

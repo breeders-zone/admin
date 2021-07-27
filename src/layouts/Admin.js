@@ -73,7 +73,7 @@ class Admin extends React.Component {
     };
     render() {
         if (!isLogin())
-            return <Redirect to="/auth/login"/>;
+            return <Redirect to="/admin/auth/login"/>;
         return (
             <React.Fragment>
                 <Helmet>

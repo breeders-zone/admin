@@ -260,7 +260,7 @@ var routes = [
     {
         path: "/login",
         component: Login,
-        layout: "/auth"
+        layout: "/admin/auth"
     },
 ];
 export default routes;
