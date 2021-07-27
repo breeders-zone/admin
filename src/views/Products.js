@@ -267,7 +267,7 @@ class Products extends Component {
                                                            </Media>
                                                        </Link>
                                                     </th>
-                                                    <td>{item.price.find((item) => item.type === 'main').amount} {getSymbolFromCurrency(item.price.find((item) => item.type === 'main').currency)}</td>
+                                                    <td>{item.price} {getSymbolFromCurrency(item.currency)}</td>
                                                     <td>
                                                         <Badge color="" className="badge-dot mr-4">
                                                             {item.kind.title_rus}<br/>

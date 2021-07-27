@@ -1,5 +1,5 @@
   
-FROM node:lts as build-stage
+FROM node:16-alpine3.11 as build-stage
 
 WORKDIR /var/www
 
