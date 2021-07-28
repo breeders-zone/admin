@@ -5,7 +5,7 @@ WORKDIR /var/www
 
 COPY . /var/www
 
-RUN rm package-lock.json && npm i
+RUN npm i
 RUN npm run build
 
 FROM nginx:latest
