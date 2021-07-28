@@ -1,11 +1,11 @@
   
-FROM node:16-alpine3.11 as build-stage
+FROM node:14-alpine3.11 as build-stage
 
 WORKDIR /var/www
 
 COPY . /var/www
 
-RUN npm i
+RUN rm package-lock.json && npm i
 RUN npm run build
 
 FROM nginx:latest
