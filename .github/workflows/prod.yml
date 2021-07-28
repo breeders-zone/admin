@@ -31,6 +31,7 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
+        no-cache: true
         push: true
         tags:  ${{ secrets.DOCKER_HUB_USERNAME }}/admin:latest
     - name: Image digest
